@@ -1,0 +1,91 @@
+package com.company.ordersbackend.service;
+
+import com.company.ordersbackend.domain.ItemCategory;
+import com.company.ordersbackend.model.ItemCategoryDTO;
+import com.company.ordersbackend.repository.ItemCategoryRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.validation.Errors;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+class ItemCategoryServiceTest {
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Mock
+    Errors errors;
+
+    @Mock
+    ItemCategoryRepository itemCategoryRepository;
+
+    ItemCategoryService itemCategoryService;
+
+    @BeforeEach
+    public void init() {
+        this.itemCategoryService = new ItemCategoryService(itemCategoryRepository, modelMapper);
+    }
+
+    @Test
+    public void findAllTest() {
+        //given
+        List<ItemCategory> list = Arrays.asList(
+                new ItemCategory("PLC"),
+                new ItemCategory("HMI")
+        );
+
+        //when
+        when(itemCategoryRepository.findAll()).thenReturn(list);
+        List<ItemCategoryDTO> result = itemCategoryService.findAll();
+
+        //then
+        assertThat(result, hasSize(list.size()));
+        assertThat(result.get(0), instanceOf(ItemCategoryDTO.class));
+        assertEquals(list.get(0).getId(), result.get(0).getId());
+        assertEquals(list.get(0).getName(), result.get(0).getName());
+    }
+
+    @Test
+    public void saveTest_noErrors() {
+        //given
+        ItemCategoryDTO itemCategoryDTO = new ItemCategoryDTO(0L, "PLC");
+        ItemCategory itemCategory = new ItemCategory("PLC");
+
+        //when
+        when(itemCategoryRepository.save(itemCategory)).thenReturn(itemCategory);
+        when(errors.hasErrors()).thenReturn(false);
+        Optional<ItemCategoryDTO> result = itemCategoryService.save(itemCategoryDTO, errors);
+
+        //then
+        assertThat(result.get(), instanceOf(ItemCategoryDTO.class));
+        assertEquals(result.get().getName(), itemCategoryDTO.getName());
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void saveTest_hasErrors() {
+        //give when
+        when(errors.hasErrors()).thenReturn(true);
+        Optional<ItemCategoryDTO> result = itemCategoryService.save(new ItemCategoryDTO(), errors);
+        //then
+        assertTrue(result.isEmpty());
+    }
+}
