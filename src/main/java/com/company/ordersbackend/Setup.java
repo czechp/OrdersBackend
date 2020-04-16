@@ -21,11 +21,11 @@ public class Setup {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void init(){
-      log.info("Development mode active");
+    public void init() {
+        log.info("Development mode active");
 
-      itemCategoryRepository.save(new ItemCategory("PLC"));
-      itemCategoryRepository.save(new ItemCategory("HMI"));
+        itemCategoryRepository.save(new ItemCategory("PLC"));
+        itemCategoryRepository.save(new ItemCategory("HMI"));
 
         System.out.println(itemCategoryRepository.findAll());
 
