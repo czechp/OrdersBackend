@@ -32,4 +32,17 @@ public class ItemCategoryController {
         Optional<ItemCategoryDTO> result = itemCategoryService.save(itemCategoryDTO, errors);
         return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
+
+    @PutMapping
+    public ResponseEntity<ItemCategoryDTO> update(@RequestBody @Valid ItemCategoryDTO itemCategoryDTO, Errors errors) {
+        Optional<ItemCategoryDTO> result = itemCategoryService.save(itemCategoryDTO, errors);
+        return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable long id){
+        return itemCategoryService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+
 }

@@ -20,9 +20,8 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -87,5 +86,30 @@ class ItemCategoryServiceTest {
         Optional<ItemCategoryDTO> result = itemCategoryService.save(new ItemCategoryDTO(), errors);
         //then
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void deleteById_IdExists(){
+        //given
+        long id = 1L;
+        //when
+        when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        doNothing().when(itemCategoryRepository).deleteById(id);
+        boolean result = itemCategoryService.deleteById(id);
+        //then
+        assertTrue(result);
+        verify(itemCategoryRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void deleteById_IdNotExist(){
+        //given
+        long id = 1L;
+        //when
+        when(itemCategoryRepository.existsById(id)).thenReturn(false);
+        boolean result = itemCategoryService.deleteById(id);
+        //then
+        assertFalse(result);
+        verify(itemCategoryRepository, times(0)).deleteById(id);
     }
 }

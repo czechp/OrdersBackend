@@ -35,6 +35,15 @@ public class ItemCategoryService {
         return Optional.empty();
     }
 
+    public boolean deleteById(long id){
+        if(itemCategoryRepository.existsById(id)){
+            itemCategoryRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
+
     private List<ItemCategoryDTO> mapToList(List<ItemCategory> all) {
         List<ItemCategoryDTO> result = new ArrayList<>();
         for (ItemCategory itemCategory : all) {
