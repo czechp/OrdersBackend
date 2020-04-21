@@ -5,9 +5,11 @@ import com.company.ordersbackend.model.ProviderDTO;
 import com.company.ordersbackend.repository.ProviderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProviderService {
@@ -23,6 +25,14 @@ public class ProviderService {
         return mapToList(providerRepository.findAll());
     }
 
+    public Optional<ProviderDTO> save(ProviderDTO providerDTO, Errors errors){
+        if(!errors.hasErrors()){
+            Provider result = providerRepository.save(modelMapper.map(providerDTO, Provider.class));
+            return Optional.of(modelMapper.map(result, ProviderDTO.class));
+        }
+
+        return Optional.empty();
+    }
     private List<ProviderDTO> mapToList(List<Provider> all) {
         List<ProviderDTO>  result = new ArrayList<>();
         for (Provider provider : all) {

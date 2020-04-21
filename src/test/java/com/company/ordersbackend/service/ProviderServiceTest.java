@@ -11,13 +11,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.validation.Errors;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +31,9 @@ class ProviderServiceTest {
 
     @Mock
     ProviderRepository providerRepository;
+
+    @Mock
+    Errors errors;
 
     ProviderService providerService;
 
@@ -54,5 +58,30 @@ class ProviderServiceTest {
         assertThat(result.get(0), instanceOf(ProviderDTO.class));
         assertEquals(result.get(0).getName(), providerList.get(0).getName());
         assertEquals(result.get(0).getId(), providerList.get(0).getId());
+    }
+
+    @Test
+    public void saveTest_noErrors(){
+        //given
+        ProviderDTO providerDTO = new ProviderDTO("XXX");
+        Provider provider = new Provider("XXX");
+        //when
+        when(providerRepository.save(provider)).thenReturn(provider);
+        when(errors.hasErrors()).thenReturn(false);
+        Optional<ProviderDTO> result = providerService.save(providerDTO, errors);
+        //then
+        assertTrue(result.isPresent());
+        assertThat(result.get(), instanceOf(ProviderDTO.class));
+        assertEquals(result.get().getName(), providerDTO.getName());
+    }
+
+    @Test
+    public void saveTest_hasErrors(){
+        //given
+        //when
+        when(errors.hasErrors()).thenReturn(true);
+        Optional<ProviderDTO> result = providerService.save(new ProviderDTO("XXX"), errors);
+        //then
+        assertFalse(result.isPresent());
     }
 }
