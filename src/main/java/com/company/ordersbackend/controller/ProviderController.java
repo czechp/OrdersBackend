@@ -31,4 +31,11 @@ public class ProviderController {
         Optional<ProviderDTO> result = providerService.save(providerDTO, errors);
         return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
+
+    @PutMapping
+    public ResponseEntity<ProviderDTO> update(@RequestBody @Valid ProviderDTO  providerDTO, Errors errors){
+        Optional<ProviderDTO> result = providerService.save(providerDTO, errors);
+        return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+    }
+
 }
