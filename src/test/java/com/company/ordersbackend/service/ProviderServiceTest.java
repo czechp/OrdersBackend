@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.*;
 class ProviderServiceTest {
 
     @Autowired
-    ModelMapper modelMapper;
+    DTOMapper dtoMapper;
 
     @Mock
     ProviderRepository providerRepository;
@@ -39,7 +38,7 @@ class ProviderServiceTest {
 
     @BeforeEach
     void init(){
-        providerService = new ProviderService(providerRepository, modelMapper);
+        providerService = new ProviderService(providerRepository, dtoMapper);
     }
 
     @Test

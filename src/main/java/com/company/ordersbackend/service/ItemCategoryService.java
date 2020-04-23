@@ -3,7 +3,6 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.ItemCategory;
 import com.company.ordersbackend.model.ItemCategoryDTO;
 import com.company.ordersbackend.repository.ItemCategoryRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -15,11 +14,11 @@ import java.util.Optional;
 @Service
 public class ItemCategoryService {
     private ItemCategoryRepository itemCategoryRepository;
-    private ModelMapper modelMapper;
+    private DTOMapper dtoMapper;
 
-    public ItemCategoryService(ItemCategoryRepository itemCategoryRepository, ModelMapper modelMapper) {
+    public ItemCategoryService(ItemCategoryRepository itemCategoryRepository, DTOMapper dtoMapper) {
         this.itemCategoryRepository = itemCategoryRepository;
-        this.modelMapper = modelMapper;
+        this.dtoMapper = dtoMapper;
     }
 
     public List<ItemCategoryDTO> findAll() {
@@ -28,8 +27,8 @@ public class ItemCategoryService {
 
     public Optional<ItemCategoryDTO> save(ItemCategoryDTO itemCategoryDTO, Errors errors) {
         if (!errors.hasErrors()) {
-            ItemCategory result = itemCategoryRepository.save(modelMapper.map(itemCategoryDTO, ItemCategory.class));
-            return Optional.of(modelMapper.map(result, ItemCategoryDTO.class));
+            ItemCategory result = itemCategoryRepository.save(dtoMapper.itemCategoryPOJO(itemCategoryDTO));
+            return Optional.of(dtoMapper.itemCategoryDTO(result));
         }
         return Optional.empty();
     }
@@ -46,10 +45,8 @@ public class ItemCategoryService {
     private List<ItemCategoryDTO> mapToList(List<ItemCategory> all) {
         List<ItemCategoryDTO> result = new ArrayList<>();
         for (ItemCategory itemCategory : all) {
-            result.add(modelMapper.map(itemCategory, ItemCategoryDTO.class));
+            result.add(dtoMapper.itemCategoryDTO(itemCategory));
         }
         return result;
     }
-
-
 }

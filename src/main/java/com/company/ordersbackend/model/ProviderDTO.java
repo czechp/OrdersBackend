@@ -1,5 +1,6 @@
 package com.company.ordersbackend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProviderDTO {
         private long id;
         @NotBlank(message = "Name cannot be empty")

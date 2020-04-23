@@ -14,11 +14,11 @@ import java.util.Optional;
 @Service
 public class ProviderService {
     private ProviderRepository providerRepository;
-    private ModelMapper  modelMapper;
+    private DTOMapper dtoMapper;
 
-    public ProviderService(ProviderRepository providerRepository, ModelMapper modelMapper) {
+    public ProviderService(ProviderRepository providerRepository, DTOMapper dtoMapper) {
         this.providerRepository = providerRepository;
-        this.modelMapper = modelMapper;
+        this.dtoMapper = dtoMapper;
     }
 
     public List<ProviderDTO> findAll(){
@@ -27,8 +27,8 @@ public class ProviderService {
 
     public Optional<ProviderDTO> save(ProviderDTO providerDTO, Errors errors){
         if(!errors.hasErrors()){
-            Provider result = providerRepository.save(modelMapper.map(providerDTO, Provider.class));
-            return Optional.of(modelMapper.map(result, ProviderDTO.class));
+            Provider result = providerRepository.save(dtoMapper.providerPOJO(providerDTO));
+            return Optional.of(dtoMapper.providerDTO(result));
         }
 
         return Optional.empty();
@@ -45,7 +45,7 @@ public class ProviderService {
     private List<ProviderDTO> mapToList(List<Provider> all) {
         List<ProviderDTO>  result = new ArrayList<>();
         for (Provider provider : all) {
-            result.add(modelMapper.map(provider, ProviderDTO.class));
+            result.add(dtoMapper.providerDTO(provider));
         }
         return result;
     }

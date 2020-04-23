@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 class ItemCategoryServiceTest {
 
     @Autowired
-    ModelMapper modelMapper;
+    DTOMapper dtoMapper;
 
     @Mock
     Errors errors;
@@ -40,7 +40,7 @@ class ItemCategoryServiceTest {
 
     @BeforeEach
     public void init() {
-        this.itemCategoryService = new ItemCategoryService(itemCategoryRepository, modelMapper);
+        this.itemCategoryService = new ItemCategoryService(itemCategoryRepository, dtoMapper);
     }
 
     @Test
