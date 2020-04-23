@@ -4,25 +4,36 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ItemCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     private String name;
+
+
+    public ItemCategory(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public ItemCategory(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

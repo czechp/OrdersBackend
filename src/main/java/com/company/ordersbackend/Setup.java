@@ -18,7 +18,6 @@ public class Setup {
     private ItemCategoryRepository itemCategoryRepository;
     private ProviderRepository providerRepository;
 
-
     public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
@@ -37,5 +36,8 @@ public class Setup {
         providerRepository.save(new Provider("ZZZ"));
 
         System.out.println(providerRepository.findAll());
+
+
+
     }
 }
