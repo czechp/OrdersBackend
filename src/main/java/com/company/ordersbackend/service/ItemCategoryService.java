@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class ItemCategoryService {
     private ItemCategoryRepository itemCategoryRepository;
     private ModelMapper modelMapper;
