@@ -38,4 +38,9 @@ public class ProviderController {
         return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable long id){
+        return providerService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 }

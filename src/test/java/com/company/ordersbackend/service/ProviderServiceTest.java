@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -83,5 +83,30 @@ class ProviderServiceTest {
         Optional<ProviderDTO> result = providerService.save(new ProviderDTO("XXX"), errors);
         //then
         assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void deleteById_Exists(){
+        //given
+        long id = 1L;
+        //when
+        when(providerRepository.existsById(id)).thenReturn(true);
+        doNothing().when(providerRepository).deleteById(id);
+        boolean result = providerService.deleteById(id);
+        //then
+        assertTrue(result);
+        verify(providerRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void deleteById_NotExists(){
+        //given
+        long id = 1L;
+        //when
+        when(providerRepository.existsById(id)).thenReturn(false);
+        //then
+        boolean result = providerService.deleteById(id);
+        assertFalse(result);
+        verify(providerRepository, times(0)).deleteById(id);
     }
 }

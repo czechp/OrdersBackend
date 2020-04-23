@@ -33,6 +33,15 @@ public class ProviderService {
 
         return Optional.empty();
     }
+
+    public boolean deleteById(long id){
+        if(providerRepository.existsById(id)){
+            providerRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
     private List<ProviderDTO> mapToList(List<Provider> all) {
         List<ProviderDTO>  result = new ArrayList<>();
         for (Provider provider : all) {
@@ -40,4 +49,6 @@ public class ProviderService {
         }
         return result;
     }
+
+
 }
