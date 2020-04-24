@@ -1,8 +1,10 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.ItemCategory;
+import com.company.ordersbackend.domain.Producer;
 import com.company.ordersbackend.domain.Provider;
 import com.company.ordersbackend.model.ItemCategoryDTO;
+import com.company.ordersbackend.model.ProducerDTO;
 import com.company.ordersbackend.model.ProviderDTO;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,21 @@ public class DTOMapper {
         Provider result = new Provider();
         result.setId(providerDTO.getId());
         result.setName(providerDTO.getName());
+        return result;
+    }
+
+    public ProducerDTO producerDTO(Producer producer){
+        ProducerDTO result = new ProducerDTO();
+        result.setId(producer.getId());
+        result.setName(producer.getName());
+        return result;
+    }
+
+    public Producer producerPOJO(ProducerDTO producerDTO){
+        Producer result = new Producer();
+        result.setId(producerDTO.getId());
+        result.setName(producerDTO.getName());
+
         return result;
     }
 }

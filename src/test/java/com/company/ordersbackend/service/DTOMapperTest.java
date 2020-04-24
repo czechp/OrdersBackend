@@ -1,8 +1,10 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.ItemCategory;
+import com.company.ordersbackend.domain.Producer;
 import com.company.ordersbackend.domain.Provider;
 import com.company.ordersbackend.model.ItemCategoryDTO;
+import com.company.ordersbackend.model.ProducerDTO;
 import com.company.ordersbackend.model.ProviderDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -62,5 +64,27 @@ class DTOMapperTest {
         //then
         assertEquals(provider.getId(), result.getId());
         assertEquals(provider.getName(), result.getName());
+    }
+
+    @Test
+    public void producerPojoTest(){
+        //given
+        ProducerDTO producerDTO = new ProducerDTO(1L, "YYY");
+        //when
+        Producer result = dtoMapper.producerPOJO(producerDTO);
+        //then
+        assertEquals(producerDTO.getId(), result.getId());
+        assertEquals(producerDTO.getName(), result.getName());
+    }
+
+    @Test
+    public void producerDTOTest(){
+        //given
+        Producer producer = new Producer(1L, "Xxxx");
+        //when
+        ProducerDTO result = dtoMapper.producerDTO(producer);
+        //then
+        assertEquals(producer.getId(), result.getId());
+        assertEquals(producer.getName(), result.getName());
     }
 }

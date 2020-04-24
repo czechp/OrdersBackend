@@ -10,33 +10,34 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "providers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Provider {
+@Entity(name = "producers")
+public class Producer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
 
-    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "producer", fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<>();
 
-    public Provider(long id, String name) {
+
+
+    public Producer(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-
-    public Provider(String name) {
+    public Producer(String name) {
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Provider{" +
+        return "Producer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
