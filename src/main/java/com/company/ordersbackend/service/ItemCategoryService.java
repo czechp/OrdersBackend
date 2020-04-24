@@ -3,7 +3,6 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.ItemCategory;
 import com.company.ordersbackend.model.ItemCategoryDTO;
 import com.company.ordersbackend.repository.ItemCategoryRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -33,8 +32,18 @@ public class ItemCategoryService {
         return Optional.empty();
     }
 
-    public boolean deleteById(long id){
-        if(itemCategoryRepository.existsById(id)){
+    public boolean update(long id, ItemCategoryDTO itemCategoryDTO, Errors errors) {
+        if (itemCategoryRepository.existsById(id) && !errors.hasErrors()) {
+            ItemCategory itemCategory = itemCategoryRepository.findById(id).get();
+            itemCategory.setName(itemCategoryDTO.getName());
+            itemCategoryRepository.save(itemCategory);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteById(long id) {
+        if (itemCategoryRepository.existsById(id)) {
             itemCategoryRepository.deleteById(id);
             return true;
         }

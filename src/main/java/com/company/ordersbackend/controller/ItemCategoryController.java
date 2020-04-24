@@ -33,10 +33,10 @@ public class ItemCategoryController {
         return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PutMapping
-    public ResponseEntity<ItemCategoryDTO> update(@RequestBody @Valid ItemCategoryDTO itemCategoryDTO, Errors errors) {
-        Optional<ItemCategoryDTO> result = itemCategoryService.save(itemCategoryDTO, errors);
-        return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<ItemCategoryDTO> update(@PathVariable long id, @RequestBody @Valid ItemCategoryDTO itemCategoryDTO, Errors errors) {
+
+        return itemCategoryService.update(id, itemCategoryDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

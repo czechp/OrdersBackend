@@ -26,7 +26,6 @@ public class ItemCategory {
     @OneToMany(mappedBy = "itemCategory", fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<>();
 
-
     public ItemCategory(long id, String name) {
         this.id = id;
         this.name = name;
