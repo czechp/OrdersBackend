@@ -43,9 +43,9 @@ public class Setup {
         providerRepository.save(new Provider("ZZZ"));
 
         producerRepository.save(new Producer("IFM"));
-
         Producer producer = producerRepository.findById(1L).get();
         System.out.println(producer);
+
         Provider provider = providerRepository.findById(1L).get();
         System.out.println(provider);
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();

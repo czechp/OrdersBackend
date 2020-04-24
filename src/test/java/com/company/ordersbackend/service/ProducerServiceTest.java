@@ -1,0 +1,54 @@
+package com.company.ordersbackend.service;
+
+import com.company.ordersbackend.domain.Producer;
+import com.company.ordersbackend.model.ProducerDTO;
+import com.company.ordersbackend.repository.ProducerRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest()
+@RunWith(SpringRunner.class)
+class ProducerServiceTest {
+
+    @Autowired
+    private DTOMapper dtoMapper;
+
+    @Mock
+    private ProducerRepository producerRepository;
+
+    private ProducerService producerService;
+
+    @BeforeEach
+    public void init(){
+        this.producerService = new ProducerService(producerRepository, dtoMapper);
+    }
+
+    @Test
+    void findAll() {
+        //given
+        List<Producer> producers = Arrays.asList(
+                new Producer(1L, "XXX"),
+                new Producer(2L, "YYY")
+        );
+        //when
+        when(producerRepository.findAll()).thenReturn(producers);
+        List<ProducerDTO> result = producerService.findAll();
+        //then
+        assertThat(result, hasSize(producers.size()));
+        assertThat(result.get(0), instanceOf(ProducerDTO.class));
+    }
+}
