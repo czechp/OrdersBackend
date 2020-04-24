@@ -112,4 +112,44 @@ class ItemCategoryServiceTest {
         assertFalse(result);
         verify(itemCategoryRepository, times(0)).deleteById(id);
     }
+
+    @Test
+    public void updateTest(){
+        //given
+        long id = 1L;
+        ItemCategoryDTO itemCategoryDTO = new ItemCategoryDTO(id, "XXX");
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        when(itemCategoryRepository.findById(id)).thenReturn(Optional.of(dtoMapper.itemCategoryPOJO(itemCategoryDTO)));
+        boolean result = itemCategoryService.update(id, itemCategoryDTO, errors);
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    public void updateTest_hasErrors(){
+        //given
+        long id = 1L;
+        ItemCategoryDTO itemCategoryDTO = new ItemCategoryDTO(id, "XXX");
+        //when
+        when(errors.hasErrors()).thenReturn(true);
+        when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        boolean result = itemCategoryService.update(id, itemCategoryDTO, errors);
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void updateTest_NotExists(){
+        //given
+        long id = 1L;
+        ItemCategoryDTO itemCategoryDTO = new ItemCategoryDTO(id, "XXX");
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(itemCategoryRepository.existsById(id)).thenReturn(false);
+        boolean result = itemCategoryService.update(id, itemCategoryDTO, errors);
+        //then
+        assertFalse(result);
+    }
 }
