@@ -40,7 +40,7 @@ public class ItemCategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable long id){
+    public ResponseEntity deleteById(@PathVariable long id) {
         return itemCategoryService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 

@@ -27,18 +27,18 @@ public class ProviderController {
     }
 
     @PostMapping
-    public ResponseEntity<ProviderDTO> save(@RequestBody @Valid ProviderDTO  providerDTO, Errors errors){
+    public ResponseEntity<ProviderDTO> save(@RequestBody @Valid ProviderDTO providerDTO, Errors errors) {
         Optional<ProviderDTO> result = providerService.save(providerDTO, errors);
         return result.isPresent() ? new ResponseEntity(result.get(), HttpStatus.CREATED) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PutMapping(path="/{id}")
-    public ResponseEntity<ProviderDTO> update(@RequestBody @Valid ProviderDTO  providerDTO, Errors errors){
-        return null;
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<ProviderDTO> update(@PathVariable long id, @RequestBody @Valid ProviderDTO providerDTO, Errors errors) {
+        return providerService.update(id, providerDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable long id){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteById(@PathVariable long id) {
         return providerService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 

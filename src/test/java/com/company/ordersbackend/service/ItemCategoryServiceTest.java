@@ -125,6 +125,7 @@ class ItemCategoryServiceTest {
         boolean result = itemCategoryService.update(id, itemCategoryDTO, errors);
         //then
         assertTrue(result);
+        verify(itemCategoryRepository, times(1)).save(any());
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.Provider;
 import com.company.ordersbackend.model.ProviderDTO;
 import com.company.ordersbackend.repository.ProviderRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -21,12 +20,12 @@ public class ProviderService {
         this.dtoMapper = dtoMapper;
     }
 
-    public List<ProviderDTO> findAll(){
+    public List<ProviderDTO> findAll() {
         return mapToList(providerRepository.findAll());
     }
 
-    public Optional<ProviderDTO> save(ProviderDTO providerDTO, Errors errors){
-        if(!errors.hasErrors()){
+    public Optional<ProviderDTO> save(ProviderDTO providerDTO, Errors errors) {
+        if (!errors.hasErrors()) {
             Provider result = providerRepository.save(dtoMapper.providerPOJO(providerDTO));
             return Optional.of(dtoMapper.providerDTO(result));
         }
@@ -34,16 +33,27 @@ public class ProviderService {
         return Optional.empty();
     }
 
-    public boolean deleteById(long id){
-        if(providerRepository.existsById(id)){
+    public boolean deleteById(long id) {
+        if (providerRepository.existsById(id)) {
             providerRepository.deleteById(id);
             return true;
         }
 
         return false;
     }
+
+    public boolean update(long id, ProviderDTO providerDTO, Errors errors) {
+        if (providerRepository.existsById(id) && !errors.hasErrors()) {
+            Provider provider = providerRepository.findById(id).get();
+            provider.setName(providerDTO.getName());
+            providerRepository.save(provider);
+            return true;
+        }
+        return false;
+    }
+
     private List<ProviderDTO> mapToList(List<Provider> all) {
-        List<ProviderDTO>  result = new ArrayList<>();
+        List<ProviderDTO> result = new ArrayList<>();
         for (Provider provider : all) {
             result.add(dtoMapper.providerDTO(provider));
         }

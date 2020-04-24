@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +21,6 @@ public class Producer {
 
     @OneToMany(mappedBy = "producer", fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<>();
-
 
 
     public Producer(long id, String name) {

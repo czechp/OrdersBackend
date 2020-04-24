@@ -108,4 +108,46 @@ class ProviderServiceTest {
         assertFalse(result);
         verify(providerRepository, times(0)).deleteById(id);
     }
+
+    @Test
+    public void updateTest(){
+        //given
+        long id  = 1L;
+        ProviderDTO providerDTO = new ProviderDTO(id, "XXX");
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(providerRepository.existsById(id)).thenReturn(true);
+        when(providerRepository.findById(id)).thenReturn(Optional.of(dtoMapper.providerPOJO(providerDTO)));
+        boolean result = providerService.update(id, providerDTO, errors);
+        //then
+        assertTrue(result);
+        verify(providerRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void updateTest_hasErrors(){
+        //given
+        long id  = 1L;
+        ProviderDTO providerDTO = new ProviderDTO(id, "XXXX");
+        //when
+        when(errors.hasErrors()).thenReturn(true);
+        when(providerRepository.existsById(id)).thenReturn(true);
+        boolean result = providerService.update(id, providerDTO, errors);
+        //then
+        assertFalse(result);
+    }
+
+
+    @Test
+    public void updateTest_notExists(){
+        //given
+        long id  = 1L;
+        ProviderDTO providerDTO = new ProviderDTO(id, "XXXX");
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(providerRepository.existsById(id)).thenReturn(false);
+        boolean result = providerService.update(id, providerDTO, errors);
+        //then
+        assertFalse(result);
+    }
 }
