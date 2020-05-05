@@ -28,13 +28,13 @@ public class ProducerController {
     }
 
     @PostMapping
-    public ResponseEntity<ProducerDTO> save(@RequestBody  @Valid ProducerDTO producerDTO, Errors errors){
+    public ResponseEntity<ProducerDTO> save(@RequestBody @Valid ProducerDTO producerDTO, Errors errors) {
         Optional<ProducerDTO> result = producerService.save(producerDTO, errors);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.badRequest().build();
     }
 
-    @PatchMapping(path="/{id}")
-    public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ProducerDTO producerDTO){
-        return null;
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ProducerDTO producerDTO, Errors errors) {
+        return producerService.update(id, producerDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 }

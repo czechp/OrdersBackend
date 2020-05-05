@@ -26,20 +26,16 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 class ProducerServiceTest {
 
-    @Autowired
-    private DTOMapper dtoMapper;
-
-    @Mock
-    private ProducerRepository producerRepository;
-
     @Mock
     Errors errors;
-
-
+    @Autowired
+    private DTOMapper dtoMapper;
+    @Mock
+    private ProducerRepository producerRepository;
     private ProducerService producerService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         this.producerService = new ProducerService(producerRepository, dtoMapper);
     }
 
@@ -59,7 +55,7 @@ class ProducerServiceTest {
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() {
         //given
         ProducerDTO producerDTO = new ProducerDTO(0L, "XXX");
         //when
@@ -73,7 +69,7 @@ class ProducerServiceTest {
     }
 
     @Test
-    public void updateTest(){
+    public void updateTest() {
         //given
         long id = 1L;
         ProducerDTO producerDTO = new ProducerDTO(id, "XXX");
@@ -86,5 +82,33 @@ class ProducerServiceTest {
         //then
         assertTrue(result);
         verify(producerRepository, times(1)).save(any());
+    }
+
+    @Test
+    void updateTest_hasErrors() {
+        //given
+        long id = 1L;
+        ProducerDTO producerDTO = new ProducerDTO(id, "XXXX");
+        //when
+        when(producerRepository.existsById(id)).thenReturn(true);
+        when(errors.hasErrors()).thenReturn(true);
+        boolean result = producerService.update(id, producerDTO, errors);
+        //then
+        assertFalse(result);
+        verify(producerRepository, times(0)).save(any());
+    }
+
+    @Test
+    void updateTest_notExists(){
+        //given
+        long id = 1L;
+        ProducerDTO producerDTO = new ProducerDTO(id, "XXXX");
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(producerRepository.existsById(id)).thenReturn(false);
+        boolean result = producerService.update(id, producerDTO, errors);
+        //then
+        assertFalse(result);
+        verify(producerRepository, times(0)).save(any());
     }
 }
