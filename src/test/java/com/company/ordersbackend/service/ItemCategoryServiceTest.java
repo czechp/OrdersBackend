@@ -1,5 +1,6 @@
 package com.company.ordersbackend.service;
 
+import com.company.ordersbackend.domain.Item;
 import com.company.ordersbackend.domain.ItemCategory;
 import com.company.ordersbackend.model.ItemCategoryDTO;
 import com.company.ordersbackend.repository.ItemCategoryRepository;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -92,8 +94,11 @@ class ItemCategoryServiceTest {
     public void deleteById_IdExists(){
         //given
         long id = 1L;
+        ItemCategory itemCategory = new ItemCategory("XXXX");
+        itemCategory.getItemList().add(new Item());
         //when
         when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        when(itemCategoryRepository.findById(id)).thenReturn(Optional.of(itemCategory));
         doNothing().when(itemCategoryRepository).deleteById(id);
         boolean result = itemCategoryService.deleteById(id);
         //then
@@ -111,6 +116,19 @@ class ItemCategoryServiceTest {
         //then
         assertFalse(result);
         verify(itemCategoryRepository, times(0)).deleteById(id);
+    }
+
+    @Test
+    public void deleteById_ItemListIsNotEmpty(){
+        //given
+        long id  = 1L;
+        ItemCategory itemCategory = new ItemCategory("XXX");
+        //when
+        when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        when(itemCategoryRepository.findById(id)).thenReturn(Optional.of(itemCategory));
+        boolean result = itemCategoryService.deleteById(id);
+        //then
+        assertFalse(result);
     }
 
     @Test

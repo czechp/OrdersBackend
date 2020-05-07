@@ -35,8 +35,11 @@ public class ProviderService {
 
     public boolean deleteById(long id) {
         if (providerRepository.existsById(id)) {
-            providerRepository.deleteById(id);
-            return true;
+            if(!providerRepository.findById(id).get().getItemList().isEmpty()){
+                providerRepository.deleteById(id);
+                return true;
+            }
+
         }
 
         return false;

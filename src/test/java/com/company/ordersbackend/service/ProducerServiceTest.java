@@ -1,5 +1,6 @@
 package com.company.ordersbackend.service;
 
+import com.company.ordersbackend.domain.Item;
 import com.company.ordersbackend.domain.Producer;
 import com.company.ordersbackend.model.ProducerDTO;
 import com.company.ordersbackend.repository.ProducerRepository;
@@ -116,8 +117,11 @@ class ProducerServiceTest {
     void deleteTest(){
         //given
         long id = 1L;
+        Producer producer = new Producer("XXX");
+        producer.getItemList().add(new Item());
         //when
         when(producerRepository.existsById(id)).thenReturn(true);
+        when(producerRepository.findById(id)).thenReturn(Optional.of(producer));
         boolean result = producerService.deleteById(id);
         //then
         assertTrue(result);
@@ -134,5 +138,18 @@ class ProducerServiceTest {
         //then
         assertFalse(result);
         verify(producerRepository, times(0)).deleteById(any());
+    }
+
+    @Test
+    public void deleteTest_ItemListIsNotEmpty(){
+        //given
+        long id = 1L;
+        Producer producer = new Producer("XXX");
+        //when
+        when(producerRepository.existsById(id)).thenReturn(true);
+        when(producerRepository.findById(id)).thenReturn(Optional.of(producer));
+        boolean result = producerService.deleteById(id);
+        //then
+        assertFalse(result);
     }
 }
