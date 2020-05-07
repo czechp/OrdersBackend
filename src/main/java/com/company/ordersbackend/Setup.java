@@ -50,13 +50,5 @@ public class Setup {
         System.out.println(provider);
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
         System.out.println(itemCategory);
-
-
-        Item item = new Item("stycznik", "xxx1213", "asdasda", "sadsadsadas", producer, provider, itemCategory);
-
-
-        itemRepository.save(item);
-
-        System.out.println(itemRepository.findAll());
     }
 }

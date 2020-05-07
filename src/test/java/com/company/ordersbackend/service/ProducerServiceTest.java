@@ -111,4 +111,28 @@ class ProducerServiceTest {
         assertFalse(result);
         verify(producerRepository, times(0)).save(any());
     }
+
+    @Test
+    void deleteTest(){
+        //given
+        long id = 1L;
+        //when
+        when(producerRepository.existsById(id)).thenReturn(true);
+        boolean result = producerService.deleteById(id);
+        //then
+        assertTrue(result);
+        verify(producerRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void deleteTest_notExists(){
+        //given
+        long id  = 1L;
+        //when
+        when(producerRepository.existsById(id)).thenReturn(false);
+        boolean result = producerService.deleteById(id);
+        //then
+        assertFalse(result);
+        verify(producerRepository, times(0)).deleteById(any());
+    }
 }

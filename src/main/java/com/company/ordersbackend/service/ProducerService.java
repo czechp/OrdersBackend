@@ -24,8 +24,8 @@ public class ProducerService {
         return mapToList(producerRepository.findAll());
     }
 
-    public Optional<ProducerDTO> save(ProducerDTO producerDTO, Errors erros){
-        if(!erros.hasErrors()){
+    public Optional<ProducerDTO> save(ProducerDTO producerDTO, Errors erros) {
+        if (!erros.hasErrors()) {
             Producer result = producerRepository.save(dtoMapper.producerPOJO(producerDTO));
             return Optional.of(dtoMapper.producerDTO(result));
         }
@@ -33,8 +33,8 @@ public class ProducerService {
         return Optional.empty();
     }
 
-    public boolean update(long id, ProducerDTO producerDTO,  Errors errors){
-        if(producerRepository.existsById(id) && !errors.hasErrors()){
+    public boolean update(long id, ProducerDTO producerDTO, Errors errors) {
+        if (producerRepository.existsById(id) && !errors.hasErrors()) {
             Producer producer = producerRepository.findById(id).get();
             producer.setName(producerDTO.getName());
             producerRepository.save(producer);
@@ -42,6 +42,16 @@ public class ProducerService {
         }
         return false;
     }
+
+    public boolean deleteById(long id) {
+        if (producerRepository.existsById(id)) {
+            producerRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
     private List<ProducerDTO> mapToList(List<Producer> all) {
         List<ProducerDTO> result = new ArrayList<>();
         for (Producer producer : all) {

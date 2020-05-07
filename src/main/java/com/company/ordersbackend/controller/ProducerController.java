@@ -37,4 +37,9 @@ public class ProducerController {
     public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ProducerDTO producerDTO, Errors errors) {
         return producerService.update(id, producerDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity delete(@PathVariable long id){
+        return producerService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 }
