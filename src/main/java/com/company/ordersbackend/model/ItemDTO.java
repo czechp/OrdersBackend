@@ -29,11 +29,11 @@ public class ItemDTO {
     private String url;
 
     @NotNull(message = "Producer cannot be null")
-    private Producer producer;
+    private ProducerDTO producer;
 
     @NotNull(message = "Provider cannot be null")
-    private Provider provider;
+    private ProviderDTO provider;
 
     @NotNull(message = "Item category cannot be null")
-    private ItemCategory itemCategory;
+    private ItemCategoryDTO itemCategory;
 }

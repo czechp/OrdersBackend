@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 @Profile("development")
 @Slf4j
@@ -50,5 +52,12 @@ public class Setup {
         System.out.println(provider);
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
         System.out.println(itemCategory);
+
+        Item item1 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item2 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item3 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+
+        itemRepository.saveAll(Arrays.asList(item1, item2, item3));
+        System.out.println(itemRepository.findAll());
     }
 }

@@ -62,9 +62,10 @@ public class DTOMapper {
         result.setName(item.getName());
         result.setSerialNumber(item.getSerialNumber());
         result.setUrl(item.getUrl());
-        result.setProducer(item.getProducer());
-        result.setProvider(item.getProvider());
-        result.setItemCategory(item.getItemCategory());
+        result.setDescription(item.getDescription());
+        result.setProducer(producerDTO(item.getProducer()));
+        result.setProvider(providerDTO(item.getProvider()));
+        result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
 
         return result;
     }
@@ -75,9 +76,9 @@ public class DTOMapper {
         result.setName(itemDTO.getName());
         result.setSerialNumber(itemDTO.getSerialNumber());
         result.setUrl(itemDTO.getUrl());
-        result.setProducer(itemDTO.getProducer());
-        result.setProvider(itemDTO.getProvider());
-        result.setItemCategory(itemDTO.getItemCategory());
+        result.setProducer(producerPOJO(itemDTO.getProducer()));
+        result.setProvider(providerPOJO(itemDTO.getProvider()));
+        result.setItemCategory(itemCategoryPOJO(itemDTO.getItemCategory()));
         return result;
     }
 
