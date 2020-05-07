@@ -44,8 +44,11 @@ public class ItemCategoryService {
 
     public boolean deleteById(long id) {
         if (itemCategoryRepository.existsById(id)) {
-            itemCategoryRepository.deleteById(id);
-            return true;
+            if(!itemCategoryRepository.findById(id).get().getItemList().isEmpty()){
+                itemCategoryRepository.deleteById(id);
+                return true;
+            }
+
         }
 
         return false;

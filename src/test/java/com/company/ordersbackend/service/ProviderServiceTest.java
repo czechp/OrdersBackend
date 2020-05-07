@@ -1,5 +1,6 @@
 package com.company.ordersbackend.service;
 
+import com.company.ordersbackend.domain.Item;
 import com.company.ordersbackend.domain.Provider;
 import com.company.ordersbackend.model.ProviderDTO;
 import com.company.ordersbackend.repository.ProviderRepository;
@@ -88,8 +89,11 @@ class ProviderServiceTest {
     public void deleteById_Exists(){
         //given
         long id = 1L;
+        Provider provider = new Provider("XXX");
+        provider.getItemList().add(new Item());
         //when
         when(providerRepository.existsById(id)).thenReturn(true);
+        when(providerRepository.findById(id)).thenReturn(Optional.of(provider));
         doNothing().when(providerRepository).deleteById(id);
         boolean result = providerService.deleteById(id);
         //then
@@ -107,6 +111,19 @@ class ProviderServiceTest {
         boolean result = providerService.deleteById(id);
         assertFalse(result);
         verify(providerRepository, times(0)).deleteById(id);
+    }
+
+    @Test
+    public void deleteById_ItemListIsNotEmpty(){
+        //given
+        long id = 1L;
+        Provider provider = new Provider("XXX");
+        //when
+        when(providerRepository.existsById(id)).thenReturn(true);
+        when(providerRepository.findById(id)).thenReturn(Optional.of(provider));
+        boolean result = providerService.deleteById(id);
+        //then
+        assertFalse(result);
     }
 
     @Test
