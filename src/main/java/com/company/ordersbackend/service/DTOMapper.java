@@ -76,6 +76,7 @@ public class DTOMapper {
         result.setName(itemDTO.getName());
         result.setSerialNumber(itemDTO.getSerialNumber());
         result.setUrl(itemDTO.getUrl());
+        result.setDescription(itemDTO.getDescription());
         result.setProducer(producerPOJO(itemDTO.getProducer()));
         result.setProvider(providerPOJO(itemDTO.getProvider()));
         result.setItemCategory(itemCategoryPOJO(itemDTO.getItemCategory()));

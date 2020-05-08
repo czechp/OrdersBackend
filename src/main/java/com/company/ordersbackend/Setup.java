@@ -53,7 +53,7 @@ public class Setup {
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
         System.out.println(itemCategory);
 
-        Item item1 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item1 = new Item("Stycznikkkkkk", "123", "32Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "https://www.google.com/", producer, provider, itemCategory);
         Item item2 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
         Item item3 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
