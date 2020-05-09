@@ -39,12 +39,16 @@ public class Setup {
 
         itemCategoryRepository.save(new ItemCategory("PLC"));
         itemCategoryRepository.save(new ItemCategory("HMI"));
+        itemCategoryRepository.save(new ItemCategory("Osprzet"));
 
 
-        providerRepository.save(new Provider("XXX"));
-        providerRepository.save(new Provider("ZZZ"));
+        providerRepository.save(new Provider("ElektroADA"));
+        providerRepository.save(new Provider("DolinaSerwis"));
+        providerRepository.save(new Provider("Internet"));
 
         producerRepository.save(new Producer("IFM"));
+        producerRepository.save(new Producer("Siemens"));
+        producerRepository.save(new Producer("Schneider"));
         Producer producer = producerRepository.findById(1L).get();
         System.out.println(producer);
 
@@ -53,7 +57,7 @@ public class Setup {
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
         System.out.println(itemCategory);
 
-        Item item1 = new Item("Stycznikkkkkk", "123", "32Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "https://www.google.com/", producer, provider, itemCategory);
+        Item item1 = new Item("Stycznikkkkkk", "123", "32a", "https://www.google.com/", producer, provider, itemCategory);
         Item item2 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
         Item item3 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
