@@ -95,7 +95,6 @@ class ItemCategoryServiceTest {
         //given
         long id = 1L;
         ItemCategory itemCategory = new ItemCategory("XXXX");
-        itemCategory.getItemList().add(new Item());
         //when
         when(itemCategoryRepository.existsById(id)).thenReturn(true);
         when(itemCategoryRepository.findById(id)).thenReturn(Optional.of(itemCategory));
@@ -123,6 +122,7 @@ class ItemCategoryServiceTest {
         //given
         long id  = 1L;
         ItemCategory itemCategory = new ItemCategory("XXX");
+        itemCategory.getItemList().add(new Item());
         //when
         when(itemCategoryRepository.existsById(id)).thenReturn(true);
         when(itemCategoryRepository.findById(id)).thenReturn(Optional.of(itemCategory));

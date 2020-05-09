@@ -118,7 +118,6 @@ class ProducerServiceTest {
         //given
         long id = 1L;
         Producer producer = new Producer("XXX");
-        producer.getItemList().add(new Item());
         //when
         when(producerRepository.existsById(id)).thenReturn(true);
         when(producerRepository.findById(id)).thenReturn(Optional.of(producer));
@@ -145,6 +144,8 @@ class ProducerServiceTest {
         //given
         long id = 1L;
         Producer producer = new Producer("XXX");
+        producer.getItemList().add(new Item());
+
         //when
         when(producerRepository.existsById(id)).thenReturn(true);
         when(producerRepository.findById(id)).thenReturn(Optional.of(producer));
