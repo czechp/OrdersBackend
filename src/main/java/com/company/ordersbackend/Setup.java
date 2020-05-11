@@ -48,7 +48,7 @@ public class Setup {
 
         producerRepository.save(new Producer("IFM"));
         producerRepository.save(new Producer("Siemens"));
-        producerRepository.save(new Producer("Schneider"));
+        producerRepository.save(new Producer("Adidas"));
         Producer producer = producerRepository.findById(1L).get();
         System.out.println(producer);
 
