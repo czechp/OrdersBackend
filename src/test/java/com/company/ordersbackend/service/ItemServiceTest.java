@@ -28,6 +28,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 
@@ -149,5 +150,63 @@ class ItemServiceTest {
         Optional<ItemDTO> result = itemService.save(itemDTO, errors);
         //then
         assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void updateTest(){
+        //given
+        long id  = 1L;
+        ItemDTO itemDTO = new ItemDTO(id, "xxxx", "yyyy", "zzzz", "xxxxx",
+        new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO());
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(producerRepository.findById(anyLong())).thenReturn(Optional.of(new Producer()));
+        when(providerRepository.findById(anyLong())).thenReturn(Optional.of(new Provider()));
+        when(itemCategoryRepository.findById(anyLong())).thenReturn(Optional.of(new ItemCategory()));
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(new Item()));
+        when(producerRepository.existsById(anyLong())).thenReturn(true);
+        when(providerRepository.existsById(anyLong())).thenReturn(true);
+        when(itemCategoryRepository.existsById(anyLong())).thenReturn(true);
+        boolean result = itemService.update(id, itemDTO, errors);
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    public void updateTest_hasErrors(){
+        //given
+        //when
+        when(errors.hasErrors()).thenReturn(true);
+        boolean result = itemService.update(1L, new ItemDTO(), errors);
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void updateTest_ItemNotExists(){
+        //given
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
+        boolean result = itemService.update(1L, new ItemDTO(), errors);
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void updateTest_AnySupplyNotExists(){
+        //given
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "xxxxx",
+                new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO());
+
+        //when
+        when(errors.hasErrors()).thenReturn(false);
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(new Item()));
+        when(producerRepository.existsById(anyLong())).thenReturn(false);
+        when(providerRepository.existsById(anyLong())).thenReturn(true);
+        when(itemCategoryRepository.existsById(anyLong())).thenReturn(true);
+        boolean result = itemService.update(1L, itemDTO, errors);
+        //then
+        assertFalse(result);
     }
 }

@@ -30,4 +30,9 @@ public class ItemController {
         Optional<ItemDTO> result = itemService.save(item, errors);
         return result.isPresent() ? ResponseEntity.ok(result.get()): ResponseEntity.badRequest().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ItemDTO itemDTO, Errors errors){
+        return itemService.update(id, itemDTO, errors) ? ResponseEntity.ok().build(): ResponseEntity.notFound().build();
+    }
 }
