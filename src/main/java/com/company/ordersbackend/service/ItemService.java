@@ -76,6 +76,14 @@ public class ItemService {
     }
 
 
+    public boolean delete(long id) {
+        if(itemRepository.existsById(id)){
+            itemRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
     private List<ItemDTO> toDTOList(List<Item> itemList) {
         List<ItemDTO> result = new ArrayList<>();
         for (Item item : itemList) {

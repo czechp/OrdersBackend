@@ -2,6 +2,7 @@ package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.model.ItemDTO;
 import com.company.ordersbackend.service.ItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,10 @@ public class ItemController {
     @PatchMapping("/{id}")
     public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ItemDTO itemDTO, Errors errors){
         return itemService.update(id, itemDTO, errors) ? ResponseEntity.ok().build(): ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable long id){
+        return itemService.delete(id)? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.IM_USED).build();
     }
 }

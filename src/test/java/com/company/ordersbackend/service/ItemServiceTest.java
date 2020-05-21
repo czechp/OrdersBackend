@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -208,5 +208,30 @@ class ItemServiceTest {
         boolean result = itemService.update(1L, itemDTO, errors);
         //then
         assertFalse(result);
+    }
+
+    @Test
+    public void deleteTest(){
+        //given
+        long id  = 1L;
+        //when
+        when(itemRepository.existsById(id)).thenReturn(true);
+        doNothing().when(itemRepository).deleteById(anyLong());
+        boolean result = itemService.delete(id);
+        //then
+        assertTrue(result);
+        verify(itemRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void deleteTest_ItemNotExists(){
+        //given
+        long id = 1L;
+        //when
+        when(itemRepository.existsById(id)).thenReturn(false);
+        boolean result = itemService.delete(id);
+        //then
+        assertFalse(result);
+        verify(itemRepository, times(0)).deleteById(id);
     }
 }
