@@ -35,7 +35,7 @@ public class ProviderService {
 
     public boolean deleteById(long id) {
         if (providerRepository.existsById(id)) {
-            if(!providerRepository.findById(id).get().getItemList().isEmpty()){
+            if(providerRepository.findById(id).get().getItemList().isEmpty()){
                 providerRepository.deleteById(id);
                 return true;
             }

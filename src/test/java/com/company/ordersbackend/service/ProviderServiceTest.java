@@ -90,7 +90,6 @@ class ProviderServiceTest {
         //given
         long id = 1L;
         Provider provider = new Provider("XXX");
-        provider.getItemList().add(new Item());
         //when
         when(providerRepository.existsById(id)).thenReturn(true);
         when(providerRepository.findById(id)).thenReturn(Optional.of(provider));
@@ -118,6 +117,8 @@ class ProviderServiceTest {
         //given
         long id = 1L;
         Provider provider = new Provider("XXX");
+        provider.getItemList().add(new Item());
+
         //when
         when(providerRepository.existsById(id)).thenReturn(true);
         when(providerRepository.findById(id)).thenReturn(Optional.of(provider));

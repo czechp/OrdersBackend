@@ -3,12 +3,16 @@ package com.company.ordersbackend.model;
 import com.company.ordersbackend.domain.ItemCategory;
 import com.company.ordersbackend.domain.Producer;
 import com.company.ordersbackend.domain.Provider;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDTO {
     private long id;
 
@@ -29,11 +33,11 @@ public class ItemDTO {
     private String url;
 
     @NotNull(message = "Producer cannot be null")
-    private Producer producer;
+    private ProducerDTO producer;
 
     @NotNull(message = "Provider cannot be null")
-    private Provider provider;
+    private ProviderDTO provider;
 
     @NotNull(message = "Item category cannot be null")
-    private ItemCategory itemCategory;
+    private ItemCategoryDTO itemCategory;
 }

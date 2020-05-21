@@ -104,8 +104,8 @@ class DTOMapperTest {
         assertEquals(result.getName(), item.getName());
         assertEquals(result.getSerialNumber(), item.getSerialNumber());
         assertEquals(result.getUrl(), item.getUrl());
-        assertEquals(result.getProducer(), item.getProducer());
-        assertEquals(result.getProvider(), item.getProvider());
-        assertEquals(result.getItemCategory(), item.getItemCategory());
+        assertThat(result.getProducer(), instanceOf(ProducerDTO.class));
+        assertThat(result.getProvider(), instanceOf(ProviderDTO.class));
+        assertThat(result.getItemCategory(), instanceOf(ItemCategoryDTO.class));
     }
 }
