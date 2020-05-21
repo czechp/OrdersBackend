@@ -1,17 +1,13 @@
 package com.company.ordersbackend;
 
-import com.company.ordersbackend.domain.Item;
-import com.company.ordersbackend.domain.ItemCategory;
-import com.company.ordersbackend.domain.Producer;
-import com.company.ordersbackend.domain.Provider;
-import com.company.ordersbackend.repository.ItemCategoryRepository;
-import com.company.ordersbackend.repository.ItemRepository;
-import com.company.ordersbackend.repository.ProducerRepository;
-import com.company.ordersbackend.repository.ProviderRepository;
+import com.company.ordersbackend.domain.*;
+import com.company.ordersbackend.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -25,12 +21,16 @@ public class Setup {
     private ProviderRepository providerRepository;
     private ProducerRepository producerRepository;
     private ItemRepository itemRepository;
+    private AppUserRepository appUserRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository) {
+    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
         this.producerRepository = producerRepository;
         this.itemRepository = itemRepository;
+        this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -50,18 +50,18 @@ public class Setup {
         producerRepository.save(new Producer("Siemens"));
         producerRepository.save(new Producer("Adidas"));
         Producer producer = producerRepository.findById(1L).get();
-        System.out.println(producer);
 
         Provider provider = providerRepository.findById(1L).get();
-        System.out.println(provider);
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
-        System.out.println(itemCategory);
 
-        Item item1 = new Item("Stycznikkkkkk", "123", "32a", "https://www.google.com/", producer, provider, itemCategory);
-        Item item2 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
-        Item item3 = new Item("Stycznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item1 = new Item("Stycznik", "123", "32a", "https://www.google.com/", producer, provider, itemCategory);
+        Item item2 = new Item("Zabezpieczenie termiczne", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item3 = new Item("Bezpiecznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
-        System.out.println(itemRepository.findAll());
+
+        appUserRepository.save(new AppUser("user", passwordEncoder.encode("user"), "ROLE_USER"));
+        System.out.println(appUserRepository.findAll());
+
     }
 }
