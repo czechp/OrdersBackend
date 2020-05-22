@@ -1,13 +1,7 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.Item;
-import com.company.ordersbackend.domain.ItemCategory;
-import com.company.ordersbackend.domain.Producer;
-import com.company.ordersbackend.domain.Provider;
-import com.company.ordersbackend.model.ItemCategoryDTO;
-import com.company.ordersbackend.model.ItemDTO;
-import com.company.ordersbackend.model.ProducerDTO;
-import com.company.ordersbackend.model.ProviderDTO;
+import com.company.ordersbackend.domain.*;
+import com.company.ordersbackend.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,5 +101,27 @@ class DTOMapperTest {
         assertThat(result.getProducer(), instanceOf(ProducerDTO.class));
         assertThat(result.getProvider(), instanceOf(ProviderDTO.class));
         assertThat(result.getItemCategory(), instanceOf(ItemCategoryDTO.class));
+    }
+
+    @Test
+    public void appUserPojo_Test(){
+        //given
+        AppUserDTO appUserDTO = new AppUserDTO(1L, "user", "user123", "USER", "webdas@gmail.com");
+        //when
+        AppUser result = dtoMapper.appUserPOJO(appUserDTO);
+        //then
+        assertThat(result, instanceOf(AppUser.class));
+        assertEquals(result.getId(), appUserDTO.getId());
+    }
+
+    @Test
+    public void appUserDTO_Test(){
+        //given
+        AppUser appUser = new AppUser(1L, "user", "user123", "USER", "webdas@gmail.com");
+        //when
+        AppUserDTO result = dtoMapper.appUserDTO(appUser);
+        //then
+        assertThat(result, instanceOf(AppUserDTO.class));
+        assertEquals(result.getId(), appUser.getId());
     }
 }

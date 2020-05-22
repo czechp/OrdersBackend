@@ -25,16 +25,22 @@ public class AppUser implements UserDetails {
     private String username;
     private String password;
     private String role;
+    private String email;
 
-    public AppUser(String username, String password, String role) {
+    public AppUser(String username, String password, String role, String email) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = role.toUpperCase();
+        this.email = email;
+    }
+
+    public void setRole(String role) {
+        this.role = role.toUpperCase();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + this.role));
     }
 
     @Override
