@@ -29,6 +29,7 @@ public class ProducerController {
 
     @PostMapping
     public ResponseEntity<ProducerDTO> save(@RequestBody @Valid ProducerDTO producerDTO, Errors errors) {
+        System.out.println("it works");
         Optional<ProducerDTO> result = producerService.save(producerDTO, errors);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.badRequest().build();
     }
