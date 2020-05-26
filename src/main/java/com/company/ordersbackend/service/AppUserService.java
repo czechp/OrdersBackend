@@ -23,13 +23,9 @@ public class AppUserService {
     public Optional<AppUserDTO> authorization(AppUserDTO appUserDTO) {
         Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(appUserDTO.getUsername());
         if (optionalAppUser.isPresent()) {
-            System.out.println(optionalAppUser.get());
-            System.out.println(passwordEncoder.encode(appUserDTO.getPassword()));
-            if (optionalAppUser.get().getPassword().equals(passwordEncoder.encode(appUserDTO.getPassword()))) {
-                AppUserDTO result = dtoMapper.appUserDTO(optionalAppUser.get());
-                result.setPassword("");
-                return Optional.of(result);
-            }
+            AppUserDTO result = dtoMapper.appUserDTO(optionalAppUser.get());
+            result.setPassword("");
+            return Optional.of(result);
         }
         return Optional.empty();
     }
