@@ -39,7 +39,7 @@ public class ProviderController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteById(@PathVariable long id) {
-        return providerService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.IM_USED);
+        return providerService.deleteById(id) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

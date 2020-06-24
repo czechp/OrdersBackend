@@ -29,7 +29,6 @@ public class ProducerController {
 
     @PostMapping
     public ResponseEntity<ProducerDTO> save(@RequestBody @Valid ProducerDTO producerDTO, Errors errors) {
-        System.out.println("it works");
         Optional<ProducerDTO> result = producerService.save(producerDTO, errors);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.badRequest().build();
     }
@@ -41,6 +40,6 @@ public class ProducerController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable long id){
-        return producerService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.IM_USED).build();
+        return producerService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 }
