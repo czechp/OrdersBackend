@@ -26,6 +26,7 @@ public class AppUser implements UserDetails {
     private String password;
     private String role;
     private String email;
+    private boolean active;
 
     public AppUser(String username, String password, String role, String email) {
         this.username = username;
@@ -60,6 +61,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 }

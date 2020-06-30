@@ -60,7 +60,9 @@ public class Setup {
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
         AppUser user = new AppUser("user", passwordEncoder.encode("user"), "user", "webcoderc@gmail.com");
+        user.setActive(true);
         user = appUserRepository.save(user);
+
         System.out.println(appUserRepository.findAll());
         System.out.println(user.getAuthorities());
 

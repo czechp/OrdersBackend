@@ -4,6 +4,7 @@ import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.service.AppUserService;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,13 @@ public class AppUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors erros){
-        return appUserService.saveAppUser(appUserDTO, erros) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors errors){
+        return appUserService.saveAppUser(appUserDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/activate-user")
+    public ResponseEntity<String> activateUser(@RequestParam(name = "token")String token){
+        return appUserService.activateAppUser(token) ? ResponseEntity.ok("Użytkownik aktywowany")
+                : new ResponseEntity<>("Błąd podczas aktywacji", HttpStatus.NOT_FOUND);
     }
 }
