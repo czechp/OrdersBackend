@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
+import javax.servlet.ServletRequest;
 import java.util.Optional;
 
 @Service
@@ -18,14 +19,19 @@ public class AppUserService {
     private DTOMapper dtoMapper;
     private PasswordEncoder passwordEncoder;
     private VerificationTokenRepository verificationTokenRepository;
+    private EmailSenderService emailSenderService;
 
     @Autowired()
-    public AppUserService(AppUserRepository appUserRepository, DTOMapper dtoMapper, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository) {
+    public AppUserService(AppUserRepository appUserRepository, DTOMapper dtoMapper, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, EmailSenderService emailSenderService) {
         this.appUserRepository = appUserRepository;
         this.dtoMapper = dtoMapper;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.emailSenderService = emailSenderService;
     }
+
+
+
 
     public Optional<AppUserDTO> authorization(AppUserDTO appUserDTO) {
         Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(appUserDTO.getUsername());
@@ -37,14 +43,14 @@ public class AppUserService {
         return Optional.empty();
     }
 
-    public boolean saveAppUser(AppUserDTO appUserDTO, Errors errors) {
+    public boolean saveAppUser(AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest) {
         if (!errors.hasErrors()) {
             if (!appUserRepository.existsByUsername(appUserDTO.getUsername()) && !appUserRepository.existsByEmail(appUserDTO.getEmail())) {
                 AppUser appUser = dtoMapper.appUserPOJO(appUserDTO);
                 appUser.setPassword(passwordEncoder.encode(appUserDTO.getPassword()));
-                //remove after tests
                 VerificationToken result = verificationTokenRepository.save(new VerificationToken(appUserRepository.save(appUser)));
-                System.out.println(result.getToken());
+                emailSenderService.sendVerificationToken(appUser.getEmail(), result.getToken(), servletRequest);
+
                 return true;
             }
         }

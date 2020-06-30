@@ -2,11 +2,11 @@ package com.company.ordersbackend;
 
 import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.repository.*;
+import com.company.ordersbackend.service.EmailSenderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +23,16 @@ public class Setup {
     private ItemRepository itemRepository;
     private AppUserRepository appUserRepository;
     private PasswordEncoder passwordEncoder;
+    private EmailSenderService emailSenderService;
 
-    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
         this.producerRepository = producerRepository;
         this.itemRepository = itemRepository;
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailSenderService = emailSenderService;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -59,12 +61,9 @@ public class Setup {
         Item item3 = new Item("Bezpiecznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
-        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "user", "webcoderc@gmail.com");
+        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "user", "webcodsdaerc@gmail.com");
         user.setActive(true);
         user = appUserRepository.save(user);
-
-        System.out.println(appUserRepository.findAll());
-        System.out.println(user.getAuthorities());
 
     }
 }

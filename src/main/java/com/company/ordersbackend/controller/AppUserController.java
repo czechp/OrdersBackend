@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -29,8 +30,8 @@ public class AppUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors errors){
-        return appUserService.saveAppUser(appUserDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest){
+        return appUserService.saveAppUser(appUserDTO, errors, servletRequest) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/activate-user")
