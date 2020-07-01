@@ -39,6 +39,6 @@ public class ItemController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id){
-        return itemService.delete(id)? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.IM_USED).build();
+        return itemService.delete(id)? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 }

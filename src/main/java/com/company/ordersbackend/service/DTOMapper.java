@@ -1,13 +1,7 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.Item;
-import com.company.ordersbackend.domain.ItemCategory;
-import com.company.ordersbackend.domain.Producer;
-import com.company.ordersbackend.domain.Provider;
-import com.company.ordersbackend.model.ItemCategoryDTO;
-import com.company.ordersbackend.model.ItemDTO;
-import com.company.ordersbackend.model.ProducerDTO;
-import com.company.ordersbackend.model.ProviderDTO;
+import com.company.ordersbackend.domain.*;
+import com.company.ordersbackend.model.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -80,6 +74,26 @@ public class DTOMapper {
         result.setProducer(producerPOJO(itemDTO.getProducer()));
         result.setProvider(providerPOJO(itemDTO.getProvider()));
         result.setItemCategory(itemCategoryPOJO(itemDTO.getItemCategory()));
+        return result;
+    }
+
+    public AppUser appUserPOJO(AppUserDTO appUserDTO) {
+        AppUser result = new AppUser();
+        result.setId(appUserDTO.getId());
+        result.setUsername(appUserDTO.getUsername());
+        result.setPassword(appUserDTO.getPassword());
+        result.setEmail(appUserDTO.getEmail());
+        result.setRole(appUserDTO.getRole());
+        return result;
+    }
+
+    public AppUserDTO appUserDTO(AppUser appUser) {
+        AppUserDTO result = new AppUserDTO();
+        result.setId(appUser.getId());
+        result.setUsername(appUser.getUsername());
+        result.setPassword(appUser.getPassword());
+        result.setEmail(appUser.getEmail());
+        result.setRole(appUser.getRole());
         return result;
     }
 
