@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.awt.*;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -124,4 +126,48 @@ class DTOMapperTest {
         assertThat(result, instanceOf(AppUserDTO.class));
         assertEquals(result.getId(), appUser.getId());
     }
+
+    @Test
+    public void itemInOrderPojo_Test(){
+        //given
+        ItemInOrderDTO itemInOrderDTO = new ItemInOrderDTO();
+        ProducerDTO producerDTO = new ProducerDTO();
+        producerDTO.setId(1L);
+        ProviderDTO providerDTO = new ProviderDTO();
+        providerDTO.setId(1L);
+        ItemCategoryDTO itemCategoryDTO = new ItemCategoryDTO();
+        itemCategoryDTO.setId(1L);
+        itemInOrderDTO.setProducer(producerDTO);
+        itemInOrderDTO.setProvider(providerDTO);
+        itemInOrderDTO.setItemCategory(itemCategoryDTO);
+        itemInOrderDTO.setId(1L);
+        //when
+        ItemInOrder result = dtoMapper.itemInOrderPOJO(itemInOrderDTO);
+        //then
+        assertThat(result, instanceOf(ItemInOrder.class));
+        assertEquals(result.getId(), itemInOrderDTO.getId());
+    }
+
+    @Test
+    public void itemInOrderDTO_Test(){
+        //given
+        ItemInOrder itemInOrder = new ItemInOrder();
+        itemInOrder.setId(1L);
+        Producer producer = new Producer();
+        producer.setId(1L);
+        Provider provider = new Provider();
+        provider.setId(1L);
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setId(1L);
+        itemInOrder.setProducer(producer);
+        itemInOrder.setProvider(provider);
+        itemInOrder.setItemCategory(itemCategory);
+
+        //when
+        ItemInOrderDTO result = dtoMapper.itemInOrderDTO(itemInOrder);
+        //then
+        assertThat(result, instanceOf(ItemInOrderDTO.class));
+        assertEquals(result.getId(), itemInOrder.getId());
+    }
+
 }

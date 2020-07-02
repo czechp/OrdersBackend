@@ -11,7 +11,7 @@ public class EmailSenderThread implements Runnable {
     private JavaMailSender javaMailSender;
     private SimpleMailMessage simpleMailMessage;
 
-    private void send(){
+    private void send() {
         javaMailSender.send(simpleMailMessage);
     }
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity(name = "items")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,5 +42,15 @@ public class Item {
         this.producer = producer;
         this.provider = provider;
         this.itemCategory = itemCategory;
+    }
+
+    public Item(Item item) {
+        this.name = item.name;
+        this.serialNumber = item.serialNumber;
+        this.description = item.description;
+        this.url = item.url;
+        this.producer = item.producer;
+        this.provider = item.provider;
+        this.itemCategory = item.itemCategory;
     }
 }

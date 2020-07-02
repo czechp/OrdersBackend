@@ -97,4 +97,39 @@ public class DTOMapper {
         return result;
     }
 
+    public ItemInOrder itemInOrderPOJO(ItemInOrderDTO itemInOrderDTO) {
+        ItemInOrder result = new ItemInOrder();
+        result.setId(itemInOrderDTO.getId());
+        result.setName(itemInOrderDTO.getName());
+        result.setSerialNumber(itemInOrderDTO.getSerialNumber());
+        result.setUrl(itemInOrderDTO.getUrl());
+        result.setDescription(itemInOrderDTO.getDescription());
+        result.setProducer(producerPOJO(itemInOrderDTO.getProducer()));
+        result.setProvider(providerPOJO(itemInOrderDTO.getProvider()));
+        result.setItemCategory(itemCategoryPOJO(itemInOrderDTO.getItemCategory()));
+        result.setOrderDate(itemInOrderDTO.getOrderDate());
+        result.setDeliverDate(itemInOrderDTO.getDeliverDate());
+        result.setDelivered(itemInOrderDTO.isDelivered());
+        result.setOrdered(itemInOrderDTO.isDelivered());
+        result.setAmount(itemInOrderDTO.getAmount());
+        return result;
+    }
+
+    public ItemInOrderDTO itemInOrderDTO(ItemInOrder itemInOrder) {
+        ItemInOrderDTO result = new ItemInOrderDTO();
+        result.setId(itemInOrder.getId());
+        result.setName(itemInOrder.getName());
+        result.setSerialNumber(itemInOrder.getSerialNumber());
+        result.setUrl(itemInOrder.getUrl());
+        result.setDescription(itemInOrder.getDescription());
+        result.setProducer(producerDTO(itemInOrder.getProducer()));
+        result.setProvider(providerDTO(itemInOrder.getProvider()));
+        result.setItemCategory(itemCategoryDTO(itemInOrder.getItemCategory()));
+        result.setOrderDate(itemInOrder.getOrderDate());
+        result.setDeliverDate(itemInOrder.getDeliverDate());
+        result.setDelivered(itemInOrder.isDelivered());
+        result.setOrdered(itemInOrder.isDelivered());
+        result.setAmount(itemInOrder.getAmount());
+        return result;
+    }
 }

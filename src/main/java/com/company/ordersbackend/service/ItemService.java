@@ -77,7 +77,7 @@ public class ItemService {
 
 
     public boolean delete(long id) {
-        if(itemRepository.existsById(id)){
+        if (itemRepository.existsById(id)) {
             itemRepository.deleteById(id);
             return true;
         }
