@@ -1,8 +1,5 @@
 package com.company.ordersbackend.model;
 
-import com.company.ordersbackend.domain.ItemCategory;
-import com.company.ordersbackend.domain.Producer;
-import com.company.ordersbackend.domain.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,4 +37,17 @@ public class ItemDTO {
 
     @NotNull(message = "Item category cannot be null")
     private ItemCategoryDTO itemCategory;
+
+    public ItemDTO(ItemDTO itemDTO) {
+        this.id = itemDTO.getId();
+        this.name = itemDTO.getName();
+        this.description = itemDTO.getDescription();
+        this.serialNumber = itemDTO.getSerialNumber();
+        this.url = itemDTO.getUrl();
+        this.producer = itemDTO.getProducer();
+        this.provider = itemDTO.getProvider();
+        this.itemCategory = itemDTO.getItemCategory();
+
+    }
+
 }

@@ -45,7 +45,7 @@ public class ProducerService {
 
     public boolean deleteById(long id) {
         if (producerRepository.existsById(id)) {
-            if(producerRepository.findById(id).get().getItemList().isEmpty()){
+            if (producerRepository.findById(id).get().getItemList().isEmpty()) {
                 producerRepository.deleteById(id);
                 return true;
             }

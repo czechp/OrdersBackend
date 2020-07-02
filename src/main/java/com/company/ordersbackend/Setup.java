@@ -23,16 +23,16 @@ public class Setup {
     private ItemRepository itemRepository;
     private AppUserRepository appUserRepository;
     private PasswordEncoder passwordEncoder;
-    private EmailSenderService emailSenderService;
+    private ItemInOrderRepository itemInOrderRepository;
 
-    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
+    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, ItemInOrderRepository itemInOrderRepository) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
         this.producerRepository = producerRepository;
         this.itemRepository = itemRepository;
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
-        this.emailSenderService = emailSenderService;
+        this.itemInOrderRepository = itemInOrderRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -64,6 +64,10 @@ public class Setup {
         AppUser user = new AppUser("user", passwordEncoder.encode("user"), "user", "webcodsdaerc@gmail.com");
         user.setActive(true);
         user = appUserRepository.save(user);
+
+        ItemInOrder itemInOrder = new ItemInOrder(item1);
+        itemInOrderRepository.save(itemInOrder);
+        System.out.println(itemInOrderRepository.findAll());
 
     }
 }

@@ -20,8 +20,8 @@ public class AppUserDTO {
     @Size(min = 5, max = 50, message = "Username has to have minimum 5 signs")
     private String username;
 
-    @NotNull(message="Password cannot be null")
-    @NotBlank(message="Password cannot be blank")
+    @NotNull(message = "Password cannot be null")
+    @NotBlank(message = "Password cannot be blank")
     @Size(min = 5, max = 50, message = "Password has to have minimum 8 signs")
     private String password;
     private String role;

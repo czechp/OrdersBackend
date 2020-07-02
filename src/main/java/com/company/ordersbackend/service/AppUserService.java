@@ -31,8 +31,6 @@ public class AppUserService {
     }
 
 
-
-
     public Optional<AppUserDTO> authorization(AppUserDTO appUserDTO) {
         Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(appUserDTO.getUsername());
         if (optionalAppUser.isPresent()) {
@@ -57,12 +55,12 @@ public class AppUserService {
         return false;
     }
 
-    public boolean activateAppUser(String token){
+    public boolean activateAppUser(String token) {
         Optional<VerificationToken> optionalVerificationToken = verificationTokenRepository.findByToken(token);
-        if(optionalVerificationToken.isPresent()){
+        if (optionalVerificationToken.isPresent()) {
             VerificationToken verificationToken = optionalVerificationToken.get();
             Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(verificationToken.getAppUser().getUsername());
-            if(optionalAppUser.isPresent()){
+            if (optionalAppUser.isPresent()) {
                 AppUser appUser = optionalAppUser.get();
                 appUser.setActive(true);
                 appUserRepository.save(appUser);
