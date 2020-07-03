@@ -67,7 +67,6 @@ public class Setup {
 
         ItemInOrder itemInOrder = new ItemInOrder(item1);
         itemInOrderRepository.save(itemInOrder);
-        System.out.println(itemInOrderRepository.findAll());
 
     }
 }

@@ -119,7 +119,7 @@ class DTOMapperTest {
     @Test
     public void appUserDTO_Test(){
         //given
-        AppUser appUser = new AppUser(1L, "user", "user123", "USER", "webdas@gmail.com", false);
+        AppUser appUser = new AppUser(1L, "user", "user123", "USER", "webdas@gmail.com");
         //when
         AppUserDTO result = dtoMapper.appUserDTO(appUser);
         //then
