@@ -132,4 +132,29 @@ public class DTOMapper {
         result.setAmount(itemInOrder.getAmount());
         return result;
     }
+
+    public OrderDTO orderDTO (Order order){
+        OrderDTO result = new OrderDTO();
+        result.setId(order.getId());
+        result.setAppUser(order.getAppUser());
+        result.setCreationDate(order.getCreationDate());
+        result.setClosedDate(order.getClosedDate());
+        for (ItemInOrder item : order.getItemsInOrder()) {
+            result.getItemsInOrder().add(itemInOrderDTO(item));
+        }
+        return result;
+    }
+
+    public Order orderPOJO(OrderDTO orderDTO){
+        Order result = new Order();
+        result.setId(orderDTO.getId());
+        result.setAppUser(orderDTO.getAppUser());
+        result.setCreationDate(orderDTO.getCreationDate());
+        result.setClosedDate(orderDTO.getClosedDate());
+
+        for (ItemInOrderDTO item : orderDTO.getItemsInOrder()) {
+            result.getItemsInOrder().add(itemInOrderPOJO(item));
+        }
+        return result;
+    }
 }

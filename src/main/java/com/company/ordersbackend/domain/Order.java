@@ -26,6 +26,7 @@ public class Order {
 
     private LocalDateTime creationDate;
 
+    private LocalDateTime closedDate;
 
     public Order() {
         this.creationDate = LocalDateTime.now();

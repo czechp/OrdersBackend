@@ -170,4 +170,23 @@ class DTOMapperTest {
         assertEquals(result.getId(), itemInOrder.getId());
     }
 
+    @Test
+    public void orderPOJO_Test(){
+        //given
+        OrderDTO orderDTO = new OrderDTO();
+        //when
+        Order result = dtoMapper.orderPOJO(orderDTO);
+        //then
+        assertThat(result, instanceOf(Order.class));
+    }
+
+    @Test
+    public void orderDTO_Test(){
+        //given
+        Order order = new Order();
+        //when
+        OrderDTO result = dtoMapper.orderDTO(order);
+        //then]
+        assertThat(result, instanceOf(OrderDTO.class));
+    }
 }

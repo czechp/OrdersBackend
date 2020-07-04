@@ -1,5 +1,7 @@
 package com.company.ordersbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,10 +24,14 @@ public class AppUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
+    @JsonIgnore()
     private String password;
     private String role;
     private String email;
+    @JsonIgnore()
     private boolean active;
+
+    @JsonIgnore()
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
@@ -72,4 +78,6 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
+
 }

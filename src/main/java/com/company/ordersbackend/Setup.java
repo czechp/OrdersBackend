@@ -2,7 +2,6 @@ package com.company.ordersbackend;
 
 import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.repository.*;
-import com.company.ordersbackend.service.EmailSenderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
