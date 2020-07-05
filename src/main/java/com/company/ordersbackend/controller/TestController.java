@@ -6,6 +6,7 @@ import com.company.ordersbackend.repository.AppUserRepository;
 import com.company.ordersbackend.repository.ItemInOrderRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import com.company.ordersbackend.service.DTOMapper;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+@Profile("development")
 @RestController()
 @RequestMapping(value = "/api/test")
 public class TestController {
@@ -34,15 +36,18 @@ public class TestController {
     @GetMapping()
     public ResponseEntity<List<OrderDTO>> test() {
         Order order = new Order();
+        order.setName("Start");
         order.setAppUser(appUserRepository.findById(1L).get());
         order.addItem(itemInOrderRepository.findById(4L).get());
         order.addItem(itemInOrderRepository.findById(4L).get());
+
         orderRepository.save(order);
         List<Order> orders = orderRepository.findAll();
         List<OrderDTO> result = orders.stream()
                 .map(x -> dtoMapper.orderDTO(x))
                 .collect(Collectors.toList());
 
+        System.out.println(result.size());
         System.out.println(result);
 
         return new ResponseEntity(result, HttpStatus.OK);

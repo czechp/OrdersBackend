@@ -136,6 +136,7 @@ public class DTOMapper {
     public OrderDTO orderDTO (Order order){
         OrderDTO result = new OrderDTO();
         result.setId(order.getId());
+        result.setName(order.getName());
         result.setAppUser(order.getAppUser());
         result.setCreationDate(order.getCreationDate());
         result.setClosedDate(order.getClosedDate());
@@ -148,6 +149,7 @@ public class DTOMapper {
     public Order orderPOJO(OrderDTO orderDTO){
         Order result = new Order();
         result.setId(orderDTO.getId());
+        result.setName(orderDTO.getName());
         result.setAppUser(orderDTO.getAppUser());
         result.setCreationDate(orderDTO.getCreationDate());
         result.setClosedDate(orderDTO.getClosedDate());

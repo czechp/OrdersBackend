@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.tomcat.jni.Local;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,11 @@ public class OrderDTO {
     private long id;
 
     private AppUser appUser;
+
+    @NotNull
+    @NotBlank
+    private String name;
+
 
     private List<ItemInOrderDTO> itemsInOrder = new ArrayList<>();
 

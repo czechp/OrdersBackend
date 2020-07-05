@@ -50,6 +50,19 @@ public class AppUser implements UserDetails {
         this.email = email;
     }
 
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
     public void setRole(String role) {
         this.role = role.toUpperCase();
     }
