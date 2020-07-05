@@ -22,11 +22,8 @@ public class Order {
     @ManyToOne()
     private AppUser appUser;
 
-    @ManyToMany
-    @JoinTable(name = "item_in_order",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "item_in_order_id$")}
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="item_in_order_id")
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
     private LocalDateTime creationDate;

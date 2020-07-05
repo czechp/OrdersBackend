@@ -39,7 +39,6 @@ public class TestController {
         order.setName("Start");
         order.setAppUser(appUserRepository.findById(1L).get());
         order.addItem(itemInOrderRepository.findById(4L).get());
-        order.addItem(itemInOrderRepository.findById(4L).get());
 
         orderRepository.save(order);
         List<Order> orders = orderRepository.findAll();
