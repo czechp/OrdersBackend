@@ -70,4 +70,7 @@ public class AppUserService {
         return false;
     }
 
+    public Optional<AppUser> findAppUserByUsername(String username){
+        return appUserRepository.findByUsername(username);
+    }
 }

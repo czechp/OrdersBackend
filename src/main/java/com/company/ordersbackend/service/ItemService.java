@@ -1,11 +1,9 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.Item;
+import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.model.ItemDTO;
-import com.company.ordersbackend.repository.ItemCategoryRepository;
-import com.company.ordersbackend.repository.ItemRepository;
-import com.company.ordersbackend.repository.ProducerRepository;
-import com.company.ordersbackend.repository.ProviderRepository;
+import com.company.ordersbackend.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -20,13 +18,19 @@ public class ItemService {
     private ProducerRepository producerRepository;
     private ProviderRepository providerRepository;
     private ItemCategoryRepository itemCategoryRepository;
+    private ItemInOrderRepository itemInOrderRepository;
 
-    public ItemService(ItemRepository itemRepository, DTOMapper dtoMapper, ProducerRepository producerRepository, ProviderRepository providerRepository, ItemCategoryRepository itemCategoryRepository) {
+    public ItemService(ItemRepository itemRepository, DTOMapper dtoMapper, ProducerRepository producerRepository, ProviderRepository providerRepository, ItemCategoryRepository itemCategoryRepository, ItemInOrderRepository itemInOrderRepository) {
         this.itemRepository = itemRepository;
         this.dtoMapper = dtoMapper;
         this.producerRepository = producerRepository;
         this.providerRepository = providerRepository;
         this.itemCategoryRepository = itemCategoryRepository;
+        this.itemInOrderRepository = itemInOrderRepository;
+    }
+
+    public Optional<Item> findById(long id){
+        return itemRepository.findById(id);
     }
 
     public List<ItemDTO> findAll() {
@@ -64,6 +68,16 @@ public class ItemService {
         return false;
     }
 
+    public Optional<ItemInOrder> convertItemIntoItemInOrder(long itemId, int amount)
+    {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if(optionalItem.isPresent()){
+            ItemInOrder itemInOrder = new ItemInOrder(optionalItem.get());
+            itemInOrder.setAmount(amount);
+            return Optional.of(itemInOrder);
+        }
+        return Optional.empty();
+    }
     private Item assignItemDTOtoPOJO(ItemDTO itemDTO, Item itemToUpdate) {
         itemToUpdate.setName(itemDTO.getName());
         itemToUpdate.setDescription(itemDTO.getDescription());

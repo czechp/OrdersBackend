@@ -1,17 +1,11 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.Item;
-import com.company.ordersbackend.domain.ItemCategory;
-import com.company.ordersbackend.domain.Producer;
-import com.company.ordersbackend.domain.Provider;
+import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.model.ItemCategoryDTO;
 import com.company.ordersbackend.model.ItemDTO;
 import com.company.ordersbackend.model.ProducerDTO;
 import com.company.ordersbackend.model.ProviderDTO;
-import com.company.ordersbackend.repository.ItemCategoryRepository;
-import com.company.ordersbackend.repository.ItemRepository;
-import com.company.ordersbackend.repository.ProducerRepository;
-import com.company.ordersbackend.repository.ProviderRepository;
+import com.company.ordersbackend.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -55,9 +49,12 @@ class ItemServiceTest {
     @Mock
     private ItemCategoryRepository itemCategoryRepository;
 
+    @Mock
+    ItemInOrderRepository itemInOrderRepository;
+
     @BeforeEach
     public void init(){
-        itemService = new ItemService(itemRepository, dtoMapper, producerRepository, providerRepository, itemCategoryRepository);
+        itemService = new ItemService(itemRepository, dtoMapper, producerRepository, providerRepository, itemCategoryRepository,itemInOrderRepository);
     }
 
     @Test
@@ -233,5 +230,30 @@ class ItemServiceTest {
         //then
         assertFalse(result);
         verify(itemRepository, times(0)).deleteById(id);
+    }
+
+    @Test
+    public void convertItemIntoItemInOrder_Test(){
+        //given
+        long itemId = 1L;
+        int amount = 100;
+        //when
+        when(itemRepository.findById(any())).thenReturn(Optional.of(new Item()));
+        Optional<ItemInOrder> result = itemService.convertItemIntoItemInOrder(itemId, amount);
+        //then
+        assertTrue(result.isPresent());
+        assertThat(result.get(), instanceOf(ItemInOrder.class));
+    }
+
+    @Test
+    public void convertItemIntoItemInOrder_itemNotExists(){
+        //given
+        long itemId = 1L;
+        int amount = 100;
+        //when
+        when(itemRepository.findById(any())).thenReturn(Optional.empty());
+        Optional<ItemInOrder> result = itemService.convertItemIntoItemInOrder(itemId, amount);
+        //then
+        assertFalse(result.isPresent());
     }
 }

@@ -119,7 +119,7 @@ class DTOMapperTest {
     @Test
     public void appUserDTO_Test(){
         //given
-        AppUser appUser = new AppUser(1L, "user", "user123", "USER", "webdas@gmail.com", false);
+        AppUser appUser = new AppUser(1L, "user", "user123", "USER", "webdas@gmail.com");
         //when
         AppUserDTO result = dtoMapper.appUserDTO(appUser);
         //then
@@ -170,4 +170,23 @@ class DTOMapperTest {
         assertEquals(result.getId(), itemInOrder.getId());
     }
 
+    @Test
+    public void orderPOJO_Test(){
+        //given
+        OrderDTO orderDTO = new OrderDTO();
+        //when
+        Order result = dtoMapper.orderPOJO(orderDTO);
+        //then
+        assertThat(result, instanceOf(Order.class));
+    }
+
+    @Test
+    public void orderDTO_Test(){
+        //given
+        Order order = new Order();
+        //when
+        OrderDTO result = dtoMapper.orderDTO(order);
+        //then]
+        assertThat(result, instanceOf(OrderDTO.class));
+    }
 }
