@@ -1,7 +1,9 @@
 package com.company.ordersbackend;
 
 import com.company.ordersbackend.domain.*;
+import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.*;
+import com.company.ordersbackend.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -23,8 +25,10 @@ public class Setup {
     private AppUserRepository appUserRepository;
     private PasswordEncoder passwordEncoder;
     private ItemInOrderRepository itemInOrderRepository;
+    private OrderService orderService;
+    private OrderRepository orderRepository;
 
-    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, ItemInOrderRepository itemInOrderRepository) {
+    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, ItemInOrderRepository itemInOrderRepository, OrderService orderService, OrderRepository orderRepository) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
         this.producerRepository = producerRepository;
@@ -32,6 +36,8 @@ public class Setup {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.itemInOrderRepository = itemInOrderRepository;
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -66,6 +72,12 @@ public class Setup {
 
         ItemInOrder itemInOrder = new ItemInOrder(item1);
         itemInOrderRepository.save(itemInOrder);
+
+        Order order = new Order();
+        order.setName("Testing name");
+        order.setAppUser(appUserRepository.findById(1L).get());
+        orderRepository.save(order);
+
 
     }
 }

@@ -6,6 +6,7 @@ import com.company.ordersbackend.repository.AppUserRepository;
 import com.company.ordersbackend.repository.ItemInOrderRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import com.company.ordersbackend.service.DTOMapper;
+import com.company.ordersbackend.service.OrderService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,14 @@ public class TestController {
     private OrderRepository orderRepository;
     private AppUserRepository appUserRepository;
     private ItemInOrderRepository itemInOrderRepository;
+    private OrderService orderService;
     private DTOMapper dtoMapper;
 
-    public TestController(OrderRepository orderRepository, AppUserRepository appUserRepository, ItemInOrderRepository itemInOrderRepository, DTOMapper dtoMapper) {
+    public TestController(OrderRepository orderRepository, AppUserRepository appUserRepository, ItemInOrderRepository itemInOrderRepository, OrderService orderService, DTOMapper dtoMapper) {
         this.orderRepository = orderRepository;
         this.appUserRepository = appUserRepository;
         this.itemInOrderRepository = itemInOrderRepository;
+        this.orderService = orderService;
         this.dtoMapper = dtoMapper;
     }
 
@@ -38,7 +41,6 @@ public class TestController {
         Order order = new Order();
         order.setName("Start");
         order.setAppUser(appUserRepository.findById(1L).get());
-        order.addItem(itemInOrderRepository.findById(4L).get());
 
         orderRepository.save(order);
         List<Order> orders = orderRepository.findAll();
@@ -46,8 +48,8 @@ public class TestController {
                 .map(x -> dtoMapper.orderDTO(x))
                 .collect(Collectors.toList());
 
-        System.out.println(result.size());
-        System.out.println(result);
+        System.out.println(orderService.addItemToOrder(1L, "user", 1L, 10).get());
+
 
         return new ResponseEntity(result, HttpStatus.OK);
     }

@@ -27,8 +27,13 @@ class OrderServiceTest {
     Errors errors;
     @Mock
     private OrderRepository orderRepository;
+
     @Mock
-    private AppUserRepository appUserRepository;
+    private ItemService itemService;
+
+    @Mock
+    private AppUserService appUserService;
+
     @Autowired
     private DTOMapper dtoMapper;
 
@@ -36,7 +41,7 @@ class OrderServiceTest {
 
     @BeforeEach
     public void init() {
-        this.orderService = new OrderService(orderRepository, dtoMapper, appUserRepository);
+        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService);
     }
 
     @Test
@@ -44,7 +49,7 @@ class OrderServiceTest {
         //given
         OrderDTO orderDTO = new OrderDTO();
         //when
-        when(appUserRepository.findByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
         when(errors.hasErrors()).thenReturn(false);
         when(orderRepository.save(any())).thenReturn(new Order());
         Optional<OrderDTO> result = orderService.save(orderDTO, errors, "user");
@@ -57,7 +62,7 @@ class OrderServiceTest {
         //given
         OrderDTO orderDTO = new OrderDTO();
         //when
-        when(appUserRepository.findByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
         when(errors.hasErrors()).thenReturn(true);
         Optional<OrderDTO> result = orderService.save(orderDTO, errors, "user");
         //then
@@ -69,13 +74,12 @@ class OrderServiceTest {
         //given
         OrderDTO orderDTO = new OrderDTO();
         //when
-        when(appUserRepository.findByUsername(any())).thenReturn(Optional.empty());
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
         when(errors.hasErrors()).thenReturn(false);
         when(orderRepository.save(any())).thenReturn(new Order());
         Optional<OrderDTO> result = orderService.save(orderDTO, errors, "user");
         //then
         assertTrue(result.isEmpty());
     }
-
 
 }
