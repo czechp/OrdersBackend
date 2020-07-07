@@ -1,0 +1,349 @@
+[33mcommit e4560dd037c79ace2119dcd1c9436087e3d32a0c[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 100f941 4d4f683
+Author: P Czech <webcoderc@gmail.com>
+Date:   Mon Jul 6 18:51:00 2020 +0200
+
+    Merge branch 'Order'
+
+[33mcommit 4d4f683be420e64490d236d0bd9d3e9170dc18c5[m[33m ([m[1;31morigin/Order[m[33m, [m[1;32mOrder[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Mon Jul 6 18:49:02 2020 +0200
+
+    Created service to getting orders for following user ----> writing test for it
+
+[33mcommit 49e882ee439d7c8fc472f700bff0357d00f47cc2[m
+Author: PCzech <you@example.com>
+Date:   Sun Jul 5 20:04:41 2020 +0200
+
+    Back to origin version relation between order and item in order
+
+[33mcommit e8a00b4a14b55cc28c73134d731c85f879b241d8[m
+Author: PCzech <you@example.com>
+Date:   Sun Jul 5 19:36:43 2020 +0200
+
+    Imporve relations between order and itemInOrder
+
+[33mcommit 40d50bdbe5e659f05403efe9b047a34fd62b3d55[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Sat Jul 4 10:52:43 2020 +0200
+
+    Tests for save method in OrderService
+
+[33mcommit cc6719116aab77c2dc0f6002b3a6d50387e63279[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Sat Jul 4 09:46:48 2020 +0200
+
+    Feature to create new Order
+
+[33mcommit 54290fca1353147ca8295423612351e947a7c78d[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Jul 3 14:56:28 2020 +0200
+
+    Created first prototype Order class
+
+[33mcommit 100f9411837dcc253d3392d448777d6b28d0cc68[m
+Merge: fbd051e b7a85eb
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Jul 2 17:55:09 2020 +0200
+
+    Merge branch 'ItemInOrderClass'
+
+[33mcommit b7a85ebc41eeb45b97e6453c6d427c671664c959[m[33m ([m[1;31morigin/ItemInOrderClass[m[33m, [m[1;32mItemInOrderClass[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Jul 2 17:54:10 2020 +0200
+
+    Prepared item in order with additional fields
+
+[33mcommit fbd051eb81d284c4e0228c8c834f7846935d3592[m
+Merge: c0e66f5 c39ee70
+Author: P Czech <webcoderc@gmail.com>
+Date:   Wed Jul 1 15:26:03 2020 +0200
+
+    Merge branch 'BasicAuthentication'
+
+[33mcommit c39ee70ed641d34df6e78eb7d8a37c99513e09d5[m[33m ([m[1;31morigin/BasicAuthentication[m[33m, [m[1;32mBasicAuthentication[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Jun 30 16:38:51 2020 +0200
+
+    Prepared email sender to verify account
+
+[33mcommit 048072312c1dd8737f8971ef9b5a7c256564e054[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Jun 30 14:41:18 2020 +0200
+
+    Register and activate new user
+
+[33mcommit 93a89b2471bf1f5215c5b483df23613a0e7551a1[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Jun 30 12:42:57 2020 +0200
+
+    Created service and endpoint to register new users
+
+[33mcommit 6c1d69c39d4295e438d9464dbe83e1f25cfc373c[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Wed Jun 24 16:09:31 2020 +0200
+
+    Correct the response status for deleting any POJO when its has some relation with other object
+
+[33mcommit 505db459a47c56e588c50f1de061769bae37cf98[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 28 14:41:25 2020 +0200
+
+    Tests for authorization method
+
+[33mcommit 8f9627e2baf49d7fdca71be8d5998b8e1a6da1e3[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue May 26 18:43:50 2020 +0200
+
+    Configured Basic Authentication to works with Angular
+
+[33mcommit 0e88e6ff5b41a8944bb139591589faa0f7e5748e[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue May 26 10:49:31 2020 +0200
+
+    Prepared end point to login user
+
+[33mcommit 9f4058cca2655f2604837407ec0867e46eb17d3f[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri May 22 12:06:12 2020 +0200
+
+    Prepared POJO and DTO for storing AppUser
+
+[33mcommit b17be6a61be924c9b25d68795470c22970d65e8c[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 21 18:44:40 2020 +0200
+
+    Created simply authorization system
+
+[33mcommit c0e66f55b23c131ea0ff1477ef457f308bc9d2ca[m
+Merge: d816889 d294083
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 21 10:01:03 2020 +0200
+
+    Merge branch 'ItemCrud'
+
+[33mcommit d29408300fd875a166e6fc60696fec1787303fe5[m[33m ([m[1;31morigin/ItemCrud[m[33m, [m[1;32mItemCrud[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 21 09:37:26 2020 +0200
+
+    Created endpoint to delete item
+
+[33mcommit 98869d5b2b32b9927d646c0bc7318600b4c460fb[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Wed May 13 18:08:52 2020 +0200
+
+    Join Swagger2 into the project
+
+[33mcommit f1fb5808b84cbeb2451ace402b2a6def863970e2[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue May 12 18:33:07 2020 +0200
+
+    Added endpoint to updated item
+
+[33mcommit 781e739603c2a61d29df6e07ab72240459e0c52b[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Mon May 11 17:09:51 2020 +0200
+
+    Improve initial values to testing
+
+[33mcommit 94c780cd138833260a5f1a3eec8db68493434b8d[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Sat May 9 10:43:15 2020 +0200
+
+    Improved initial value
+
+[33mcommit a4ec45284a4b49aca1b8f3491351f3b0a129fb2d[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Sat May 9 10:21:04 2020 +0200
+
+    Corrected HTTPStatus in endpoint to deal delete
+
+[33mcommit d3aec331bfa785cb81583f8b15c06e16b2c29791[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri May 8 17:36:27 2020 +0200
+
+    Created endpoint service and test to making new Item
+
+[33mcommit 31b6d330de420846326b09d0f03cec39bb8079b5[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 7 17:01:30 2020 +0200
+
+    Find All for Item
+
+[33mcommit d8168890357e73df53233c02898c1f04cf0deb87[m
+Merge: c448208 f1576ba
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 7 14:46:57 2020 +0200
+
+    Merge branch 'ProtectionForEarese'
+
+[33mcommit f1576badab604f24ba7557fb33b6926671c194ce[m[33m ([m[1;31morigin/ProtectionForEarese[m[33m, [m[1;32mProtectionForEarese[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 7 14:46:05 2020 +0200
+
+    Added protection before remove object which contains any Item instance
+
+[33mcommit c448208871dfc17d34a02145c4775c1a28d259ef[m
+Merge: 20e063e f38c9c9
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 7 09:17:19 2020 +0200
+
+    Merge branch 'Producer'
+
+[33mcommit f38c9c9e83d0276e98d26ad3ffa20fb5c743b6b2[m[33m ([m[1;31morigin/Producer[m[33m, [m[1;32mProducer[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu May 7 08:09:15 2020 +0200
+
+    Created endpoint for delete producer
+
+[33mcommit 48729fef30289195874222d96ba0499843b7d66c[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue May 5 07:58:58 2020 +0200
+
+    Test for update in ProducerService and implemented endpoint to updateProducer
+
+[33mcommit 5388cc7b540e312937e3e7e725b9ff7d16c349cd[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 14:53:03 2020 +0200
+
+    Update for producer
+
+[33mcommit 20e063e7a8f59d5dbde51c2a82acbec62bfe2c2f[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 12:42:59 2020 +0200
+
+    Created feature to adding new Producer
+
+[33mcommit cab0a3735821cd478b38945d60fe2b0d33942713[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 10:41:40 2020 +0200
+
+    Refactor Patch method for provider
+
+[33mcommit 9d75ace7747c4b1584b931ac145b0a0119b871c4[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 10:07:04 2020 +0200
+
+    Test for update method in ItemCategoryService
+
+[33mcommit dac813058b461aca32d88d9c9082f040df9405fa[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 09:47:44 2020 +0200
+
+    Exchange PUT method Patch in ItemCategory
+
+[33mcommit 85ed4e0fa3007a34fdd16b8108972719a1eb8c78[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Fri Apr 24 08:44:38 2020 +0200
+
+    Created Entity -> DTO for Item and Producer class
+
+[33mcommit 96529ac7e729e42224b6ac5a576fc7e2a0fbd781[m[33m ([m[1;31morigin/Item[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 14:42:14 2020 +0200
+
+    Done test for relation a return to original state
+
+[33mcommit 8654b0d5453c7071b1b0c8dc92cdef30d0dc8993[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 12:29:37 2020 +0200
+
+    Created entity for Item class
+
+[33mcommit 23a915e8897ca6a41f77d9931c5894eef97a8b0b[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 10:52:22 2020 +0200
+
+    Tests for DTOMapper
+
+[33mcommit 4c5188ef62076e40f01daa7051f79171e42f5e41[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 10:43:56 2020 +0200
+
+    Refactor DTO mapper
+
+[33mcommit d37689d381ad39ac4dbab94916f9c4a8e3e51f21[m
+Merge: 8cd066f 6029d28
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 10:09:31 2020 +0200
+
+    Merge branch 'Providers'
+
+[33mcommit 6029d28059c60c0873b70a50128a72eaeba5362e[m[33m ([m[1;31morigin/Providers[m[33m, [m[1;32mProviders[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Thu Apr 23 10:00:53 2020 +0200
+
+    Delete provider service -> test -> controller
+
+[33mcommit 04136d495e25c18c25c426bd6c0801ffea82b4f2[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Wed Apr 22 08:37:52 2020 +0200
+
+    Created controller to update Provider
+
+[33mcommit ed5b91bdf25db833ca7a8675db29c89cc587113c[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Apr 21 17:27:50 2020 +0200
+
+    Created chain of classes provided created new Provider
+
+[33mcommit d5ebbed59473afc6ffde354e2c978788c5d0ac06[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Apr 21 09:09:29 2020 +0200
+
+    Created:
+    - Provider entity,
+    - ProviderDTO,
+    - ProviderRepository,
+    - ProviderService  -> findAll -> Test
+    - ProviderController
+
+[33mcommit 8cd066ff457d8d679dc7759f190af25d0e685ad3[m
+Merge: 62d2807 576edd1
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Apr 21 08:45:02 2020 +0200
+
+    Merge branch 'ItemCategoryUpdateDelete'
+
+[33mcommit 576edd12f2ede64fdf9e62cf59c3baf8822c0364[m[33m ([m[1;31morigin/ItemCategoryUpdateDelete[m[33m)[m
+Author: P Czech <webcoderc@gmail.com>
+Date:   Tue Apr 21 08:44:00 2020 +0200
+
+    Service -> Test -> Controller for delete and put endpoints to service itemCategory
+
+[33mcommit 62d2807d62daa198556a2f3bc09a05003cfb3052[m
+Merge: da41df6 4445a05
+Author: PCzech <you@example.com>
+Date:   Thu Apr 16 21:53:43 2020 +0200
+
+    Merge branch 'ItemCategory'
+
+[33mcommit 4445a0507220708d0e6b86631bcce03dd6322c6d[m
+Author: PCzech <you@example.com>
+Date:   Thu Apr 16 21:31:02 2020 +0200
+
+    Service -> Test -> Controller for save new ItemCategory
+
+[33mcommit 99ff7c848b74ec04522aa683e5892599a6376112[m
+Author: PCzech <you@example.com>
+Date:   Thu Apr 16 20:46:16 2020 +0200
+
+    Service -> Test -> Controller for get all categories
+
+[33mcommit b62a5d629f688095b6d7cee560f6b4719bf27708[m
+Author: PCzech <you@example.com>
+Date:   Thu Apr 16 19:55:42 2020 +0200
+
+    Created ItemCategory entity with repository
+
+[33mcommit da41df68d5335aeae0cd09160e53093669dce613[m
+Author: PCzech <you@example.com>
+Date:   Thu Apr 16 19:53:17 2020 +0200
+
+    Added model mapper to pom.xml dependencies
+
+[33mcommit f45a640045abeb9e2621ccf1debc9d8c7d1a03bc[m
+Author: PCzech <you@example.com>
+Date:   Mon Apr 6 20:29:44 2020 +0200
+
+    Initial

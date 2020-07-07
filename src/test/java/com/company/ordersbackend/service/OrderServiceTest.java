@@ -5,6 +5,7 @@ import com.company.ordersbackend.domain.Order;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
 import com.company.ordersbackend.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -82,4 +89,32 @@ class OrderServiceTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    public void findOrderByUsernameTest(){
+        //given
+        String username = "user";
+        AppUser appUser = new AppUser();
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(appUser));
+        when(orderRepository.findByAppUser(any())).thenReturn(
+                Arrays.asList(
+                        new Order(),
+                        new Order()
+                )
+        );
+        List<OrderDTO> result = orderService.findOrdersByUsername(username);
+        //then
+        assertThat(result, hasSize(2));
+    }
+
+    @Test
+    public void findfindOrderByUsernameTest_UserNotExist(){
+        //given
+        String username = "user";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
+        List<OrderDTO> result = orderService.findOrdersByUsername(username);
+        //then
+        assertThat(result, hasSize(0));
+    }
 }
