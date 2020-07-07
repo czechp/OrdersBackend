@@ -3,6 +3,7 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.domain.Order;
+import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class OrderService {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
         if (!errors.hasErrors() && optionalAppUser.isPresent()) {
             Order order = dtoMapper.orderPOJO(orderDTO);
+            order.setOrderStatus(OrderStatus.NEW);
             order.setAppUser(optionalAppUser.get());
             return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
         }
@@ -41,7 +43,7 @@ public class OrderService {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
-            if (order.getAppUser().getUsername().equals(username)) {
+            if (order.getAppUser().getUsername().equals(username) && order.getOrderStatus() != OrderStatus.FINISHED) {
                 Optional<ItemInOrder> optionalItemInOrder = itemService.convertItemIntoItemInOrder(itemId, amount);
                 if (optionalItemInOrder.isPresent()) {
                     order.getItemsInOrder().add(optionalItemInOrder.get());

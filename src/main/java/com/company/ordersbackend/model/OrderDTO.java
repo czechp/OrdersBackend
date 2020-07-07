@@ -1,6 +1,7 @@
 package com.company.ordersbackend.model;
 
 import com.company.ordersbackend.domain.AppUser;
+import com.company.ordersbackend.domain.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,9 +32,12 @@ public class OrderDTO {
 
     private LocalDateTime closedDate;
 
+    private OrderStatus orderStatus;
+
     public OrderDTO() {
         this.creationDate = LocalDateTime.now();
     }
+
 
     public OrderDTO(@NotNull AppUser appUser, List<ItemInOrderDTO> itemsInOrder, LocalDateTime creationDate, LocalDateTime closedDate) {
         this.appUser = appUser;

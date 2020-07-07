@@ -140,6 +140,7 @@ public class DTOMapper {
         result.setAppUser(order.getAppUser());
         result.setCreationDate(order.getCreationDate());
         result.setClosedDate(order.getClosedDate());
+        result.setOrderStatus(order.getOrderStatus());
         for (ItemInOrder item : order.getItemsInOrder()) {
             result.getItemsInOrder().add(itemInOrderDTO(item));
         }
@@ -153,7 +154,7 @@ public class DTOMapper {
         result.setAppUser(orderDTO.getAppUser());
         result.setCreationDate(orderDTO.getCreationDate());
         result.setClosedDate(orderDTO.getClosedDate());
-
+        result.setOrderStatus(orderDTO.getOrderStatus());
         for (ItemInOrderDTO item : orderDTO.getItemsInOrder()) {
             result.getItemsInOrder().add(itemInOrderPOJO(item));
         }

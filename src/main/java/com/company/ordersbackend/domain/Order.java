@@ -26,17 +26,23 @@ public class Order {
     @JoinColumn(name="item_in_order_id")
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
+    @Enumerated(value = EnumType.STRING)
+    private OrderStatus orderStatus;
+
+
     private LocalDateTime creationDate;
 
     private LocalDateTime closedDate;
 
     public Order() {
         this.creationDate = LocalDateTime.now();
+        this.orderStatus = OrderStatus.NEW;
     }
 
     public Order(AppUser appUser) {
         this.appUser = appUser;
         this.creationDate = LocalDateTime.now();
+        this.orderStatus = OrderStatus.NEW;
     }
 
     public void addItem(ItemInOrder itemInOrder){
