@@ -16,7 +16,6 @@ import java.util.List;
 @Data()
 public class OrderDTO {
 
-    @NotNull
     private long id;
 
     private AppUser appUser;
