@@ -29,16 +29,22 @@ public class OrderController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<OrderDTO>> getOrdersForUser(Principal principal){
-        return ResponseEntity.ok(orderService.findOrdersByUsername(principal.getName()));
+    public ResponseEntity<List<OrderDTO>> getOrdersForUser(Principal principal) {
+        return ResponseEntity.ok(orderService.findByUsername(principal.getName()));
     }
 
     @PostMapping("/{orderId}/item/{itemId}")
     public ResponseEntity<OrderDTO> addItemToOrder(@PathVariable(name = "orderId") long orderId,
-                                                   @PathVariable(name = "itemId")long itemId,
-                                                   @RequestParam(name = "amount")int amount,
-                                                   Principal principal){
+                                                   @PathVariable(name = "itemId") long itemId,
+                                                   @RequestParam(name = "amount") int amount,
+                                                   Principal principal) {
         Optional<OrderDTO> result = orderService.addItemToOrder(orderId, principal.getName(), itemId, amount);
+        return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") long id, Principal principal) {
+        Optional<OrderDTO> result = orderService.findByUsernameAndId(principal.getName(), id);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 }
