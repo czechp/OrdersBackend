@@ -1,7 +1,6 @@
 package com.company.ordersbackend;
 
 import com.company.ordersbackend.domain.*;
-import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.*;
 import com.company.ordersbackend.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -76,8 +75,8 @@ public class Setup {
         Order order = new Order();
         order.setName("Testing name");
         order.setAppUser(appUserRepository.findById(1L).get());
+        order.setOrderStatus(OrderStatus.NEW);
         orderRepository.save(order);
-
 
     }
 }
