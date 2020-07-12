@@ -75,7 +75,7 @@ public class Setup {
         Order order = new Order();
         order.setName("Testing name");
         order.setAppUser(appUserRepository.findById(1L).get());
-        order.setOrderStatus(OrderStatus.REALISE);
+        order.setOrderStatus(OrderStatus.NEW);
         orderRepository.save(order);
 
     }

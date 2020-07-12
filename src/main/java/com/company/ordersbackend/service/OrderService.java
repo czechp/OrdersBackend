@@ -54,7 +54,7 @@ public class OrderService {
         return Optional.empty();
     }
 
-    public List<OrderDTO> findByUsername(String username) {
+    public List<OrderDTO> findAllByUsername(String username) {
         List<OrderDTO> result = new ArrayList<>();
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
         if (optionalAppUser.isPresent()) {
@@ -77,6 +77,20 @@ public class OrderService {
             }
         }
 
+        return Optional.empty();
+    }
+
+    public Optional<OrderDTO> modifyName(String username, long id, String orderName){
+        Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
+        if(optionalAppUser.isPresent()){
+            Optional<Order> optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
+            if(optionalOrder.isPresent()){
+                Order order = optionalOrder.get();
+                order.setName(orderName);
+                return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
+            }
+
+        }
         return Optional.empty();
     }
 }

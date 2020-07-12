@@ -30,7 +30,7 @@ public class OrderController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<OrderDTO>> getOrdersForUser(Principal principal) {
-        return ResponseEntity.ok(orderService.findByUsername(principal.getName()));
+        return ResponseEntity.ok(orderService.findAllByUsername(principal.getName()));
     }
 
     @PostMapping("/{orderId}/item/{itemId}")
@@ -46,5 +46,15 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") long id, Principal principal) {
         Optional<OrderDTO> result = orderService.findByUsernameAndId(principal.getName(), id);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/name/{id}")
+    public ResponseEntity<OrderDTO> changeName(@PathVariable("id")long id,
+                                               @RequestParam("name")String name,
+                                               Principal principal){
+        Optional<OrderDTO> optionalOrderDTO = orderService.modifyName(principal.getName(), id, name);
+        return optionalOrderDTO.isPresent() ?
+                ResponseEntity.ok(optionalOrderDTO.get()) :
+                ResponseEntity.notFound().build();
     }
 }

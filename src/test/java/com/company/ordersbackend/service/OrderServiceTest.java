@@ -102,7 +102,7 @@ class OrderServiceTest {
                         new Order()
                 )
         );
-        List<OrderDTO> result = orderService.findByUsername(username);
+        List<OrderDTO> result = orderService.findAllByUsername(username);
         //then
         assertThat(result, hasSize(2));
     }
@@ -113,7 +113,7 @@ class OrderServiceTest {
         String username = "user";
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
-        List<OrderDTO> result = orderService.findByUsername(username);
+        List<OrderDTO> result = orderService.findAllByUsername(username);
         //then
         assertThat(result, hasSize(0));
     }
@@ -153,6 +153,48 @@ class OrderServiceTest {
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
         when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.empty());
         Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
+        //then
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void modifyNameTest(){
+        //given
+        String username = "user";
+        long id  = 1L;
+        String orderName = "New order name";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.of(new Order()));
+        when(orderRepository.save(any())).thenReturn(new Order());
+        Optional<OrderDTO> result = orderService.modifyName(username, id, orderName);
+        //then
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void modifyNameTest_userNotExists(){
+        //given
+        String username = "user";
+        long id  = 1L;
+        String orderName = "New order name";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
+        Optional<OrderDTO> result = orderService.modifyName(username, id, orderName);
+        //then
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void modifyNameTest_orderNotExists(){
+        //given
+        String username = "user";
+        long id  = 1L;
+        String orderName = "New order name";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.empty());
+        Optional<OrderDTO> result = orderService.modifyName(username, id, orderName);
         //then
         assertFalse(result.isPresent());
     }
