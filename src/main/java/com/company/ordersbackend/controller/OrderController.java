@@ -1,5 +1,7 @@
 package com.company.ordersbackend.controller;
 
+import com.company.ordersbackend.domain.Order;
+import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -8,12 +10,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/order")
 @CrossOrigin()
+
 public class OrderController {
     private OrderService orderService;
 
@@ -56,5 +61,13 @@ public class OrderController {
         return optionalOrderDTO.isPresent() ?
                 ResponseEntity.ok(optionalOrderDTO.get()) :
                 ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<String>> getStatusList(){
+        List<String> result = Arrays.stream(OrderStatus.values())
+                .map(Enum::toString)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 }
