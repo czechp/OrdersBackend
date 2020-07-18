@@ -22,7 +22,6 @@ public class ItemInOrderService {
         this.dtoMapper = dtoMapper;
     }
 
-    //todo Make test for it
     public Optional<ItemInOrderDTO> update(ItemInOrderDTO itemInOrderDTO, Errors errors) {
         if(itemInOrderRepository.existsById(itemInOrderDTO.getId()) && !errors.hasErrors()){
             ItemInOrder result = itemInOrderRepository.save(dtoMapper.itemInOrderPOJO(itemInOrderDTO));
@@ -35,9 +34,22 @@ public class ItemInOrderService {
         return toDtoArray(itemInOrderRepository.findAll());
     }
 
+    //TODO: Make test for it
+    public Optional<ItemInOrderDTO> delete(long id){
+        Optional<ItemInOrder> optionalItemInOrder = itemInOrderRepository.findById(id);
+        if(optionalItemInOrder.isPresent()){
+            itemInOrderRepository.deleteById(id);
+            return Optional.of(dtoMapper.itemInOrderDTO(optionalItemInOrder.get()));
+        }
+        return Optional.empty();
+    }
+
+
     private List<ItemInOrderDTO> toDtoArray(List<ItemInOrder> all) {
         return all.stream()
                 .map(x-> dtoMapper.itemInOrderDTO(x))
                 .collect(Collectors.toList());
     }
+
+
 }
