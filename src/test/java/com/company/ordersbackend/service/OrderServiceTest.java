@@ -2,6 +2,7 @@ package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.Order;
+import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -198,4 +199,63 @@ class OrderServiceTest {
         //then
         assertFalse(result.isPresent());
     }
+
+    @Test
+    public void modifyStatusTest(){
+        //given
+        String username = "user";
+        long id = 1L;
+        String status = "FINISHED";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.of(new Order()));
+        when(orderRepository.save(any())).thenReturn(new Order());
+        Optional<OrderDTO> result = orderService.modifyStatus(username, id, status);
+        //then
+        assertTrue(result.isPresent());
+        assertThat(result.get(), instanceOf(OrderDTO.class));
+    }
+
+    @Test
+    public void modifyStatusTest_userNotExists(){
+        //given
+        String username = "user";
+        long id = 1L;
+        String status = "FINISHED";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        Optional<OrderDTO> result = orderService.modifyStatus(username, id, status);
+        //then
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void modifyStatusTest_orderNotExists(){
+        //given
+        String username = "user";
+        long id = 1L;
+        String status = "FINISHED";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.empty());
+        Optional<OrderDTO> result = orderService.modifyStatus(username, id, status);
+        //then
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void modifyStatusTest_statusNotExists(){
+        //given
+        String username = "user";
+        long id = 1L;
+        String status = "XXXX";
+        //when
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.of(new Order()));
+        when(orderRepository.save(any())).thenReturn(new Order());
+        Optional<OrderDTO> result = orderService.modifyStatus(username, id, status);
+        //then
+        assertFalse(result.isPresent());
+    }
+
 }

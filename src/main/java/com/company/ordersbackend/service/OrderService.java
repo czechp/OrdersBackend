@@ -68,11 +68,11 @@ public class OrderService {
         return result;
     }
 
-    public Optional<OrderDTO> findByUsernameAndId(String username, long id){
+    public Optional<OrderDTO> findByUsernameAndId(String username, long id) {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
-        if(optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             Optional<Order> optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
-            if(optionalOrder.isPresent()){
+            if (optionalOrder.isPresent()) {
                 return Optional.of(dtoMapper.orderDTO(optionalOrder.get()));
             }
         }
@@ -80,16 +80,29 @@ public class OrderService {
         return Optional.empty();
     }
 
-    public Optional<OrderDTO> modifyName(String username, long id, String orderName){
+    public Optional<OrderDTO> modifyName(String username, long id, String orderName) {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
-        if(optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             Optional<Order> optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
-            if(optionalOrder.isPresent()){
+            if (optionalOrder.isPresent()) {
                 Order order = optionalOrder.get();
                 order.setName(orderName);
                 return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
             }
 
+        }
+        return Optional.empty();
+    }
+
+    public Optional<OrderDTO> modifyStatus(String username, long id, String status) {
+        Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
+        if (optionalAppUser.isPresent()) {
+            Optional<Order> optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
+            if (optionalOrder.isPresent() && OrderStatus.getByString(status) != null) {
+                Order order = optionalOrder.get();
+                order.setOrderStatus(OrderStatus.getByString(status));
+                return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
+            }
         }
         return Optional.empty();
     }

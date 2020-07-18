@@ -1,5 +1,6 @@
 package com.company.ordersbackend.controller;
 
+import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/order")
 @CrossOrigin()
+
 public class OrderController {
     private OrderService orderService;
 
@@ -49,12 +53,29 @@ public class OrderController {
     }
 
     @PatchMapping("/name/{id}")
-    public ResponseEntity<OrderDTO> changeName(@PathVariable("id")long id,
-                                               @RequestParam("name")String name,
-                                               Principal principal){
+    public ResponseEntity<OrderDTO> changeName(@PathVariable("id") long id,
+                                               @RequestParam("name") String name,
+                                               Principal principal) {
         Optional<OrderDTO> optionalOrderDTO = orderService.modifyName(principal.getName(), id, name);
         return optionalOrderDTO.isPresent() ?
                 ResponseEntity.ok(optionalOrderDTO.get()) :
                 ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<OrderDTO> changeStatus(
+            @PathVariable("id") long id,
+            @RequestParam("status") String status,
+            Principal principal) {
+        Optional<OrderDTO> result = orderService.modifyStatus(principal.getName(), id, status);
+        return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<String>> getStatusList() {
+        List<String> result = Arrays.stream(OrderStatus.values())
+                .map(Enum::toString)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 }
