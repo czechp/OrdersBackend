@@ -37,7 +37,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findAllByUsername(principal.getName()));
     }
 
-    @PostMapping("/{orderId}/item/{itemId}")
+    @GetMapping("/{orderId}/item/{itemId}")
     public ResponseEntity<OrderDTO> addItemToOrder(@PathVariable(name = "orderId") long orderId,
                                                    @PathVariable(name = "itemId") long itemId,
                                                    @RequestParam(name = "amount") int amount,
