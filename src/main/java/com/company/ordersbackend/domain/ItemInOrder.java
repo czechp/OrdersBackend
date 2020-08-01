@@ -2,12 +2,13 @@ package com.company.ordersbackend.domain;
 
 import lombok.Data;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Data()
-@Entity(name = "items-in-order")
-public class ItemInOrder extends Item{
+@Entity()
+public class ItemInOrder extends ItemSuperClass{
     private LocalDateTime orderDate;
     private LocalDateTime deliverDate;
     private boolean isOrdered;
@@ -15,10 +16,11 @@ public class ItemInOrder extends Item{
     private int amount;
 
     public ItemInOrder() {
+        super();
     }
 
-    public ItemInOrder(Item item){
-        super(item);
+    public ItemInOrder(ItemSuperClass itemSuperClass){
+        super(itemSuperClass);
     }
     
 }
