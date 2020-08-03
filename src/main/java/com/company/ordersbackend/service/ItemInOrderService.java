@@ -34,7 +34,6 @@ public class ItemInOrderService {
         return toDtoArray(itemInOrderRepository.findAll());
     }
 
-    //TODO: Make test for it
     public Optional<ItemInOrderDTO> delete(long id){
         Optional<ItemInOrder> optionalItemInOrder = itemInOrderRepository.findById(id);
         if(optionalItemInOrder.isPresent()){
@@ -42,6 +41,11 @@ public class ItemInOrderService {
             return Optional.of(dtoMapper.itemInOrderDTO(optionalItemInOrder.get()));
         }
         return Optional.empty();
+    }
+
+    public Optional<ItemInOrderDTO> findById(long id){
+        Optional<ItemInOrder> result = itemInOrderRepository.findById(id);
+        return result.map(itemInOrder -> dtoMapper.itemInOrderDTO(itemInOrder));
     }
 
 
