@@ -128,7 +128,7 @@ public class DTOMapper {
         result.setOrderDate(itemInOrder.getOrderDate());
         result.setDeliverDate(itemInOrder.getDeliverDate());
         result.setDelivered(itemInOrder.isDelivered());
-        result.setOrdered(itemInOrder.isDelivered());
+        result.setOrdered(itemInOrder.isOrdered());
         result.setAmount(itemInOrder.getAmount());
         return result;
     }

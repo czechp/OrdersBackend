@@ -1,12 +1,17 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.ItemInOrder;
+import com.company.ordersbackend.domain.ItemStatus;
+import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.ItemInOrderDTO;
 import com.company.ordersbackend.repository.ItemInOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,11 +20,14 @@ import java.util.stream.Collectors;
 public class ItemInOrderService {
     private ItemInOrderRepository itemInOrderRepository;
     private DTOMapper dtoMapper;
+    private AppUserService appUserService;
+
 
     @Autowired()
-    public ItemInOrderService(ItemInOrderRepository itemInOrderRepository, DTOMapper dtoMapper) {
+    public ItemInOrderService(ItemInOrderRepository itemInOrderRepository, DTOMapper dtoMapper, AppUserService appUserService) {
         this.itemInOrderRepository = itemInOrderRepository;
         this.dtoMapper = dtoMapper;
+        this.appUserService = appUserService;
     }
 
     public Optional<ItemInOrderDTO> update(ItemInOrderDTO itemInOrderDTO, Errors errors) {
@@ -46,6 +54,31 @@ public class ItemInOrderService {
     public Optional<ItemInOrderDTO> findById(long id){
         Optional<ItemInOrder> result = itemInOrderRepository.findById(id);
         return result.map(itemInOrder -> dtoMapper.itemInOrderDTO(itemInOrder));
+    }
+
+    public ItemInOrderDTO changeStatus(final long id, ItemStatus itemStatus, Principal principal){
+        if(appUserService.isSuperUser(principal)){
+            ItemInOrder itemInOrder = itemInOrderRepository.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id)));
+            if(itemStatus == ItemStatus.ORDERED){
+                setOrdered(itemInOrder);
+            }else{
+                setDelivered(itemInOrder);
+            }
+            return dtoMapper.itemInOrderDTO(itemInOrderRepository.save(itemInOrder));
+        }else {
+            throw new AccesDeniedException("FORBIDEN");
+        }
+    }
+
+    private void setOrdered(ItemInOrder itemInOrder) {
+        itemInOrder.setOrdered(true);
+        itemInOrder.setOrderDate(LocalDateTime.now());
+    }
+
+
+    private void setDelivered(ItemInOrder itemInOrder) {
+        itemInOrder.setDelivered(true);
+        itemInOrder.setDeliverDate(LocalDateTime.now());
     }
 
 

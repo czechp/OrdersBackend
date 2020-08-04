@@ -65,9 +65,14 @@ public class Setup {
         Item item3 = new Item("Bezpiecznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
-        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "user", "webcodsdaerc@gmail.com");
+        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "superUser", "webcodsdaerc@gmail.com");
         user.setActive(true);
         user = appUserRepository.save(user);
+
+
+        AppUser user1= new AppUser("user1", passwordEncoder.encode("user1"), "user", "webcodsdaerc@gmail.com");
+        user1.setActive(true);
+        user1 = appUserRepository.save(user1);
 
         ItemInOrder itemInOrder = new ItemInOrder(item1);
         itemInOrderRepository.save(itemInOrder);
@@ -83,6 +88,9 @@ public class Setup {
         orderFinished.setAppUser(appUserRepository.findById(1L).get());
         orderFinished.setOrderStatus(OrderStatus.FINISHED);
         orderRepository.save(orderFinished);
+
+        System.out.println(appUserRepository.existsByUsernameAndRole("user1", AppUserRole.SUPERUSER.toString()));
+
 
     }
 }

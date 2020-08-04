@@ -1,7 +1,9 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
+import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.VerificationToken;
+import com.company.ordersbackend.exception.AccesDeniedException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
 import com.company.ordersbackend.repository.VerificationTokenRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
 import javax.servlet.ServletRequest;
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -72,5 +75,9 @@ public class AppUserService {
 
     public Optional<AppUser> findAppUserByUsername(String username){
         return appUserRepository.findByUsername(username);
+    }
+
+    public boolean isSuperUser(Principal principal){
+        return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.SUPERUSER.toString());
     }
 }

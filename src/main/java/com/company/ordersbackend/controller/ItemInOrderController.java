@@ -1,6 +1,9 @@
 package com.company.ordersbackend.controller;
 
+import com.company.ordersbackend.domain.ItemInOrder;
+import com.company.ordersbackend.domain.ItemStatus;
 import com.company.ordersbackend.model.ItemInOrderDTO;
+import com.company.ordersbackend.service.AppUserService;
 import com.company.ordersbackend.service.ItemInOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController()
@@ -47,6 +51,17 @@ public class ItemInOrderController {
         );
     }
 
+    @PatchMapping("/status/ordered/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemInOrderDTO changeStatusOrdered(@PathVariable("id") final long id, Principal principal){
+        return itemInOrderService.changeStatus(id, ItemStatus.ORDERED, principal);
+    }
+
+    @PatchMapping("/status/delivered/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemInOrderDTO changeStatusDelivered(@PathVariable("id") final long id, Principal principal){
+        return itemInOrderService.changeStatus(id, ItemStatus.DELIVERED, principal);
+    }
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
