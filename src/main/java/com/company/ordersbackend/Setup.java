@@ -78,5 +78,11 @@ public class Setup {
         order.setOrderStatus(OrderStatus.NEW);
         orderRepository.save(order);
 
+        Order orderFinished = new Order();
+        orderFinished.setName("Finished order");
+        orderFinished.setAppUser(appUserRepository.findById(1L).get());
+        orderFinished.setOrderStatus(OrderStatus.FINISHED);
+        orderRepository.save(orderFinished);
+
     }
 }

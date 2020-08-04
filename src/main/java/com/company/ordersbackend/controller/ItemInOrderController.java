@@ -1,6 +1,5 @@
 package com.company.ordersbackend.controller;
 
-import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.model.ItemInOrderDTO;
 import com.company.ordersbackend.service.ItemInOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api/itemInOrder")
@@ -28,6 +26,11 @@ public class ItemInOrderController {
     @GetMapping()
     public List<ItemInOrderDTO> findAll(){
         return itemInOrderService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ItemInOrderDTO getItemInOrderById(@PathVariable(name = "id") long id){
+        return itemInOrderService.findById(id).orElseThrow(ItemInOrderNotExists::new);
     }
 
     @PutMapping()

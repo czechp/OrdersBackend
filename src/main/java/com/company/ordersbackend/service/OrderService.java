@@ -5,6 +5,7 @@ import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.domain.Order;
 import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
+import com.company.ordersbackend.repository.ItemRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;

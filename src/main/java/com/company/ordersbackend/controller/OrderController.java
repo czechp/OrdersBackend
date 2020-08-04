@@ -2,7 +2,9 @@ package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
+import com.company.ordersbackend.repository.ItemRepository;
 import com.company.ordersbackend.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 @CrossOrigin()
 
 public class OrderController {
+    @Autowired
+    private ItemRepository itemRepository;
+
     private OrderService orderService;
 
     public OrderController(OrderService orderService) {
