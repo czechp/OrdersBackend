@@ -4,15 +4,18 @@ import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.domain.Order;
 import com.company.ordersbackend.domain.OrderStatus;
+import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
-import com.company.ordersbackend.repository.ItemRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -106,5 +109,25 @@ public class OrderService {
             }
         }
         return Optional.empty();
+    }
+
+    public List<OrderDTO> findOrderByStatusForSuperUser(final String status, Principal principal) {
+        List<OrderDTO> orders = new ArrayList<>();
+        if (appUserService.isSuperUser(principal)) {
+            if (OrderStatus.getByString(status) != null) {
+                return toOrderDTOList(orderRepository.findByOrderStatus(OrderStatus.getByString(status)));
+            } else {
+                throw new NotFoundException(status);
+            }
+
+        } else {
+            throw new AccesDeniedException(principal.getName());
+        }
+    }
+
+    private List<OrderDTO> toOrderDTOList(List<Order> orders) {
+        return orders.stream()
+                .map(x -> dtoMapper.orderDTO(x))
+                .collect(Collectors.toList());
     }
 }

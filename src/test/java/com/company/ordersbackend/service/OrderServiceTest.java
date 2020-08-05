@@ -2,7 +2,8 @@ package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.Order;
-import com.company.ordersbackend.domain.OrderStatus;
+import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,16 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -33,15 +33,14 @@ import static org.mockito.Mockito.when;
 class OrderServiceTest {
     @Mock
     Errors errors;
+    @Mock()
+    Principal principal;
     @Mock
     private OrderRepository orderRepository;
-
     @Mock
     private ItemService itemService;
-
     @Mock
     private AppUserService appUserService;
-
     @Autowired
     private DTOMapper dtoMapper;
 
@@ -91,7 +90,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void findOrderByUsernameTest(){
+    public void findOrderByUsernameTest() {
         //given
         String username = "user";
         AppUser appUser = new AppUser();
@@ -109,7 +108,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void findOrderByUsernameTest_UserNotExist(){
+    public void findOrderByUsernameTest_UserNotExist() {
         //given
         String username = "user";
         //when
@@ -120,7 +119,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void findByUsernameAndIdTest(){
+    public void findByUsernameAndIdTest() {
         //given
         String username = "user";
         long id = 1L;
@@ -134,7 +133,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void findByUsernameAndIdTest_userNotExists(){
+    public void findByUsernameAndIdTest_userNotExists() {
         //given
         String username = "user";
         long id = 1L;
@@ -146,7 +145,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void findByUsernameAndIdTest_orderNotExists(){
+    public void findByUsernameAndIdTest_orderNotExists() {
         //given
         String username = "user";
         long id = 1L;
@@ -159,10 +158,10 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyNameTest(){
+    public void modifyNameTest() {
         //given
         String username = "user";
-        long id  = 1L;
+        long id = 1L;
         String orderName = "New order name";
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
@@ -174,10 +173,10 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyNameTest_userNotExists(){
+    public void modifyNameTest_userNotExists() {
         //given
         String username = "user";
-        long id  = 1L;
+        long id = 1L;
         String orderName = "New order name";
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
@@ -187,10 +186,10 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyNameTest_orderNotExists(){
+    public void modifyNameTest_orderNotExists() {
         //given
         String username = "user";
-        long id  = 1L;
+        long id = 1L;
         String orderName = "New order name";
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
@@ -201,7 +200,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyStatusTest(){
+    public void modifyStatusTest() {
         //given
         String username = "user";
         long id = 1L;
@@ -217,7 +216,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyStatusTest_userNotExists(){
+    public void modifyStatusTest_userNotExists() {
         //given
         String username = "user";
         long id = 1L;
@@ -230,7 +229,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyStatusTest_orderNotExists(){
+    public void modifyStatusTest_orderNotExists() {
         //given
         String username = "user";
         long id = 1L;
@@ -244,7 +243,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void modifyStatusTest_statusNotExists(){
+    public void modifyStatusTest_statusNotExists() {
         //given
         String username = "user";
         long id = 1L;
@@ -256,6 +255,43 @@ class OrderServiceTest {
         Optional<OrderDTO> result = orderService.modifyStatus(username, id, status);
         //then
         assertFalse(result.isPresent());
+    }
+
+    @Test()
+    public void findOrderByStatusForSuperUserTest() {
+        //given
+        String status = "NEW";
+        //when
+        when(appUserService.isSuperUser(any())).thenReturn(true);
+        when(orderRepository.findByOrderStatus(any())).thenReturn(
+                Arrays.asList(
+                        new Order(),
+                        new Order()
+                )
+        );
+        List<OrderDTO> result = orderService.findOrderByStatusForSuperUser(status, principal);
+        //then
+        assertThat(result, hasSize(2));
+    }
+
+    @Test()
+    public void findOrderByStatusForSuperUserTest_notSuperUser() {
+        //given
+        String status = "NEW";
+        //when
+        when(appUserService.isSuperUser(any())).thenReturn(false);
+        //then
+        assertThrows(AccesDeniedException.class, () -> orderService.findOrderByStatusForSuperUser(status, principal));
+    }
+
+    @Test()
+    public void findOrderByStatusForSuperUserTest_statusNotExists(){
+        //given
+        String status ="xxxx";
+        //when
+        when(appUserService.isSuperUser(any())).thenReturn(true);
+        //then
+        assertThrows(NotFoundException.class, () -> orderService.findOrderByStatusForSuperUser(status, principal));
     }
 
 }

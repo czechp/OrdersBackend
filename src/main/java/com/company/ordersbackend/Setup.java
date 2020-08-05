@@ -88,9 +88,5 @@ public class Setup {
         orderFinished.setAppUser(appUserRepository.findById(1L).get());
         orderFinished.setOrderStatus(OrderStatus.FINISHED);
         orderRepository.save(orderFinished);
-
-        System.out.println(appUserRepository.existsByUsernameAndRole("user1", AppUserRole.SUPERUSER.toString()));
-
-
     }
 }

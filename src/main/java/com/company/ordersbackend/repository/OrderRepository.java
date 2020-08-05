@@ -2,6 +2,7 @@ package com.company.ordersbackend.repository;
 
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.Order;
+import com.company.ordersbackend.domain.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     public List<Order> findByAppUser(AppUser appUser);
     public Optional<Order> findByAppUserAndId(AppUser appUser, long id);
+    public List<Order> findByOrderStatus(OrderStatus orderStatus);
 }
