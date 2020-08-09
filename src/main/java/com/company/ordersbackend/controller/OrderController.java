@@ -57,6 +57,7 @@ public class OrderController {
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 
+
     @GetMapping("/superuser/status/{status}")
     public List<OrderDTO> getOrderByStatusForSuperUser(@PathVariable(name = "status")String status, Principal principal){
         return orderService.findOrderByStatusForSuperUser(status, principal);

@@ -93,7 +93,8 @@ public class AppUserService {
     }
 
     public boolean isSuperUser(Principal principal) {
-        return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.SUPERUSER.toString());
+        return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.SUPERUSER.toString())
+                || appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.ADMIN.toString());
     }
 
     private boolean isAdmin(Principal principal) {

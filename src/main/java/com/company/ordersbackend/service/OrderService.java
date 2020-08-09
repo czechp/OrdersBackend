@@ -1,9 +1,6 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.AppUser;
-import com.company.ordersbackend.domain.ItemInOrder;
-import com.company.ordersbackend.domain.Order;
-import com.company.ordersbackend.domain.OrderStatus;
+import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.exception.AccesDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
@@ -75,7 +72,12 @@ public class OrderService {
     public Optional<OrderDTO> findByUsernameAndId(String username, long id) {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
         if (optionalAppUser.isPresent()) {
-            Optional<Order> optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
+            Optional<Order> optionalOrder;
+            if (optionalAppUser.get().getRole() == AppUserRole.USER.toString())
+                optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
+            else
+                optionalOrder = orderRepository.findById(id);
+
             if (optionalOrder.isPresent()) {
                 return Optional.of(dtoMapper.orderDTO(optionalOrder.get()));
             }
