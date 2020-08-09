@@ -4,6 +4,7 @@ import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.VerificationToken;
 import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
 import com.company.ordersbackend.repository.VerificationTokenRepository;
@@ -73,11 +74,31 @@ public class AppUserService {
         return false;
     }
 
-    public Optional<AppUser> findAppUserByUsername(String username){
+    public Optional<AppUser> findAppUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }
 
-    public boolean isSuperUser(Principal principal){
+
+    //todo remake this by implemenatation function to finding Enum by string
+
+    public AppUserDTO changeRole(long id, String role, Principal principal) {
+        if(isAdmin(principal)){
+            AppUserRole appUserRole = AppUserRole.findByString(role).orElseThrow(() -> new NotFoundException(role));
+            AppUser appUser = appUserRepository.findById(id).orElseThrow(() -> new NotFoundException(role));
+            appUser.setRole(appUserRole.toString());
+            return dtoMapper.appUserDTO(appUserRepository.save(appUser));
+        }else{
+            throw new AccesDeniedException(principal.getName());
+        }
+    }
+
+    public boolean isSuperUser(Principal principal) {
         return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.SUPERUSER.toString());
     }
+
+    private boolean isAdmin(Principal principal) {
+        return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.ADMIN.toString());
+    }
+
+
 }

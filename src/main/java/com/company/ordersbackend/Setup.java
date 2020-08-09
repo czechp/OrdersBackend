@@ -74,6 +74,10 @@ public class Setup {
         user1.setActive(true);
         user1 = appUserRepository.save(user1);
 
+        AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "admin", "anyGmail@gmail.com");
+        admin.setActive(true);
+        appUserRepository.save(admin);
+
         ItemInOrder itemInOrder = new ItemInOrder(item1);
         itemInOrderRepository.save(itemInOrder);
 
@@ -94,5 +98,6 @@ public class Setup {
         orderCurrent.setAppUser(appUserRepository.findById(1L).get());
         orderCurrent.setOrderStatus(OrderStatus.REALISE);
         orderRepository.save(orderCurrent);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.company.ordersbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class AppUserDTO {
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 5, max = 50, message = "Password has to have minimum 8 signs")
+    @JsonIgnore()
     private String password;
     private String role;
     @Email(message = "Not correct e-mail format")

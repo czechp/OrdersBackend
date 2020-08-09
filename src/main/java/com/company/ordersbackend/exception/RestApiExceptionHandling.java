@@ -18,12 +18,12 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handlingNotFoundException(NotFoundException e, WebRequest webRequest){
         Map<String, String> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
-        body.put("message", "Element not exists");
+        body.put("message", "Element not exists -- " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({AccesDeniedException.class})
-    public ResponseEntity<Object> handlingAccesDeniedException(AccesDeniedException e, WebRequest webRequest){
+    public ResponseEntity<Object> handlingAccessDeniedException(AccesDeniedException e, WebRequest webRequest){
         Map<String, String> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("message", "Not enough permissions");
