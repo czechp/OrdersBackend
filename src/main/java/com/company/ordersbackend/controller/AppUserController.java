@@ -13,7 +13,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/api/")
 public class AppUserController {
     private AppUserService appUserService;
