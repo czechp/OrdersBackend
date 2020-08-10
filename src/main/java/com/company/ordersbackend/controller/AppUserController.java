@@ -32,7 +32,6 @@ public class AppUserController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest) {
-        log.info(appUserDTO.toString());
         return appUserService.saveAppUser(appUserDTO, errors, servletRequest) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
