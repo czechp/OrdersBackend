@@ -2,6 +2,7 @@ package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.service.AppUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/")
+@Slf4j()
 public class AppUserController {
     private AppUserService appUserService;
 
@@ -30,6 +32,7 @@ public class AppUserController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest) {
+        log.info(appUserDTO.toString());
         return appUserService.saveAppUser(appUserDTO, errors, servletRequest) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
