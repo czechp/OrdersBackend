@@ -46,4 +46,10 @@ public class AppUserController {
     public AppUserDTO changeRole(@PathVariable("id") long id,@RequestParam("role") String role, Principal principal){
         return appUserService.changeRole(id, role, principal);
     }
+
+    @DeleteMapping("user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") long id, Principal principal){
+        appUserService.delete(id, principal);
+    }
 }

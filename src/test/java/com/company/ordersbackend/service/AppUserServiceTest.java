@@ -25,7 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -179,7 +179,7 @@ class AppUserServiceTest {
     }
 
     @Test()
-    public void changeRoleTest_roleNotExists(){
+    public void changeRoleTest_roleNotExists() {
         //given
         long id = 1L;
         String role = "user123";
@@ -187,11 +187,11 @@ class AppUserServiceTest {
         when(principal.getName()).thenReturn("admin");
         when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(true);
         //then
-        assertThrows(NotFoundException.class, ()->appUserService.changeRole(id, role, principal));
+        assertThrows(NotFoundException.class, () -> appUserService.changeRole(id, role, principal));
     }
 
     @Test()
-    public void changeRoleTest_appUserNotExists(){
+    public void changeRoleTest_appUserNotExists() {
         //given
         long id = 1L;
         String role = "ADMIN";
@@ -203,4 +203,38 @@ class AppUserServiceTest {
         assertThrows(NotFoundException.class, () -> appUserService.changeRole(id, role, principal));
     }
 
+    @Test()
+    public void deleteTest() {
+        //given
+        long id = 1L;
+        //when
+        when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(true);
+        when(appUserRepository.existsById(anyLong())).thenReturn(true);
+        when(principal.getName()).thenReturn("admin");
+        appUserService.delete(id, principal);
+        //then
+        verify(appUserRepository, times(1)).deleteById(id);
+    }
+
+    @Test()
+    public void deleteTest_isNotAdmin(){
+        //given
+        long id = 1L;
+        //when
+        when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(false);
+        //then
+        assertThrows(AccesDeniedException.class, () -> appUserService.delete(id, principal));
+    }
+
+    @Test()
+    public void deleteTest_userNotExists(){
+        //given
+        long id = 1L;
+        //when
+        when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(true);
+        when(principal.getName()).thenReturn("ADMIN");
+        when(appUserRepository.existsById(anyLong())).thenReturn(false);
+        //then
+        assertThrows(NotFoundException.class, ()->appUserService.delete(id, principal));
+    }
 }

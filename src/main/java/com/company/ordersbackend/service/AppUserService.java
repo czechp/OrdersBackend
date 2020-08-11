@@ -79,8 +79,6 @@ public class AppUserService {
     }
 
 
-    //todo remake this by implemenatation function to finding Enum by string
-
     public AppUserDTO changeRole(long id, String role, Principal principal) {
         if(isAdmin(principal)){
             AppUserRole appUserRole = AppUserRole.findByString(role).orElseThrow(() -> new NotFoundException(role));
@@ -95,6 +93,14 @@ public class AppUserService {
     public boolean isSuperUser(Principal principal) {
         return appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.SUPERUSER.toString())
                 || appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.ADMIN.toString());
+    }
+
+    public void delete(long id, Principal principal){
+        if(isAdmin(principal)){
+         if(appUserRepository.existsById(id)) appUserRepository.deleteById(id);
+         else throw new NotFoundException(String.valueOf(id));
+        }
+        else throw new AccesDeniedException(principal.getName());
     }
 
     private boolean isAdmin(Principal principal) {
