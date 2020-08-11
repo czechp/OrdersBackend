@@ -1,6 +1,7 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
+import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.Order;
 import com.company.ordersbackend.exception.AccesDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
@@ -122,9 +123,11 @@ class OrderServiceTest {
     public void findByUsernameAndIdTest() {
         //given
         String username = "user";
+        AppUser appUser = new AppUser();
+        appUser.setRole(AppUserRole.USER.toString());
         long id = 1L;
         //when
-        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(appUser));
         when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.of(new Order()));
         Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
         //then
