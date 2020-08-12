@@ -48,6 +48,10 @@ public class AppUserService {
         return Optional.empty();
     }
 
+    public AppUser saveAppUser(AppUser appUser){
+        return appUserRepository.save(appUser);
+    }
+
     public boolean saveAppUser(AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest) {
         if (!errors.hasErrors()) {
             if (!appUserRepository.existsByUsername(appUserDTO.getUsername()) && !appUserRepository.existsByEmail(appUserDTO.getEmail())) {
