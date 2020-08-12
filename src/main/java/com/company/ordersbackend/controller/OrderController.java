@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 @CrossOrigin()
 
 public class OrderController {
-    @Autowired
-    private ItemRepository itemRepository;
 
     private OrderService orderService;
 
@@ -49,6 +47,13 @@ public class OrderController {
                                                    Principal principal) {
         Optional<OrderDTO> result = orderService.addItemToOrder(orderId, principal.getName(), itemId, amount);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
+    }
+    @GetMapping("/status")
+    public ResponseEntity<List<String>> getStatusList() {
+        List<String> result = Arrays.stream(OrderStatus.values())
+                .map(Enum::toString)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
@@ -82,12 +87,10 @@ public class OrderController {
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<List<String>> getStatusList() {
-        List<String> result = Arrays.stream(OrderStatus.values())
-                .map(Enum::toString)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(result);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") long id){
+        orderService.delete(id);
     }
 
 }

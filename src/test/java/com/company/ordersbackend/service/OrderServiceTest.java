@@ -27,7 +27,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -288,13 +288,37 @@ class OrderServiceTest {
     }
 
     @Test()
-    public void findOrderByStatusForSuperUserTest_statusNotExists(){
+    public void findOrderByStatusForSuperUserTest_statusNotExists() {
         //given
-        String status ="xxxx";
+        String status = "xxxx";
         //when
         when(appUserService.isSuperUser(any())).thenReturn(true);
         //then
         assertThrows(NotFoundException.class, () -> orderService.findOrderByStatusForSuperUser(status, principal));
     }
 
+    @Test()
+    public void deleteTest() {
+        //given
+        long id = 1L;
+        AppUser appUser = new AppUser();
+        Order order = new Order();
+        appUser.getOrders().add(order);
+        order.setAppUser(appUser);
+        //when
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
+        orderService.delete(id);
+        //then
+        verify(appUserService, times(1)).saveAppUser(appUser);
+    }
+
+    @Test()
+    public void deleteTest_orderNotExists() {
+        //given
+        long id = 1L;
+        //when
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.empty());
+        //then
+        assertThrows(NotFoundException.class, () -> orderService.delete(id));
+    }
 }

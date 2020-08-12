@@ -1,7 +1,6 @@
 package com.company.ordersbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ public class AppUser implements UserDetails {
     private boolean active;
 
     @JsonIgnore()
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "appUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     public AppUser(String username, String password, String role, String email) {

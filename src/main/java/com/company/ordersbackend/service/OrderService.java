@@ -5,6 +5,7 @@ import com.company.ordersbackend.exception.AccesDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
+import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -131,5 +132,11 @@ public class OrderService {
         return orders.stream()
                 .map(x -> dtoMapper.orderDTO(x))
                 .collect(Collectors.toList());
+    }
+
+    public void delete(long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id)));
+        order.getAppUser().getOrders().remove(order);
+        appUserService.saveAppUser(order.getAppUser());
     }
 }
