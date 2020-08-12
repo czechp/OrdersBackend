@@ -15,7 +15,10 @@ import org.springframework.validation.Errors;
 
 import javax.servlet.ServletRequest;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AppUserService {
@@ -108,4 +111,13 @@ public class AppUserService {
     }
 
 
+    public List<AppUserDTO> findAll(Principal principal) {
+        if (isAdmin(principal)) {
+            List<AppUser> result = appUserRepository.findAll();
+            result.forEach(user -> user.setPassword(""));
+            return result.stream()
+                    .map(user -> dtoMapper.appUserDTO(user))
+                    .collect(Collectors.toList());
+        }else throw new AccesDeniedException(principal.getName());
+    }
 }

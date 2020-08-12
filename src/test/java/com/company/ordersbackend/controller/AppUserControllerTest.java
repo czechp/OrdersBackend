@@ -16,11 +16,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.print.attribute.standard.Media;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
@@ -97,5 +100,41 @@ class AppUserControllerTest {
                 delete("/api/user/{id}", 1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test()
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
+    public void findAllTest() throws Exception {
+        //given
+        List<AppUserDTO> users = Arrays.asList(
+                new AppUserDTO(1L, "user", "user123", "anyRole", "anyEmail@gmail.com"),
+                new AppUserDTO()
+        );
+        //when
+        when(appUserService.findAll(any())).thenReturn(users);
+
+        //then
+        mockMvc.perform(
+                get("/api/user")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value("user"));
+
+    }
+
+    @Test()
+    @WithMockUser(username = "user", password = "user", roles = "USER")
+    public void findAllTest_isNotAdmin() throws Exception {
+        //given
+        //when
+        doThrow(AccesDeniedException.class)
+                .when(appUserService)
+                .findAll(any());
+        //then
+        mockMvc.perform(
+                get("/api/user")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").isNotEmpty());
     }
 }

@@ -1,7 +1,6 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
-import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.VerificationToken;
 import com.company.ordersbackend.exception.AccesDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
@@ -20,9 +19,13 @@ import org.springframework.validation.Errors;
 
 import javax.servlet.ServletRequest;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -163,7 +166,7 @@ class AppUserServiceTest {
         AppUserDTO result = appUserService.changeRole(id, role, principal);
 
         //then
-        assertThat(result).isNotNull();
+        assertThat(result, instanceOf(AppUserDTO.class));
     }
 
     @Test()
@@ -217,7 +220,7 @@ class AppUserServiceTest {
     }
 
     @Test()
-    public void deleteTest_isNotAdmin(){
+    public void deleteTest_isNotAdmin() {
         //given
         long id = 1L;
         //when
@@ -227,7 +230,7 @@ class AppUserServiceTest {
     }
 
     @Test()
-    public void deleteTest_userNotExists(){
+    public void deleteTest_userNotExists() {
         //given
         long id = 1L;
         //when
@@ -235,6 +238,34 @@ class AppUserServiceTest {
         when(principal.getName()).thenReturn("ADMIN");
         when(appUserRepository.existsById(anyLong())).thenReturn(false);
         //then
-        assertThrows(NotFoundException.class, ()->appUserService.delete(id, principal));
+        assertThrows(NotFoundException.class, () -> appUserService.delete(id, principal));
+    }
+
+    @Test()
+    public void findALl() {
+        //given
+        //when
+        when(principal.getName()).thenReturn("admin");
+        when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(true);
+        when(appUserRepository.findAll()).thenReturn(
+                Arrays.asList(
+                        new AppUser(),
+                        new AppUser()
+                )
+        );
+        List<AppUserDTO> result = appUserService.findAll(principal);
+        //then
+        assertThat(result, hasSize(2));
+        assertThat(result.get(0), instanceOf(AppUserDTO.class));
+    }
+
+    @Test()
+    public void findAll_isNotAdmin() {
+        //given
+        //when
+        when(principal.getName()).thenReturn("user");
+        when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(false);
+        //then
+        assertThrows(AccesDeniedException.class, () -> appUserService.findAll(principal));
     }
 }
