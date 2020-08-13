@@ -75,6 +75,7 @@ public class AppUserService {
                 AppUser appUser = optionalAppUser.get();
                 appUser.setActive(true);
                 appUserRepository.save(appUser);
+                verificationTokenRepository.delete(verificationToken);
                 return true;
             }
         }
