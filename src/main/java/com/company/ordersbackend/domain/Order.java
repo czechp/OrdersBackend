@@ -22,7 +22,7 @@ public class Order {
     @ManyToOne()
     private AppUser appUser;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name="item_in_order_id")
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
