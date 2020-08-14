@@ -1,11 +1,8 @@
 package com.company.ordersbackend.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +19,8 @@ public class Order {
     @ManyToOne()
     private AppUser appUser;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="item_in_order_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_in_order_id")
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
@@ -45,7 +42,7 @@ public class Order {
         this.orderStatus = OrderStatus.NEW;
     }
 
-    public void addItem(ItemInOrder itemInOrder){
+    public void addItem(ItemInOrder itemInOrder) {
         this.itemsInOrder.add(itemInOrder);
     }
 
