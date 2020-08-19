@@ -45,7 +45,7 @@ public class CsvMapperService {
         try {
             MappingIterator<Object> itemsList = csvMapper.readerFor(Item.class)
                     .with(csvSchema)
-                    .readValues(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+                    .readValues(new InputStreamReader(multipartFile.getInputStream(), "iso-8859-1"));
             List<Item> items = itemsList.readAll().stream()
                     .map(x -> (Item) x)
                     .collect(Collectors.toList());
