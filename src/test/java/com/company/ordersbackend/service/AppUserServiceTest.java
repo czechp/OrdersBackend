@@ -2,7 +2,7 @@ package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.VerificationToken;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
@@ -178,7 +178,7 @@ class AppUserServiceTest {
         when(principal.getName()).thenReturn("user");
         when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(false);
         //then
-        assertThrows(AccesDeniedException.class, () -> appUserService.changeRole(id, role, principal));
+        assertThrows(AccessDeniedException.class, () -> appUserService.changeRole(id, role, principal));
     }
 
     @Test()
@@ -226,7 +226,7 @@ class AppUserServiceTest {
         //when
         when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(false);
         //then
-        assertThrows(AccesDeniedException.class, () -> appUserService.delete(id, principal));
+        assertThrows(AccessDeniedException.class, () -> appUserService.delete(id, principal));
     }
 
     @Test()
@@ -266,6 +266,6 @@ class AppUserServiceTest {
         when(principal.getName()).thenReturn("user");
         when(appUserRepository.existsByUsernameAndRole(anyString(), anyString())).thenReturn(false);
         //then
-        assertThrows(AccesDeniedException.class, () -> appUserService.findAll(principal));
+        assertThrows(AccessDeniedException.class, () -> appUserService.findAll(principal));
     }
 }

@@ -1,13 +1,13 @@
 package com.company.ordersbackend.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity(name = "items")
-@Data()
+@Getter()
+@Setter()
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor()
 public class Item extends ItemSuperClass{
 

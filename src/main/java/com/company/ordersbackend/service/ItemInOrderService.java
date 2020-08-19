@@ -2,7 +2,7 @@ package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.domain.ItemStatus;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.ItemInOrderDTO;
 import com.company.ordersbackend.repository.ItemInOrderRepository;
@@ -66,7 +66,7 @@ public class ItemInOrderService {
             }
             return dtoMapper.itemInOrderDTO(itemInOrderRepository.save(itemInOrder));
         }else {
-            throw new AccesDeniedException("FORBIDEN");
+            throw new AccessDeniedException("FORBIDEN");
         }
     }
 

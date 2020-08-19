@@ -61,4 +61,8 @@ public class ItemCategoryService {
         }
         return result;
     }
+
+    public Optional<ItemCategory> findById(long categoryId) {
+        return itemCategoryRepository.findById(categoryId);
+    }
 }

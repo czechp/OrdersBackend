@@ -64,4 +64,11 @@ public class ProviderService {
     }
 
 
+    public Optional<Provider> findByName(String name) {
+        return providerRepository.findByName(name);
+    }
+
+    public Provider save(Provider provider) {
+        return providerRepository.save(provider);
+    }
 }
