@@ -1,11 +1,10 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.*;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
-import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -124,7 +123,7 @@ public class OrderService {
             }
 
         } else {
-            throw new AccesDeniedException(principal.getName());
+            throw new AccessDeniedException(principal.getName());
         }
     }
 
