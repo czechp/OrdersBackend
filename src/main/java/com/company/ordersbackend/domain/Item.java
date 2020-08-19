@@ -1,13 +1,13 @@
 package com.company.ordersbackend.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity(name = "items")
-@Data()
+@Getter()
+@Setter()
+@EqualsAndHashCode()
 @AllArgsConstructor()
 public class Item extends ItemSuperClass{
 
@@ -18,5 +18,9 @@ public class Item extends ItemSuperClass{
 
     public Item(long id,String name, String serialNumber, String description, String url, Producer producer, Provider provider, ItemCategory itemCategory) {
         super(id, name, serialNumber, description, url, producer, provider, itemCategory);
+    }
+
+    public Item(ItemSuperClass itemSuperClass){
+        super(itemSuperClass);
     }
 }

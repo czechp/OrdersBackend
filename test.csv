@@ -1,0 +1,7 @@
+name;serialNumber;producer;description;url
+Czujnik indukcyjny  IFS248 M12 NC;IFS248;FESTO;M12 NC;Klik
+Czujnik indukcyjny  IFS248 M12 NO;IFS289;IFM;M12 NO;Klik
+Czujnik refleksyjny;OJ5104;IFM;M8;Klik
+Czujnik dyfuzyjny z t³umieniem t³a;O5H500;IFM;M12, PNP;Klik
+Œwiat³owodowy czujnik odbiciowy;E20654;IFM;M6;Klik
+Wzmacniacz œwiat³owodowy;OBF500;IFM;M12;Klik
