@@ -33,6 +33,10 @@ public class ProducerService {
         return Optional.empty();
     }
 
+    public Producer save(Producer producer){
+        return producerRepository.save(producer);
+    }
+
     public boolean update(long id, ProducerDTO producerDTO, Errors errors) {
         if (producerRepository.existsById(id) && !errors.hasErrors()) {
             Producer producer = producerRepository.findById(id).get();
@@ -54,6 +58,10 @@ public class ProducerService {
         return false;
     }
 
+    public boolean existByName(String name){
+        return producerRepository.existsByName(name);
+    }
+
 
     private List<ProducerDTO> mapToList(List<Producer> all) {
         List<ProducerDTO> result = new ArrayList<>();
@@ -63,4 +71,7 @@ public class ProducerService {
         return result;
     }
 
+    public Optional<Producer> findByName(String name) {
+        return producerRepository.findByName(name);
+    }
 }

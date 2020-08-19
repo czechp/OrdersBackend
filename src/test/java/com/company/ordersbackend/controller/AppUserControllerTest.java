@@ -1,6 +1,6 @@
 package com.company.ordersbackend.controller;
 
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.service.AppUserService;
@@ -16,7 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.print.attribute.standard.Media;
 import java.util.Arrays;
 import java.util.List;
 
@@ -77,7 +76,7 @@ class AppUserControllerTest {
     public void deleteTest_isNotAdmin() throws Exception {
         //given
         //when
-        doThrow(AccesDeniedException.class)
+        doThrow(AccessDeniedException.class)
                 .when(appUserService)
                 .delete(anyLong(), any());
         //then
@@ -127,7 +126,7 @@ class AppUserControllerTest {
     public void findAllTest_isNotAdmin() throws Exception {
         //given
         //when
-        doThrow(AccesDeniedException.class)
+        doThrow(AccessDeniedException.class)
                 .when(appUserService)
                 .findAll(any());
         //then

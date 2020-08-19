@@ -3,7 +3,7 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.Order;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
@@ -284,7 +284,7 @@ class OrderServiceTest {
         //when
         when(appUserService.isSuperUser(any())).thenReturn(false);
         //then
-        assertThrows(AccesDeniedException.class, () -> orderService.findOrderByStatusForSuperUser(status, principal));
+        assertThrows(AccessDeniedException.class, () -> orderService.findOrderByStatusForSuperUser(status, principal));
     }
 
     @Test()

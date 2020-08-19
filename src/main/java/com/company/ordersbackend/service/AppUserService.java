@@ -3,7 +3,7 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.VerificationToken;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
@@ -18,7 +18,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class AppUserService {
@@ -94,7 +93,7 @@ public class AppUserService {
             appUser.setRole(appUserRole.toString());
             return dtoMapper.appUserDTO(appUserRepository.save(appUser));
         }else{
-            throw new AccesDeniedException(principal.getName());
+            throw new AccessDeniedException(principal.getName());
         }
     }
 
@@ -108,7 +107,7 @@ public class AppUserService {
          if(appUserRepository.existsById(id)) appUserRepository.deleteById(id);
          else throw new NotFoundException(String.valueOf(id));
         }
-        else throw new AccesDeniedException(principal.getName());
+        else throw new AccessDeniedException(principal.getName());
     }
 
     private boolean isAdmin(Principal principal) {
@@ -123,6 +122,6 @@ public class AppUserService {
             return result.stream()
                     .map(user -> dtoMapper.appUserDTO(user))
                     .collect(Collectors.toList());
-        }else throw new AccesDeniedException(principal.getName());
+        }else throw new AccessDeniedException(principal.getName());
     }
 }

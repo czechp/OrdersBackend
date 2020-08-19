@@ -1,7 +1,7 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.*;
-import com.company.ordersbackend.exception.AccesDeniedException;
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.ItemInOrderDTO;
 import com.company.ordersbackend.repository.ItemInOrderRepository;
@@ -121,7 +121,7 @@ class ItemInOrderServiceTest {
         //when
         when(appUserService.isSuperUser(principal)).thenReturn(false);
         //then
-        assertThrows(AccesDeniedException.class, () -> itemInOrderService.changeStatus(anyLong(), ItemStatus.ORDERED, principal));
+        assertThrows(AccessDeniedException.class, () -> itemInOrderService.changeStatus(anyLong(), ItemStatus.ORDERED, principal));
     }
 
     @Test()
