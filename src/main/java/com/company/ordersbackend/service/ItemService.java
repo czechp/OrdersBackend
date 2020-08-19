@@ -107,4 +107,11 @@ public class ItemService {
     }
 
 
+    public List<Item> saveAll(List<Item> items) {
+        return itemRepository.saveAll(items);
+    }
+
+    public boolean existsByName(String name) {
+        return itemRepository.existsByName(name);
+    }
 }

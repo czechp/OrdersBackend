@@ -30,11 +30,11 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({BadRequestException.class})
+    @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handlingBadRequestException(BadRequestException e, WebRequest webRequest) {
         Map<String, String> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
-        body.put("message", "Not enough permissions");
+        body.put("message", "Bad request: " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
