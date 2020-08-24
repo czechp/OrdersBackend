@@ -33,7 +33,15 @@ public class CsvMapperService {
                             ItemService itemService,
                             ItemCategoryService itemCategoryService,
                             ProviderService providerService) {
-        this.csvSchema = CsvSchema.emptySchema().withColumnSeparator(';').withHeader();
+        this.csvSchema = CsvSchema.builder()
+                .addColumn("name")
+                .addColumn("serialNumber")
+                .addColumn("producer")
+                .addColumn("description")
+                .addColumn("url")
+                .build()
+                .withColumnSeparator(';')
+                .withHeader();
         this.csvMapper = new CsvMapper();
         this.producerService = producerService;
         this.itemService = itemService;
