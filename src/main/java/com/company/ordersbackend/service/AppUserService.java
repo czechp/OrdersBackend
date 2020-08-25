@@ -49,8 +49,18 @@ public class AppUserService {
     }
 
     public AppUser saveAppUser(AppUser appUser) {
-        if (!appUserRepository.existsByUsername(appUser.getUsername()) && !appUserRepository.existsByEmail(appUser.getEmail()))
+        if(appUser.getId() != 0L)
             return appUserRepository.save(appUser);
+        else
+            return saveNewAppUser(appUser);
+
+    }
+
+    private AppUser saveNewAppUser(AppUser appUser) {
+        if(!appUserRepository.existsByUsername(appUser.getUsername())
+        && !appUserRepository.existsByEmail(appUser.getEmail())){
+            return appUserRepository.save(appUser);
+        }
         else
             throw new AlreadyExistsException("user: " + appUser.getUsername() + " ---- email: " + appUser.getEmail());
     }
