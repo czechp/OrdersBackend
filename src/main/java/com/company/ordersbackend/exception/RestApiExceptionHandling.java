@@ -40,10 +40,10 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<Object> handlingAlreadyExistsException(AlreadyExistsException e, WebRequest webRequest){
+    public ResponseEntity<Object> handlingAlreadyExistsException(AlreadyExistsException e, WebRequest webRequest) {
         Map<String, String> body = new HashMap();
         body.put("timestamp", LocalDateTime.now().toString());
-        body.put("message", "Already exists: "e.getMessage());
+        body.put("message", "Already exists: " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 }
