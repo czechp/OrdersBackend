@@ -18,6 +18,6 @@ public class EmailSenderThread implements Runnable {
     @Override
     public void run() {
         send();
-        log.info("Email with verification token sent");
+        log.info("Email sent");
     }
 }

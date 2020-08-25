@@ -5,6 +5,7 @@ import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -20,13 +21,16 @@ public class OrderService {
     private DTOMapper dtoMapper;
     private ItemService itemService;
     private AppUserService appUserService;
+    private EmailSenderService emailSenderService;
 
 
-    public OrderService(OrderRepository orderRepository, DTOMapper dtoMapper, ItemService itemService, AppUserService appUserService) {
+    @Autowired()
+    public OrderService(OrderRepository orderRepository, DTOMapper dtoMapper, ItemService itemService, AppUserService appUserService, EmailSenderService emailSenderService) {
         this.orderRepository = orderRepository;
         this.dtoMapper = dtoMapper;
         this.itemService = itemService;
         this.appUserService = appUserService;
+        this.emailSenderService = emailSenderService;
     }
 
     public Optional<OrderDTO> save(OrderDTO orderDTO, Errors errors, String username) {
@@ -107,10 +111,18 @@ public class OrderService {
             if (optionalOrder.isPresent() && OrderStatus.getByString(status) != null) {
                 Order order = optionalOrder.get();
                 order.setOrderStatus(OrderStatus.getByString(status));
+                if(OrderStatus.getByString(status) == OrderStatus.REALISE) sendNotificationToSuperUser(order, username);
                 return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
             }
         }
         return Optional.empty();
+    }
+
+    private void sendNotificationToSuperUser(Order order, String username) {
+
+        emailSenderService.sendNotificationAboutNewOrder(username,
+                order.getName(),
+                appUserService.findByRole(AppUserRole.SUPERUSER.toString()));
     }
 
     public List<OrderDTO> findOrderByStatusForSuperUser(final String status, Principal principal) {

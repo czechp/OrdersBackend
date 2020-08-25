@@ -1,18 +1,26 @@
 package com.company.ordersbackend.service;
 
+import com.company.ordersbackend.domain.AppUser;
+import com.company.ordersbackend.domain.AppUserRole;
+import com.company.ordersbackend.repository.AppUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletRequest;
+import java.util.List;
 
 @Service
 public class EmailSenderService {
     private JavaMailSender javaMailSender;
 
-    public EmailSenderService(JavaMailSender javaMailSender) {
+    @Autowired()
+    public EmailSenderService(JavaMailSender javaMailSender ) {
         this.javaMailSender = javaMailSender;
     }
+
+
 
     public void sendVerificationToken(String email, String token, ServletRequest servletRequest) {
         String content = new StringBuilder()
@@ -30,7 +38,18 @@ public class EmailSenderService {
         simpleMailMessage.setText(content);
 
         new Thread(new EmailSenderThread(javaMailSender, simpleMailMessage)).start();
+    }
 
+    public void sendNotificationAboutNewOrder(String username, String orderName, List<AppUser> users){
+        users.forEach(x->{
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setTo(x.getEmail());
+            simpleMailMessage.setSubject("Nowe zamówienie");
+            simpleMailMessage.setText("Nowe zamówienie do realizacji. \n" +
+                    "Nazwa zamówienia: " + orderName +
+                    "\nZamawiający : " + username);
+            new Thread(new EmailSenderThread(javaMailSender, simpleMailMessage)).start();
+        });
     }
 
 }

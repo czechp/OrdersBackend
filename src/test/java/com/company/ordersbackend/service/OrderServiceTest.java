@@ -13,9 +13,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import javax.validation.constraints.Email;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,9 @@ class OrderServiceTest {
     private ItemService itemService;
     @Mock
     private AppUserService appUserService;
+    @Mock
+    private EmailSenderService emailSenderService;
+
     @Autowired
     private DTOMapper dtoMapper;
 
@@ -49,7 +54,7 @@ class OrderServiceTest {
 
     @BeforeEach
     public void init() {
-        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService);
+        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService, emailSenderService);
     }
 
     @Test

@@ -137,4 +137,8 @@ public class AppUserService {
                     .collect(Collectors.toList());
         } else throw new AccessDeniedException(principal.getName());
     }
+
+    public List<AppUser> findByRole(String role) {
+        return appUserRepository.findByRole(role);
+    }
 }

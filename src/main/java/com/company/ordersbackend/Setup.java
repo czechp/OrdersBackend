@@ -65,7 +65,7 @@ public class Setup {
         Item item3 = new Item("Bezpiecznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
-        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "superUser", "webcodsdaerc@gmail.com");
+        AppUser user = new AppUser("user", passwordEncoder.encode("user"), "superUser", "webcoderc@gmail.com");
         user.setActive(true);
         user = appUserRepository.save(user);
 
