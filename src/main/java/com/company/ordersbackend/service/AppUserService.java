@@ -4,6 +4,7 @@ import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.VerificationToken;
 import com.company.ordersbackend.exception.AccessDeniedException;
+import com.company.ordersbackend.exception.AlreadyExistsException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.repository.AppUserRepository;
@@ -47,8 +48,11 @@ public class AppUserService {
         return Optional.empty();
     }
 
-    public AppUser saveAppUser(AppUser appUser){
-        return appUserRepository.save(appUser);
+    public AppUser saveAppUser(AppUser appUser) {
+        if (!appUserRepository.existsByUsername(appUser.getUsername()) && !appUserRepository.existsByEmail(appUser.getEmail()))
+            return appUserRepository.save(appUser);
+        else
+            throw new AlreadyExistsException("user: " + appUser.getUsername() + " ---- email: " + appUser.getEmail());
     }
 
     public boolean saveAppUser(AppUserDTO appUserDTO, Errors errors, ServletRequest servletRequest) {
@@ -87,12 +91,12 @@ public class AppUserService {
 
 
     public AppUserDTO changeRole(long id, String role, Principal principal) {
-        if(isAdmin(principal)){
+        if (isAdmin(principal)) {
             AppUserRole appUserRole = AppUserRole.findByString(role).orElseThrow(() -> new NotFoundException(role));
             AppUser appUser = appUserRepository.findById(id).orElseThrow(() -> new NotFoundException(role));
             appUser.setRole(appUserRole.toString());
             return dtoMapper.appUserDTO(appUserRepository.save(appUser));
-        }else{
+        } else {
             throw new AccessDeniedException(principal.getName());
         }
     }
@@ -102,12 +106,11 @@ public class AppUserService {
                 || appUserRepository.existsByUsernameAndRole(principal.getName(), AppUserRole.ADMIN.toString());
     }
 
-    public void delete(long id, Principal principal){
-        if(isAdmin(principal)){
-         if(appUserRepository.existsById(id)) appUserRepository.deleteById(id);
-         else throw new NotFoundException(String.valueOf(id));
-        }
-        else throw new AccessDeniedException(principal.getName());
+    public void delete(long id, Principal principal) {
+        if (isAdmin(principal)) {
+            if (appUserRepository.existsById(id)) appUserRepository.deleteById(id);
+            else throw new NotFoundException(String.valueOf(id));
+        } else throw new AccessDeniedException(principal.getName());
     }
 
     private boolean isAdmin(Principal principal) {
@@ -122,6 +125,6 @@ public class AppUserService {
             return result.stream()
                     .map(user -> dtoMapper.appUserDTO(user))
                     .collect(Collectors.toList());
-        }else throw new AccessDeniedException(principal.getName());
+        } else throw new AccessDeniedException(principal.getName());
     }
 }

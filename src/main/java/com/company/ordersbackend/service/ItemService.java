@@ -40,7 +40,6 @@ public class ItemService {
     public Optional<ItemDTO> save(ItemDTO itemDTO, Errors errors) {
         if (!errors.hasErrors()) {
             Item item = dtoMapper.itemPOJO(itemDTO);
-            System.out.println("Errors");
             if (producerRepository.existsById(item.getProducer().getId())) {
                 if (providerRepository.existsById(item.getProvider().getId())) {
                     if (itemCategoryRepository.existsById(item.getItemCategory().getId())) {

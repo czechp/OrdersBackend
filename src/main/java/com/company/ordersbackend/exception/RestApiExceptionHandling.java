@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,5 +37,13 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("message", "Bad request: " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<Object> handlingAlreadyExistsException(AlreadyExistsException e, WebRequest webRequest){
+        Map<String, String> body = new HashMap();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("message", "Already exists: "e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 }
