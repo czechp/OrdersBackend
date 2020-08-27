@@ -2,9 +2,7 @@ package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
-import com.company.ordersbackend.repository.ItemRepository;
 import com.company.ordersbackend.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -48,6 +46,7 @@ public class OrderController {
         Optional<OrderDTO> result = orderService.addItemToOrder(orderId, principal.getName(), itemId, amount);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
+
     @GetMapping("/status")
     public ResponseEntity<List<String>> getStatusList() {
         List<String> result = Arrays.stream(OrderStatus.values())
@@ -64,7 +63,7 @@ public class OrderController {
 
 
     @GetMapping("/superuser/status/{status}")
-    public List<OrderDTO> getOrderByStatusForSuperUser(@PathVariable(name = "status")String status, Principal principal){
+    public List<OrderDTO> getOrderByStatusForSuperUser(@PathVariable(name = "status") String status, Principal principal) {
         return orderService.findOrderByStatusForSuperUser(status, principal);
     }
 
@@ -89,7 +88,7 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id){
+    public void delete(@PathVariable("id") long id) {
         orderService.delete(id);
     }
 

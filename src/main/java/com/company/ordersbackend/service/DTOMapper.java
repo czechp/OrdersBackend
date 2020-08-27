@@ -133,7 +133,7 @@ public class DTOMapper {
         return result;
     }
 
-    public OrderDTO orderDTO (Order order){
+    public OrderDTO orderDTO(Order order) {
         OrderDTO result = new OrderDTO();
         result.setId(order.getId());
         result.setName(order.getName());
@@ -147,7 +147,7 @@ public class DTOMapper {
         return result;
     }
 
-    public Order orderPOJO(OrderDTO orderDTO){
+    public Order orderPOJO(OrderDTO orderDTO) {
         Order result = new Order();
         result.setId(orderDTO.getId());
         result.setName(orderDTO.getName());

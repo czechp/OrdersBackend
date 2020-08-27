@@ -3,7 +3,7 @@ package com.company.ordersbackend.domain;
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum  AppUserRole {
+public enum AppUserRole {
     USER,
     SUPERUSER,
     ADMIN;
@@ -11,7 +11,7 @@ public enum  AppUserRole {
     AppUserRole() {
     }
 
-    public static Optional<AppUserRole> findByString(String role){
+    public static Optional<AppUserRole> findByString(String role) {
         return Arrays.stream(AppUserRole.values())
                 .filter(x -> x.toString().equals(role))
                 .findAny();

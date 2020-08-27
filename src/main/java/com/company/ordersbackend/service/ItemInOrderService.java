@@ -31,7 +31,7 @@ public class ItemInOrderService {
     }
 
     public Optional<ItemInOrderDTO> update(ItemInOrderDTO itemInOrderDTO, Errors errors) {
-        if(itemInOrderRepository.existsById(itemInOrderDTO.getId()) && !errors.hasErrors()){
+        if (itemInOrderRepository.existsById(itemInOrderDTO.getId()) && !errors.hasErrors()) {
             ItemInOrder result = itemInOrderRepository.save(dtoMapper.itemInOrderPOJO(itemInOrderDTO));
             return Optional.of(dtoMapper.itemInOrderDTO(result));
         }
@@ -42,30 +42,30 @@ public class ItemInOrderService {
         return toDtoArray(itemInOrderRepository.findAll());
     }
 
-    public Optional<ItemInOrderDTO> delete(long id){
+    public Optional<ItemInOrderDTO> delete(long id) {
         Optional<ItemInOrder> optionalItemInOrder = itemInOrderRepository.findById(id);
-        if(optionalItemInOrder.isPresent()){
+        if (optionalItemInOrder.isPresent()) {
             itemInOrderRepository.deleteById(id);
             return Optional.of(dtoMapper.itemInOrderDTO(optionalItemInOrder.get()));
         }
         return Optional.empty();
     }
 
-    public Optional<ItemInOrderDTO> findById(long id){
+    public Optional<ItemInOrderDTO> findById(long id) {
         Optional<ItemInOrder> result = itemInOrderRepository.findById(id);
         return result.map(itemInOrder -> dtoMapper.itemInOrderDTO(itemInOrder));
     }
 
-    public ItemInOrderDTO changeStatus(final long id, ItemStatus itemStatus, Principal principal){
-        if(appUserService.isSuperUser(principal)){
+    public ItemInOrderDTO changeStatus(final long id, ItemStatus itemStatus, Principal principal) {
+        if (appUserService.isSuperUser(principal)) {
             ItemInOrder itemInOrder = itemInOrderRepository.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id)));
-            if(itemStatus == ItemStatus.ORDERED){
+            if (itemStatus == ItemStatus.ORDERED) {
                 setOrdered(itemInOrder);
-            }else{
+            } else {
                 setDelivered(itemInOrder);
             }
             return dtoMapper.itemInOrderDTO(itemInOrderRepository.save(itemInOrder));
-        }else {
+        } else {
             throw new AccessDeniedException("FORBIDEN");
         }
     }
@@ -84,7 +84,7 @@ public class ItemInOrderService {
 
     private List<ItemInOrderDTO> toDtoArray(List<ItemInOrder> all) {
         return all.stream()
-                .map(x-> dtoMapper.itemInOrderDTO(x))
+                .map(x -> dtoMapper.itemInOrderDTO(x))
                 .collect(Collectors.toList());
     }
 

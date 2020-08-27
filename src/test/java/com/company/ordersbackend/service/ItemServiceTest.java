@@ -80,9 +80,9 @@ class ItemServiceTest {
         long id  = 1L;
         ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
         //when
-        when(producerRepository.existsById(id)).thenReturn(true);
-        when(providerRepository.existsById(id)).thenReturn(true);
-        when(itemCategoryRepository.existsById(id)).thenReturn(true);
+        when(producerRepository.existsById(anyLong())).thenReturn(true);
+        when(providerRepository.existsById(anyLong())).thenReturn(true);
+        when(itemCategoryRepository.existsById(anyLong())).thenReturn(true);
         when(errors.hasErrors()).thenReturn(false);
         when(itemRepository.save(dtoMapper.itemPOJO(itemDTO))).thenReturn(dtoMapper.itemPOJO(itemDTO));
         Optional<ItemDTO> result = itemService.save(itemDTO, errors);

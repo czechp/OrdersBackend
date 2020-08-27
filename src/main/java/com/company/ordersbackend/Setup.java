@@ -26,8 +26,10 @@ public class Setup {
     private ItemInOrderRepository itemInOrderRepository;
     private OrderService orderService;
     private OrderRepository orderRepository;
+    private TaskRepository taskRepository;
 
-    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, ItemInOrderRepository itemInOrderRepository, OrderService orderService, OrderRepository orderRepository) {
+
+    public Setup(ItemCategoryRepository itemCategoryRepository, ProviderRepository providerRepository, ProducerRepository producerRepository, ItemRepository itemRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, ItemInOrderRepository itemInOrderRepository, OrderService orderService, OrderRepository orderRepository, TaskRepository taskRepository) {
         this.itemCategoryRepository = itemCategoryRepository;
         this.providerRepository = providerRepository;
         this.producerRepository = producerRepository;
@@ -37,6 +39,7 @@ public class Setup {
         this.itemInOrderRepository = itemInOrderRepository;
         this.orderService = orderService;
         this.orderRepository = orderRepository;
+        this.taskRepository = taskRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -70,11 +73,11 @@ public class Setup {
         user = appUserRepository.save(user);
 
 
-        AppUser user1= new AppUser("user1", passwordEncoder.encode("user1"), "user", "webcodsdaerc@gmail.com");
+        AppUser user1 = new AppUser("user1", passwordEncoder.encode("user1"), "user", "webcodsdaerc@gmail.com");
         user1.setActive(true);
         user1 = appUserRepository.save(user1);
 
-        AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "admin", "anyGmail@gmail.com");
+        AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "ADMIN", "anyGmail@gmail.com");
         admin.setActive(true);
         appUserRepository.save(admin);
 
@@ -99,5 +102,9 @@ public class Setup {
         orderCurrent.setOrderStatus(OrderStatus.REALISE);
         orderRepository.save(orderCurrent);
 
+        Task task = new Task();
+        task.setAppUser(user);
+        task.setName("Example task");
+        taskRepository.save(task);
     }
 }

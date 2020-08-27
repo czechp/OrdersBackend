@@ -33,7 +33,7 @@ public class ProducerService {
         return Optional.empty();
     }
 
-    public Producer save(Producer producer){
+    public Producer save(Producer producer) {
         return producerRepository.save(producer);
     }
 
@@ -58,7 +58,7 @@ public class ProducerService {
         return false;
     }
 
-    public boolean existByName(String name){
+    public boolean existByName(String name) {
         return producerRepository.existsByName(name);
     }
 

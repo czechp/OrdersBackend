@@ -46,4 +46,12 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
         body.put("message", "Already exists: " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(BadInputDataException.class)
+    public ResponseEntity<Object> handlingBadDataInputException(BadInputDataException e, WebRequest webRequest) {
+        Map<String, String> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("message", "Incorrect input data: " + e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

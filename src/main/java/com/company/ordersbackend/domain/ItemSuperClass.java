@@ -47,7 +47,7 @@ public class ItemSuperClass {
         this.name = itemSuperClass.name;
         this.serialNumber = itemSuperClass.serialNumber;
         this.description = itemSuperClass.description;
-        this.url =itemSuperClass. url;
+        this.url = itemSuperClass.url;
         this.producer = itemSuperClass.producer;
         this.provider = itemSuperClass.provider;
         this.itemCategory = itemSuperClass.itemCategory;
