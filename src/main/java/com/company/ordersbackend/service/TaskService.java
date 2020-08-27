@@ -23,15 +23,21 @@ public class TaskService {
     }
 
 
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
     public Task save(Task task, Errors errors, Principal principal) {
-        if(!errors.hasErrors()){
-            task.setAppUser(appUserService.findAppUserByUsername(principal.getName()).orElseThrow(()->new NotFoundException("user --- " + principal.getName())));
+        if (!errors.hasErrors()) {
+            task.setAppUser(appUserService.findAppUserByUsername(principal.getName()).orElseThrow(() -> new NotFoundException("user --- " + principal.getName())));
             return taskRepository.save(task);
         }
         throw new BadInputDataException("");
+    }
+
+    public void delete(long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("task id ---- " + id));
+        task.getAppUser().getTasks().remove(task);
+        appUserService.saveAppUser(task.getAppUser());
     }
 }

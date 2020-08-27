@@ -49,7 +49,7 @@ public class AppUserService {
     }
 
     public AppUser saveAppUser(AppUser appUser) {
-        if(appUser.getId() != 0L)
+        if (appUser.getId() != 0L)
             return appUserRepository.save(appUser);
         else
             return saveNewAppUser(appUser);
@@ -57,11 +57,10 @@ public class AppUserService {
     }
 
     private AppUser saveNewAppUser(AppUser appUser) {
-        if(!appUserRepository.existsByUsername(appUser.getUsername())
-        && !appUserRepository.existsByEmail(appUser.getEmail())){
+        if (!appUserRepository.existsByUsername(appUser.getUsername())
+                && !appUserRepository.existsByEmail(appUser.getEmail())) {
             return appUserRepository.save(appUser);
-        }
-        else
+        } else
             throw new AlreadyExistsException("user: " + appUser.getUsername() + " ---- email: " + appUser.getEmail());
     }
 

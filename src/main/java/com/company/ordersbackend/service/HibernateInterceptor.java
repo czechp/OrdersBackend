@@ -14,7 +14,7 @@ public class HibernateInterceptor extends EmptyInterceptor {
     @Override
     public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
 
-        if(entity instanceof Task && ((Task) entity).getId()==0L)
+        if (entity instanceof Task && ((Task) entity).getId() == 0L)
             ((Task) entity).setCreatingDate(LocalDateTime.now());
 
         return super.onSave(entity, id, state, propertyNames, types);

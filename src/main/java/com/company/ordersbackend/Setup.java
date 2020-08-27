@@ -73,11 +73,11 @@ public class Setup {
         user = appUserRepository.save(user);
 
 
-        AppUser user1= new AppUser("user1", passwordEncoder.encode("user1"), "user", "webcodsdaerc@gmail.com");
+        AppUser user1 = new AppUser("user1", passwordEncoder.encode("user1"), "user", "webcodsdaerc@gmail.com");
         user1.setActive(true);
         user1 = appUserRepository.save(user1);
 
-        AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "admin", "anyGmail@gmail.com");
+        AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "ADMIN", "anyGmail@gmail.com");
         admin.setActive(true);
         appUserRepository.save(admin);
 

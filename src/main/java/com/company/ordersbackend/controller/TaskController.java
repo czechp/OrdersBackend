@@ -23,13 +23,19 @@ public class TaskController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return taskService.findAll();
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Task save(@RequestBody Task task, Errors errors, Principal principal){
+    public Task save(@RequestBody Task task, Errors errors, Principal principal) {
         return taskService.save(task, errors, principal);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable(name = "id") long id) {
+        taskService.delete(id);
     }
 }

@@ -1,9 +1,7 @@
 package com.company.ordersbackend.controller;
 
-import com.company.ordersbackend.domain.ItemInOrder;
 import com.company.ordersbackend.domain.ItemStatus;
 import com.company.ordersbackend.model.ItemInOrderDTO;
-import com.company.ordersbackend.service.AppUserService;
 import com.company.ordersbackend.service.ItemInOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,23 +26,23 @@ public class ItemInOrderController {
     }
 
     @GetMapping()
-    public List<ItemInOrderDTO> findAll(){
+    public List<ItemInOrderDTO> findAll() {
         return itemInOrderService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ItemInOrderDTO getItemInOrderById(@PathVariable(name = "id") long id){
+    public ItemInOrderDTO getItemInOrderById(@PathVariable(name = "id") long id) {
         return itemInOrderService.findById(id).orElseThrow(ItemInOrderNotExists::new);
     }
 
     @PutMapping()
-    public ItemInOrderDTO update(@RequestBody() @Valid() ItemInOrderDTO itemInOrderDTO, Errors errors){
-            return itemInOrderService.update(itemInOrderDTO, errors).orElseThrow(ItemInOrderNotExists::new);
+    public ItemInOrderDTO update(@RequestBody() @Valid() ItemInOrderDTO itemInOrderDTO, Errors errors) {
+        return itemInOrderService.update(itemInOrderDTO, errors).orElseThrow(ItemInOrderNotExists::new);
     }
 
-    @DeleteMapping(path="/{id}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ItemInOrderDTO> delete(@PathVariable(name = "id") long id){
+    public ResponseEntity<ItemInOrderDTO> delete(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(
                 itemInOrderService.delete(id).orElseThrow(ItemInOrderNotExists::new),
                 HttpStatus.OK
@@ -53,17 +51,17 @@ public class ItemInOrderController {
 
     @PatchMapping("/status/ordered/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemInOrderDTO changeStatusOrdered(@PathVariable("id") final long id, Principal principal){
+    public ItemInOrderDTO changeStatusOrdered(@PathVariable("id") final long id, Principal principal) {
         return itemInOrderService.changeStatus(id, ItemStatus.ORDERED, principal);
     }
 
     @PatchMapping("/status/delivered/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemInOrderDTO changeStatusDelivered(@PathVariable("id") final long id, Principal principal){
+    public ItemInOrderDTO changeStatusDelivered(@PathVariable("id") final long id, Principal principal) {
         return itemInOrderService.changeStatus(id, ItemStatus.DELIVERED, principal);
     }
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class ItemInOrderNotExists extends RuntimeException{
+class ItemInOrderNotExists extends RuntimeException {
 }

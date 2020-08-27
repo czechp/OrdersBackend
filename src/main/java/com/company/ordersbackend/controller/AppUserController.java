@@ -44,19 +44,19 @@ public class AppUserController {
 
     @PatchMapping("/user/role/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDTO changeRole(@PathVariable("id") long id,@RequestParam("role") String role, Principal principal){
+    public AppUserDTO changeRole(@PathVariable("id") long id, @RequestParam("role") String role, Principal principal) {
         return appUserService.changeRole(id, role, principal);
     }
 
     @DeleteMapping("user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id, Principal principal){
+    public void delete(@PathVariable("id") long id, Principal principal) {
         appUserService.delete(id, principal);
     }
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDTO> findAll(Principal principal){
+    public List<AppUserDTO> findAll(Principal principal) {
         return appUserService.findAll(principal);
     }
 }

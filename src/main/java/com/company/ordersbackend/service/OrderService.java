@@ -111,7 +111,8 @@ public class OrderService {
             if (optionalOrder.isPresent() && OrderStatus.getByString(status) != null) {
                 Order order = optionalOrder.get();
                 order.setOrderStatus(OrderStatus.getByString(status));
-                if(OrderStatus.getByString(status) == OrderStatus.REALISE) sendNotificationToSuperUser(order, username);
+                if (OrderStatus.getByString(status) == OrderStatus.REALISE)
+                    sendNotificationToSuperUser(order, username);
                 return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
             }
         }

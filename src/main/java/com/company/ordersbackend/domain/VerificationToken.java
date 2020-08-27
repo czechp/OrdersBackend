@@ -1,7 +1,6 @@
 package com.company.ordersbackend.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.UUID;

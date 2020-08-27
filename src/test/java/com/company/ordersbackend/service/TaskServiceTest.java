@@ -20,9 +20,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest()
 @RunWith(SpringRunner.class)
@@ -32,11 +31,11 @@ class TaskServiceTest {
     TaskService taskService;
     Task task;
     @MockBean()
+    AppUserService appUserService;
+    @MockBean()
     private Errors errors;
     @MockBean()
     private Principal principal;
-    @MockBean()
-    AppUserService appUserService;
 
     @BeforeEach()
     public void init() {
@@ -61,7 +60,7 @@ class TaskServiceTest {
     }
 
     @Test()
-    public void save_UserNotExistsTest(){
+    public void save_UserNotExistsTest() {
         //given
         //when
         when(principal.getName()).thenReturn("user");
@@ -78,5 +77,26 @@ class TaskServiceTest {
         when(errors.hasErrors()).thenReturn(true);
         //then
         assertThrows(BadInputDataException.class, () -> taskService.save(task, errors, principal));
+    }
+
+    @Test()
+    public void delete_Test() {
+        //given
+        long id = 1L;
+        //when
+        when(taskRepository.findById(anyLong())).thenReturn(Optional.of(task));
+        taskService.delete(id);
+        //then
+        verify(appUserService, times(1)).saveAppUser(any());
+    }
+
+    @Test()
+    public void delete_taskNotExists() {
+        //given
+        long id = 1L;
+        //when
+        when(taskRepository.findById(anyLong())).thenReturn(Optional.empty());
+        //then
+        assertThrows(NotFoundException.class, ()->taskService.delete(id));
     }
 }

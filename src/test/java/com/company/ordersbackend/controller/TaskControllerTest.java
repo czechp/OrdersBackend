@@ -20,10 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest()
@@ -114,6 +112,38 @@ class TaskControllerTest {
                         .content(objectMapper.writeValueAsString(task))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+
+    @Test()
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
+    public void delete_Test() throws Exception {
+        //given
+
+        //when
+        doNothing().when(taskService).delete(anyLong());
+        //then
+        mockMvc.perform(
+                delete(url + "/{id}", 1))
+                .andExpect(status().isNoContent());
+    }
+
+
+    @Test()
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
+    public void delete_taskNotExistsTest() throws Exception {
+        //given
+
+        //when
+        doThrow(NotFoundException.class)
+                .when(taskService)
+                .delete(anyLong());
+        //then
+        mockMvc.perform(
+                delete(url + "/{id}", 1))
+                .andExpect(status().isNotFound());
+
+
     }
 
 

@@ -39,7 +39,7 @@ public class ProducerController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity delete(@PathVariable long id){
+    public ResponseEntity delete(@PathVariable long id) {
         return producerService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 }

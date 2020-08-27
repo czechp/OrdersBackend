@@ -1,6 +1,5 @@
 package com.company.ordersbackend.exception;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,7 +48,7 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BadInputDataException.class)
-    public ResponseEntity<Object> handlingBadDataInputException(BadInputDataException e, WebRequest webRequest){
+    public ResponseEntity<Object> handlingBadDataInputException(BadInputDataException e, WebRequest webRequest) {
         Map<String, String> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("message", "Incorrect input data: " + e.getMessage());

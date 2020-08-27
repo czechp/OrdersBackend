@@ -1,6 +1,5 @@
 package com.company.ordersbackend.domain;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

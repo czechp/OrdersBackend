@@ -1,8 +1,6 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.AppUser;
-import com.company.ordersbackend.domain.AppUserRole;
-import com.company.ordersbackend.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,10 +14,9 @@ public class EmailSenderService {
     private JavaMailSender javaMailSender;
 
     @Autowired()
-    public EmailSenderService(JavaMailSender javaMailSender ) {
+    public EmailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-
 
 
     public void sendVerificationToken(String email, String token, ServletRequest servletRequest) {
@@ -40,8 +37,8 @@ public class EmailSenderService {
         new Thread(new EmailSenderThread(javaMailSender, simpleMailMessage)).start();
     }
 
-    public void sendNotificationAboutNewOrder(String username, String orderName, List<AppUser> users){
-        users.forEach(x->{
+    public void sendNotificationAboutNewOrder(String username, String orderName, List<AppUser> users) {
+        users.forEach(x -> {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setTo(x.getEmail());
             simpleMailMessage.setSubject("Nowe zamówienie");
