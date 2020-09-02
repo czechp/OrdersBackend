@@ -30,6 +30,8 @@ public class OrderDTO {
 
     private OrderStatus orderStatus;
 
+    private String commentary;
+
     public OrderDTO() {
         this.creationDate = LocalDateTime.now();
     }

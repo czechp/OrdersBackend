@@ -1,6 +1,7 @@
 package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.exception.NotFoundException;
+import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +14,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest()
@@ -53,5 +57,38 @@ class OrderControllerTest {
         mockMvc.perform(
                 delete("/api/order/{id}", 1L))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test()
+    @WithMockUser(username = "user", password = "user", roles = "USER")
+    public void changeCommentary() throws Exception {
+        //given
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setCommentary("Any text");
+        //when
+        when(orderService.modifyCommentary(anyLong(), anyString(), any())).thenReturn(orderDTO);
+        //then
+        mockMvc.perform(patch("/api/order/commentary/{id}", 1L)
+                .param("commentary", "Any text")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.commentary").value("Any text"));
+    }
+
+    @Test()
+    @WithMockUser(username = "user", password = "user", roles = "USER")
+    public void changeCommentary_userNotExist() throws Exception {
+        //given
+        //when
+        doThrow(NotFoundException.class)
+                .when(orderService)
+                .modifyCommentary(anyLong(), anyString(), any());
+        //then
+        mockMvc.perform(patch("/api/order/commentary/{id}",1L)
+        .param("commentary", "any text")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
     }
 }

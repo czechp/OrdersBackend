@@ -31,6 +31,8 @@ public class Order {
 
     private LocalDateTime closedDate;
 
+    private String commentary = "";
+
     public Order() {
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;

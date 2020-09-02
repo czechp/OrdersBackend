@@ -151,4 +151,11 @@ public class OrderService {
         order.getAppUser().getOrders().remove(order);
         appUserService.saveAppUser(order.getAppUser());
     }
+
+    public OrderDTO modifyCommentary(long id, String commentary, Principal principal) {
+        AppUser appUser = appUserService.findAppUserByUsername(principal.getName()).orElseThrow(() -> new NotFoundException("user --- " + principal.getName()));
+        Order order = orderRepository.findByAppUserAndId(appUser, id).orElseThrow(() -> new NotFoundException("order id --- " + id));
+        order.setCommentary(commentary);
+        return dtoMapper.orderDTO(orderRepository.save(order));
+    }
 }
