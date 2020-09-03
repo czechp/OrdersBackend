@@ -86,8 +86,17 @@ public class OrderController {
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/commentary/{id}")
+    public OrderDTO changeCommentary(@PathVariable long id,
+                                     @RequestParam(name = "commentary") String commentary,
+                                     Principal principal){
+        return orderService.modifyCommentary(id, commentary, principal);
+    }
+
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+
     public void delete(@PathVariable("id") long id) {
         orderService.delete(id);
     }

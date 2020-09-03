@@ -3,6 +3,7 @@ package com.company.ordersbackend.service;
 import com.company.ordersbackend.domain.AppUser;
 import com.company.ordersbackend.domain.AppUserRole;
 import com.company.ordersbackend.domain.Order;
+import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
@@ -326,4 +327,6 @@ class OrderServiceTest {
         //then
         assertThrows(NotFoundException.class, () -> orderService.delete(id));
     }
+
+
 }
