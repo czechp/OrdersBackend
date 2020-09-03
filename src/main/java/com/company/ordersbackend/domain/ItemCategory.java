@@ -1,5 +1,6 @@
 package com.company.ordersbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ public class ItemCategory {
 
     private String name;
 
+    @JsonIgnore()
     @OneToMany(mappedBy = "itemCategory", fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<>();
 

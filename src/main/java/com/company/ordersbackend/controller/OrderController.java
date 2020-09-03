@@ -89,7 +89,7 @@ public class OrderController {
     @PatchMapping("/commentary/{id}")
     public OrderDTO changeCommentary(@PathVariable long id,
                                      @RequestParam(name = "commentary") String commentary,
-                                     Principal principal){
+                                     Principal principal) {
         return orderService.modifyCommentary(id, commentary, principal);
     }
 
