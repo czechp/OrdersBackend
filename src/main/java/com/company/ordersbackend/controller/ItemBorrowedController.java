@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/api/itemBorrowed")
@@ -20,11 +21,23 @@ public class ItemBorrowedController {
         this.itemBorrowedService = itemBorrowedService;
     }
 
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<ItemBorrowed> findAll(){
+        return itemBorrowedService.findAll();
+    }
+
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public ItemBorrowed save(@PathVariable(value = "id") long itemId,
                              Principal principal,
                              @RequestParam(value = "amount") int amount){
         return itemBorrowedService.save(itemId, amount, principal);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable(value = "id") long id){
+        itemBorrowedService.delete(id);
     }
 }

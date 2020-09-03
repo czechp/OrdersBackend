@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service()
 public class ItemBorrowedService {
@@ -36,5 +37,16 @@ public class ItemBorrowedService {
         } catch (Exception e) {
             throw new BadInputDataException("amount --- " + amount);
         }
+    }
+
+    public void delete(long id) {
+        if (itemBorrowedRepository.existsById(id))
+            itemBorrowedRepository.deleteById(id);
+        else
+            throw new NotFoundException("itemBorrowed id --- " + id);
+    }
+
+    public List<ItemBorrowed> findAll() {
+        return itemBorrowedRepository.findAll();
     }
 }
