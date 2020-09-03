@@ -38,6 +38,10 @@ public class AppUser implements UserDetails {
     @OneToMany(mappedBy = "appUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 
+    @JsonIgnore()
+    @OneToMany(mappedBy = "appUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<ItemBorrowed> itemBorrowedList = new ArrayList<>();
+
     public AppUser(String username, String password, String role, String email) {
         this.username = username;
         this.password = password;

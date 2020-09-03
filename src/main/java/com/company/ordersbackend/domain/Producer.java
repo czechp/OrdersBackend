@@ -1,5 +1,6 @@
 package com.company.ordersbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Producer {
 
     private String name;
 
+    @JsonIgnore()
     @OneToMany(mappedBy = "producer", fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<>();
 
