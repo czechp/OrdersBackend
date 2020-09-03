@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/api/itemBorrowed")
+@CrossOrigin("*")
 public class ItemBorrowedController {
     private ItemBorrowedService itemBorrowedService;
 
