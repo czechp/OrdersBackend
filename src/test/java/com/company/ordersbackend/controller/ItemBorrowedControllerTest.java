@@ -16,6 +16,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -42,11 +45,12 @@ class ItemBorrowedControllerTest {
         ItemBorrowed itemBorrowed = new ItemBorrowed();
         itemBorrowed.setAmount(12);
         //when
-        when(itemBorrowedService.save(anyLong(), anyInt(), any(), )).thenReturn(itemBorrowed);
+        when(itemBorrowedService.save(anyLong(), anyInt(), anyString(), any())).thenReturn(itemBorrowed);
         //then
         mockMvc.perform(
                 post(url + "{id}", 1)
                         .param("amount", "12")
+                        .param("receiver", "anyMan")
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isCreated())
@@ -60,10 +64,11 @@ class ItemBorrowedControllerTest {
         //when
         doThrow(NotFoundException.class)
                 .when(itemBorrowedService)
-                .save(anyLong(), anyInt(), any(), );
+                .save(anyLong(), anyInt(), anyString(), any());
         //then
         mockMvc.perform(post(url + "{id}", 1)
                 .param("amount", "12")
+                .param("receiver", "anyMan")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
@@ -77,10 +82,11 @@ class ItemBorrowedControllerTest {
         //when
         doThrow(BadInputDataException.class)
                 .when(itemBorrowedService)
-                .save(anyLong(), anyInt(), any(), );
+                .save(anyLong(), anyInt(), anyString(), any());
         //then
         mockMvc.perform(post(url + "{id}", 1)
                 .param("amount", "12")
+                .param("receiver", "anyMan")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
 
