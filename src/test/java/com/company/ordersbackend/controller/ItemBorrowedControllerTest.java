@@ -42,7 +42,7 @@ class ItemBorrowedControllerTest {
         ItemBorrowed itemBorrowed = new ItemBorrowed();
         itemBorrowed.setAmount(12);
         //when
-        when(itemBorrowedService.save(anyLong(), anyInt(), any())).thenReturn(itemBorrowed);
+        when(itemBorrowedService.save(anyLong(), anyInt(), any(), )).thenReturn(itemBorrowed);
         //then
         mockMvc.perform(
                 post(url + "{id}", 1)
@@ -60,7 +60,7 @@ class ItemBorrowedControllerTest {
         //when
         doThrow(NotFoundException.class)
                 .when(itemBorrowedService)
-                .save(anyLong(), anyInt(), any());
+                .save(anyLong(), anyInt(), any(), );
         //then
         mockMvc.perform(post(url + "{id}", 1)
                 .param("amount", "12")
@@ -77,7 +77,7 @@ class ItemBorrowedControllerTest {
         //when
         doThrow(BadInputDataException.class)
                 .when(itemBorrowedService)
-                .save(anyLong(), anyInt(), any());
+                .save(anyLong(), anyInt(), any(), );
         //then
         mockMvc.perform(post(url + "{id}", 1)
                 .param("amount", "12")

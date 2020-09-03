@@ -4,10 +4,8 @@ import com.company.ordersbackend.domain.ItemBorrowed;
 import com.company.ordersbackend.service.ItemBorrowedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class ItemBorrowedController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemBorrowed> findAll(){
+    public List<ItemBorrowed> findAll() {
         return itemBorrowedService.findAll();
     }
 
@@ -32,13 +30,14 @@ public class ItemBorrowedController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemBorrowed save(@PathVariable(value = "id") long itemId,
                              Principal principal,
-                             @RequestParam(value = "amount") int amount){
-        return itemBorrowedService.save(itemId, amount, principal);
+                             @RequestParam(value = "amount") int amount,
+                             @RequestParam(value = "receiver") String receiver) {
+        return itemBorrowedService.save(itemId, amount, receiver, principal);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable(value = "id") long id){
+    public void delete(@PathVariable(value = "id") long id) {
         itemBorrowedService.delete(id);
     }
 }

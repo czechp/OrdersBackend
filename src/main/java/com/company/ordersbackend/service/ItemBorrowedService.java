@@ -25,13 +25,14 @@ public class ItemBorrowedService {
         this.itemService = itemService;
     }
 
-    public ItemBorrowed save(long itemId, int amount, Principal principal) {
+    public ItemBorrowed save(long itemId, int amount, String receiver, Principal principal) {
         Item item = itemService.findById(itemId).orElseThrow(() -> new NotFoundException("item --- " + itemId));
         AppUser appUser = appUserService.findAppUserByUsername(principal.getName()).orElseThrow(() -> new NotFoundException("user --- " + principal.getName()));
         ItemBorrowed itemBorrowed = new ItemBorrowed(item);
         itemBorrowed.setId(0L);
         itemBorrowed.setAppUser(appUser);
         itemBorrowed.setAmount(amount);
+        itemBorrowed.setReceiver(receiver);
         try {
             return itemBorrowedRepository.save(itemBorrowed);
         } catch (Exception e) {
