@@ -3,6 +3,7 @@ package com.company.ordersbackend.controller;
 import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -103,9 +104,11 @@ public class OrderController {
         return orderService.addCommentaryBySuperUser(id, commentary, principal.getName());
     }
 
-    @PostMapping("/orderNr/{id}")
-    public String setOrderNr(@PathVariable(value = "id") @Min(1) long id) {
-        return "Works";
+    @PatchMapping("/orderNr/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO setOrderNr(@PathVariable(value = "id") @Min(1) long id,
+                               @RequestParam(value = "orderNr") @Length(min = 5, max = 255) String orderNr) {
+        return orderService.setOrderNr(id, orderNr);
     }
 
     @DeleteMapping("/{id}")

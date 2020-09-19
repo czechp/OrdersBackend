@@ -122,4 +122,35 @@ class OrderControllerTest {
                 .param("commentary", "Any text"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void setOrderNr_Test() throws Exception {
+        //given
+        //when
+        when(orderService.setOrderNr(anyLong(), anyString()))
+                .thenReturn(new OrderDTO());
+        //then
+        mockMvc.perform(patch("/api/order/orderNr/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("orderNr", "1234567"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void setOrderNr_badInputDataTest() throws Exception {
+        //given
+        //when
+        doThrow(NotFoundException.class)
+                .when(orderService)
+                .setOrderNr(anyLong(), anyString());
+        //then
+        mockMvc.perform(patch("/api/order/orderNr/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("orderNr", "12345"))
+                .andExpect(status().isBadRequest());
+    }
+
 }

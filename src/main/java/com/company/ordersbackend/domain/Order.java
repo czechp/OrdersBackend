@@ -33,6 +33,8 @@ public class Order {
 
     private String commentary = "";
 
+    private String orderNr = "";
+
     public Order() {
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;

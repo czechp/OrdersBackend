@@ -171,4 +171,12 @@ public class OrderService {
                 + ": " + "\n" + commentary);
         return dtoMapper.orderDTO(order);
     }
+
+    @Transactional()
+    public OrderDTO setOrderNr(long id, String orderNr) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("order id --- " + id));
+        order.setOrderNr(orderNr);
+        return dtoMapper.orderDTO(order);
+    }
 }

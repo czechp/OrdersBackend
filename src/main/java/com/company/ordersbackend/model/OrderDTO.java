@@ -32,6 +32,8 @@ public class OrderDTO {
 
     private String commentary;
 
+    private String orderNr;
+
     public OrderDTO() {
         this.creationDate = LocalDateTime.now();
     }

@@ -29,7 +29,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/task/**").hasRole("ADMIN")
-                .antMatchers("/commentary/superuser").hasAnyRole("SUPERUSER", "ADMIN")
+                .antMatchers("/commentary/superuser", "/orderNr").hasAnyRole("SUPERUSER", "ADMIN")
                 .antMatchers("/api/register", "/api/activate-user").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();
