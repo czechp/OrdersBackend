@@ -3,11 +3,14 @@ package com.company.ordersbackend.controller;
 import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -17,10 +20,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/order")
 @CrossOrigin()
-
+@Validated()
 public class OrderController {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -93,10 +96,23 @@ public class OrderController {
         return orderService.modifyCommentary(id, commentary, principal);
     }
 
+    @PatchMapping("/commentary/superuser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO changeCommentaryBySuperUser(@PathVariable(value = "id") long id,
+                                                Principal principal,
+                                                @RequestParam(value = "commentary") String commentary) {
+        return orderService.addCommentaryBySuperUser(id, commentary, principal.getName());
+    }
+
+    @PatchMapping("/orderNr/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO setOrderNr(@PathVariable(value = "id") @Min(1) long id,
+                               @RequestParam(value = "orderNr") @Length(min = 5, max = 255) String orderNr) {
+        return orderService.setOrderNr(id, orderNr);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-
     public void delete(@PathVariable("id") long id) {
         orderService.delete(id);
     }

@@ -85,10 +85,72 @@ class OrderControllerTest {
                 .when(orderService)
                 .modifyCommentary(anyLong(), anyString(), any());
         //then
-        mockMvc.perform(patch("/api/order/commentary/{id}",1L)
-        .param("commentary", "any text")
-        .accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNotFound());
+        mockMvc.perform(patch("/api/order/commentary/{id}", 1L)
+                .param("commentary", "any text")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void changeCommentaryBySuperUser_Test() throws Exception {
+        //given
+        OrderDTO orderDTO = new OrderDTO();
+        //when
+        when(orderService.addCommentaryBySuperUser(anyLong(), anyString(), anyString()))
+                .thenReturn(orderDTO);
+        //then
+        mockMvc.perform(patch("/api/order/commentary/superuser/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("commentary", "Any text"))
+                .andExpect(status().isOk());
+    }
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void changeCommentaryBySuperUser_orderNotExistTest() throws Exception {
+        //given
+        OrderDTO orderDTO = new OrderDTO();
+        //when
+        doThrow(NotFoundException.class)
+                .when(orderService)
+                .addCommentaryBySuperUser(anyLong(), anyString(), anyString());
+        //then
+        mockMvc.perform(patch("/api/order/commentary/superuser/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("commentary", "Any text"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void setOrderNr_Test() throws Exception {
+        //given
+        //when
+        when(orderService.setOrderNr(anyLong(), anyString()))
+                .thenReturn(new OrderDTO());
+        //then
+        mockMvc.perform(patch("/api/order/orderNr/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("orderNr", "1234567"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test()
+    @WithMockUser(roles = "SUPERUSER")
+    void setOrderNr_badInputDataTest() throws Exception {
+        //given
+        //when
+        doThrow(NotFoundException.class)
+                .when(orderService)
+                .setOrderNr(anyLong(), anyString());
+        //then
+        mockMvc.perform(patch("/api/order/orderNr/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("orderNr", "12345"))
+                .andExpect(status().isBadRequest());
+    }
+
 }

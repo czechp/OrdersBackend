@@ -7,6 +7,7 @@ import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import java.security.Principal;
@@ -17,11 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
-    private OrderRepository orderRepository;
-    private DTOMapper dtoMapper;
-    private ItemService itemService;
-    private AppUserService appUserService;
-    private EmailSenderService emailSenderService;
+    private final OrderRepository orderRepository;
+    private final DTOMapper dtoMapper;
+    private final ItemService itemService;
+    private final AppUserService appUserService;
+    private final EmailSenderService emailSenderService;
 
 
     @Autowired()
@@ -77,7 +78,7 @@ public class OrderService {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
         if (optionalAppUser.isPresent()) {
             Optional<Order> optionalOrder;
-            if (optionalAppUser.get().getRole() == AppUserRole.USER.toString())
+            if (optionalAppUser.get().getRole().equals(AppUserRole.USER.toString()))
                 optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
             else
                 optionalOrder = orderRepository.findById(id);
@@ -127,7 +128,6 @@ public class OrderService {
     }
 
     public List<OrderDTO> findOrderByStatusForSuperUser(final String status, Principal principal) {
-        List<OrderDTO> orders = new ArrayList<>();
         if (appUserService.isSuperUser(principal)) {
             if (OrderStatus.getByString(status) != null) {
                 return toOrderDTOList(orderRepository.findByOrderStatus(OrderStatus.getByString(status)));
@@ -157,5 +157,26 @@ public class OrderService {
         Order order = orderRepository.findByAppUserAndId(appUser, id).orElseThrow(() -> new NotFoundException("order id --- " + id));
         order.setCommentary(commentary);
         return dtoMapper.orderDTO(orderRepository.save(order));
+    }
+
+
+    @Transactional()
+    public OrderDTO addCommentaryBySuperUser(long id, String commentary, String username) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("order id --- " + id));
+        AppUser appUser = appUserService.findAppUserByUsername(username)
+                .orElseThrow(() -> new NotFoundException("appuser username --- " + username));
+        order.setCommentary(order.getCommentary() + "\n----------------------------------------\n"
+                + appUser.getUsername()
+                + ": " + "\n" + commentary);
+        return dtoMapper.orderDTO(order);
+    }
+
+    @Transactional()
+    public OrderDTO setOrderNr(long id, String orderNr) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("order id --- " + id));
+        order.setOrderNr(orderNr);
+        return dtoMapper.orderDTO(order);
     }
 }
