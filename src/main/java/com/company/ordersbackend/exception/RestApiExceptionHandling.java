@@ -4,9 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -53,5 +56,12 @@ public class RestApiExceptionHandling extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("message", "Incorrect input data: " + e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public void handleConstraintViolationException(ConstraintViolationException exception,
+                                                   ServletWebRequest webRequest) throws IOException {
+        webRequest.getResponse().sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 }

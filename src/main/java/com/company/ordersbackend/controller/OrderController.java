@@ -6,8 +6,10 @@ import com.company.ordersbackend.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/order")
 @CrossOrigin()
-
+@Validated()
 public class OrderController {
 
     private final OrderService orderService;
@@ -101,6 +103,10 @@ public class OrderController {
         return orderService.addCommentaryBySuperUser(id, commentary, principal.getName());
     }
 
+    @PostMapping("/orderNr/{id}")
+    public String setOrderNr(@PathVariable(value = "id") @Min(1) long id) {
+        return "Works";
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
