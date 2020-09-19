@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class OrderController {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -93,10 +93,17 @@ public class OrderController {
         return orderService.modifyCommentary(id, commentary, principal);
     }
 
+    @PatchMapping("/commentary/superuser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO changeCommentaryBySuperUser(@PathVariable(value = "id") long id,
+                                                Principal principal,
+                                                @RequestParam(value = "commentary") String commentary) {
+        return orderService.addCommentaryBySuperUser(id, commentary, principal.getName());
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-
     public void delete(@PathVariable("id") long id) {
         orderService.delete(id);
     }

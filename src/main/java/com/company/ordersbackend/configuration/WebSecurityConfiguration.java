@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public WebSecurityConfiguration(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -29,6 +29,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/task/**").hasRole("ADMIN")
+                .antMatchers("/commentary/superuser").hasAnyRole("SUPERUSER", "ADMIN")
                 .antMatchers("/api/register", "/api/activate-user").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();

@@ -2,7 +2,6 @@ package com.company.ordersbackend.controller;
 
 import com.company.ordersbackend.model.AppUserDTO;
 import com.company.ordersbackend.service.AppUserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -17,9 +16,8 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/")
-@Slf4j()
 public class AppUserController {
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;
