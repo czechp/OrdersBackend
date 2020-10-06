@@ -164,4 +164,30 @@ public class DTOMapper {
         }
         return result;
     }
+
+    public ItemAccessoryDTO itemAccessoryDTO(Item item) {
+        ItemAccessoryDTO result = new ItemAccessoryDTO();
+        result.setId(item.getId());
+        result.setName(item.getName());
+        result.setSerialNumber(item.getSerialNumber());
+        result.setUrl(item.getUrl());
+        result.setDescription(item.getDescription());
+        result.setProducer(producerDTO(item.getProducer()));
+        result.setProvider(providerDTO(item.getProvider()));
+        result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
+        return result;
+    }
+
+    public ItemAccessoryDTO itemAccessoryEntity(Item item) {
+        ItemAccessoryDTO result = new ItemAccessoryDTO();
+        result.setId(item.getId());
+        result.setName(item.getName());
+        result.setSerialNumber(item.getSerialNumber());
+        result.setUrl(item.getUrl());
+        result.setDescription(item.getDescription());
+        result.setProducer(producerDTO(item.getProducer()));
+        result.setProvider(providerDTO(item.getProvider()));
+        result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
+        return result;
+    }
 }
