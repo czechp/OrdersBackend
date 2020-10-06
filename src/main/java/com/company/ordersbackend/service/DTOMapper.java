@@ -60,7 +60,9 @@ public class DTOMapper {
         result.setProducer(producerDTO(item.getProducer()));
         result.setProvider(providerDTO(item.getProvider()));
         result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
-
+        for (ItemAccessory accessory : item.getAccessories()) {
+            result.getAccessories().add(itemAccessoryDTO(accessory));
+        }
         return result;
     }
 
@@ -74,6 +76,9 @@ public class DTOMapper {
         result.setProducer(producerPOJO(itemDTO.getProducer()));
         result.setProvider(providerPOJO(itemDTO.getProvider()));
         result.setItemCategory(itemCategoryPOJO(itemDTO.getItemCategory()));
+        for (ItemAccessoryDTO accessoryDTO : itemDTO.getAccessories()) {
+            result.getAccessories().add(itemAccessoryPojo(accessoryDTO));
+        }
         return result;
     }
 
@@ -165,7 +170,7 @@ public class DTOMapper {
         return result;
     }
 
-    public ItemAccessoryDTO itemAccessoryDTO(Item item) {
+    public ItemAccessoryDTO itemAccessoryDTO(ItemAccessory item) {
         ItemAccessoryDTO result = new ItemAccessoryDTO();
         result.setId(item.getId());
         result.setName(item.getName());
@@ -178,16 +183,16 @@ public class DTOMapper {
         return result;
     }
 
-    public ItemAccessoryDTO itemAccessoryEntity(Item item) {
-        ItemAccessoryDTO result = new ItemAccessoryDTO();
-        result.setId(item.getId());
-        result.setName(item.getName());
-        result.setSerialNumber(item.getSerialNumber());
-        result.setUrl(item.getUrl());
-        result.setDescription(item.getDescription());
-        result.setProducer(producerDTO(item.getProducer()));
-        result.setProvider(providerDTO(item.getProvider()));
-        result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
+    public ItemAccessory itemAccessoryPojo(ItemAccessoryDTO itemAccessoryDTO) {
+        ItemAccessory result = new ItemAccessory();
+        result.setId(itemAccessoryDTO.getId());
+        result.setName(itemAccessoryDTO.getName());
+        result.setSerialNumber(itemAccessoryDTO.getSerialNumber());
+        result.setUrl(itemAccessoryDTO.getUrl());
+        result.setDescription(itemAccessoryDTO.getDescription());
+        result.setProducer(producerPOJO(itemAccessoryDTO.getProducer()));
+        result.setProvider(providerPOJO(itemAccessoryDTO.getProvider()));
+        result.setItemCategory(itemCategoryPOJO(itemAccessoryDTO.getItemCategory()));
         return result;
     }
 }

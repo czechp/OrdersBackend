@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +40,9 @@ public class ItemDTO {
     @NotNull(message = "Item category cannot be null")
     private ItemCategoryDTO itemCategory;
 
+    private List<ItemAccessoryDTO> accessories = new ArrayList<>();
+
+
     public ItemDTO(ItemDTO itemDTO) {
         this.id = itemDTO.getId();
         this.name = itemDTO.getName();
@@ -47,7 +52,6 @@ public class ItemDTO {
         this.producer = itemDTO.getProducer();
         this.provider = itemDTO.getProvider();
         this.itemCategory = itemDTO.getItemCategory();
-
     }
 
 }
