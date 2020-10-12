@@ -1,6 +1,8 @@
 package com.company.ordersbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor()
 @NoArgsConstructor()
+@SuperBuilder()
 public class Item extends ItemSuperClass {
 
 
@@ -28,4 +31,11 @@ public class Item extends ItemSuperClass {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemAccessory> accessories = new ArrayList<>();
+
+    public void addItemAccessory(ItemAccessory itemAccessory){
+        this.accessories.add(itemAccessory);
+        itemAccessory.setItem(this);
+    }
+
+
 }

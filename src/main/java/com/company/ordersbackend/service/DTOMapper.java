@@ -170,16 +170,16 @@ public class DTOMapper {
         return result;
     }
 
-    public ItemAccessoryDTO itemAccessoryDTO(ItemAccessory item) {
+    public ItemAccessoryDTO itemAccessoryDTO(ItemAccessory itemAccessory) {
         ItemAccessoryDTO result = new ItemAccessoryDTO();
-        result.setId(item.getId());
-        result.setName(item.getName());
-        result.setSerialNumber(item.getSerialNumber());
-        result.setUrl(item.getUrl());
-        result.setDescription(item.getDescription());
-        result.setProducer(producerDTO(item.getProducer()));
-        result.setProvider(providerDTO(item.getProvider()));
-        result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
+        result.setId(itemAccessory.getId());
+        result.setName(itemAccessory.getName());
+        result.setSerialNumber(itemAccessory.getSerialNumber());
+        result.setUrl(itemAccessory.getUrl());
+        result.setDescription(itemAccessory.getDescription());
+        result.setProducer(producerDTO(itemAccessory.getProducer()));
+        result.setProvider(providerDTO(itemAccessory.getProvider()));
+        result.setItemCategory(itemCategoryDTO(itemAccessory.getItemCategory()));
         return result;
     }
 
@@ -193,6 +193,7 @@ public class DTOMapper {
         result.setProducer(producerPOJO(itemAccessoryDTO.getProducer()));
         result.setProvider(providerPOJO(itemAccessoryDTO.getProvider()));
         result.setItemCategory(itemCategoryPOJO(itemAccessoryDTO.getItemCategory()));
+        result.setItem(itemPOJO(itemAccessoryDTO.getItemDTO()));
         return result;
     }
 }

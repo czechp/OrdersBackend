@@ -3,6 +3,7 @@ package com.company.ordersbackend.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Data()
 @NoArgsConstructor()
 @AllArgsConstructor()
+@SuperBuilder()
 public class ItemSuperClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

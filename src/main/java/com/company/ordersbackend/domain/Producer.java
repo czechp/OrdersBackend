@@ -2,6 +2,7 @@ package com.company.ordersbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "producers")
+@Builder()
 public class Producer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,7 @@ public class Producer {
     public Producer(String name) {
         this.name = name;
     }
+
 
     @Override
     public String toString() {

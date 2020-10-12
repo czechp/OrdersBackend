@@ -1,5 +1,6 @@
 package com.company.ordersbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +39,8 @@ public class ItemAccessoryDTO {
     @NotNull(message = "Item category cannot be null")
     private ItemCategoryDTO itemCategory;
 
+    @NotNull()
+    @JsonIgnore()
+    private ItemDTO itemDTO;
 
 }

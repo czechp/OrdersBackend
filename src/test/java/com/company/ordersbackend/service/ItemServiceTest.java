@@ -1,10 +1,8 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.*;
-import com.company.ordersbackend.model.ItemCategoryDTO;
-import com.company.ordersbackend.model.ItemDTO;
-import com.company.ordersbackend.model.ProducerDTO;
-import com.company.ordersbackend.model.ProviderDTO;
+import com.company.ordersbackend.exception.NotFoundException;
+import com.company.ordersbackend.model.*;
 import com.company.ordersbackend.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -23,49 +23,77 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 class ItemServiceTest {
-    private ItemService itemService;
 
+    @Mock()
+    private ItemAccessoryRepository itemAccessoryRepository;
+    @Mock
+    private ItemInOrderRepository itemInOrderRepository;
+    private ItemService itemService;
     @Mock
     private ItemRepository itemRepository;
-
     @Mock
     private Errors errors;
-
     @Autowired
     private DTOMapper dtoMapper;
-
     @Mock
     private ProducerRepository producerRepository;
-
     @Mock
     private ProviderRepository providerRepository;
-
     @Mock
     private ItemCategoryRepository itemCategoryRepository;
 
-    @Mock
-    ItemInOrderRepository itemInOrderRepository;
+    private Item item;
+    private ItemAccessory itemAccessory;
+    private Producer producer;
+    private Provider provider;
+    private ItemCategory itemCategory;
 
     @BeforeEach
-    public void init(){
-        itemService = new ItemService(itemRepository, dtoMapper, producerRepository, providerRepository, itemCategoryRepository,itemInOrderRepository);
+    public void init() {
+        this.item = Item.builder()
+                .id(1L)
+                .name("name")
+                .serialNumber("123-456-789")
+                .description("any description")
+                .url("www.google.pl")
+                .producer(producer)
+                .provider(provider)
+                .itemCategory(itemCategory)
+                .accessories(new ArrayList<>())
+                .build();
+
+        this.producer = Producer.builder().id(1l).name("Producer").build();
+        this.provider = Provider.builder().id(1l).name("Provider").build();
+        this.itemCategory = ItemCategory.builder().id(1l).name("ItemCategory").build();
+        itemService = new ItemService(itemRepository, dtoMapper, producerRepository, providerRepository, itemCategoryRepository, itemInOrderRepository, itemAccessoryRepository);
+        itemAccessory = ItemAccessory.builder()
+                .id(1L)
+                .name("name")
+                .serialNumber("123-456-789")
+                .description("any description")
+                .url("www.google.pl")
+                .producer(producer)
+                .provider(provider)
+                .itemCategory(itemCategory)
+                .item(item)
+                .build();
     }
 
     @Test
-    public void findAllTest(){
+    public void findAllTest() {
         //given
         List<Item> items = Arrays.asList(
-                new Item(1L,"xxxx","yyyy","zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx")),
-                new Item(1L,"xxxx","yyyy","zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx")),
-                new Item(1L,"xxxx","yyyy","zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx"))
+                new Item(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx")),
+                new Item(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx")),
+                new Item(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new Producer(1L, "xxx"), new Provider("xxxx"), new ItemCategory(1L, "xxxx"))
 
-                );
+        );
         //when
         when(itemRepository.findAll()).thenReturn(items);
         List<ItemDTO> result = itemService.findAll();
@@ -75,10 +103,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() {
         //given
-        long id  = 1L;
-        ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
+        long id = 1L;
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"), new ArrayList<>());
         //when
         when(producerRepository.existsById(anyLong())).thenReturn(true);
         when(providerRepository.existsById(anyLong())).thenReturn(true);
@@ -93,10 +121,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveTest_hasErrors(){
+    public void saveTest_hasErrors() {
         //given
-        long id  = 1L;
-        ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
+        long id = 1L;
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"), new ArrayList<>());
         //when
         when(errors.hasErrors()).thenReturn(true);
         Optional<ItemDTO> result = itemService.save(itemDTO, errors);
@@ -105,10 +133,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveTest_producerNotExists(){
+    public void saveTest_producerNotExists() {
         //given
-        long id  = 1L;
-        ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
+        long id = 1L;
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"), new ArrayList<>());
         //when
         when(errors.hasErrors()).thenReturn(false);
         when(producerRepository.existsById(id)).thenReturn(false);
@@ -119,10 +147,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveTest_providerNotExists(){
+    public void saveTest_providerNotExists() {
         //given
-        long id  = 1L;
-        ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
+        long id = 1L;
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"), new ArrayList<>());
         //when
         when(errors.hasErrors()).thenReturn(false);
         when(producerRepository.existsById(id)).thenReturn(true);
@@ -134,10 +162,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveTest_itemCategoryNotExists(){
+    public void saveTest_itemCategoryNotExists() {
         //given
-        long id  = 1L;
-        ItemDTO itemDTO = new ItemDTO(1L,"xxxx","yyyy","zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"));
+        long id = 1L;
+        ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "zxczxc", new ProducerDTO(1L, "xxx"), new ProviderDTO("xxxx"), new ItemCategoryDTO(1L, "xxxx"), new ArrayList<>());
         //when
         when(errors.hasErrors()).thenReturn(false);
         when(producerRepository.existsById(id)).thenReturn(true);
@@ -150,11 +178,11 @@ class ItemServiceTest {
     }
 
     @Test
-    public void updateTest(){
+    public void updateTest() {
         //given
-        long id  = 1L;
+        long id = 1L;
         ItemDTO itemDTO = new ItemDTO(id, "xxxx", "yyyy", "zzzz", "xxxxx",
-        new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO());
+                new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO(), new ArrayList<>());
         //when
         when(errors.hasErrors()).thenReturn(false);
         when(producerRepository.findById(anyLong())).thenReturn(Optional.of(new Producer()));
@@ -170,7 +198,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void updateTest_hasErrors(){
+    public void updateTest_hasErrors() {
         //given
         //when
         when(errors.hasErrors()).thenReturn(true);
@@ -180,7 +208,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void updateTest_ItemNotExists(){
+    public void updateTest_ItemNotExists() {
         //given
         //when
         when(errors.hasErrors()).thenReturn(false);
@@ -191,10 +219,10 @@ class ItemServiceTest {
     }
 
     @Test
-    public void updateTest_AnySupplyNotExists(){
+    public void updateTest_AnySupplyNotExists() {
         //given
         ItemDTO itemDTO = new ItemDTO(1L, "xxxx", "yyyy", "zzzz", "xxxxx",
-                new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO());
+                new ProducerDTO(), new ProviderDTO(), new ItemCategoryDTO(), new ArrayList<>());
 
         //when
         when(errors.hasErrors()).thenReturn(false);
@@ -208,9 +236,9 @@ class ItemServiceTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         //given
-        long id  = 1L;
+        long id = 1L;
         //when
         when(itemRepository.existsById(id)).thenReturn(true);
         doNothing().when(itemRepository).deleteById(anyLong());
@@ -221,7 +249,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void deleteTest_ItemNotExists(){
+    public void deleteTest_ItemNotExists() {
         //given
         long id = 1L;
         //when
@@ -233,7 +261,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void convertItemIntoItemInOrder_Test(){
+    public void convertItemIntoItemInOrder_Test() {
         //given
         long itemId = 1L;
         int amount = 100;
@@ -246,7 +274,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void convertItemIntoItemInOrder_itemNotExists(){
+    public void convertItemIntoItemInOrder_itemNotExists() {
         //given
         long itemId = 1L;
         int amount = 100;
@@ -255,5 +283,31 @@ class ItemServiceTest {
         Optional<ItemInOrder> result = itemService.convertItemIntoItemInOrder(itemId, amount);
         //then
         assertFalse(result.isPresent());
+    }
+
+
+    @Test()
+    public void createNewAccessoryTest() {
+        //given
+        long itemId = 1L;
+        long accessoryId = 2L;
+        //when
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
+        when(itemAccessoryRepository.save(any())).thenReturn(itemAccessory);
+        ItemAccessoryDTO result = itemService.createNewAccessory(itemId, accessoryId);
+        //then
+        assertEquals(item.getSerialNumber(), result.getSerialNumber());
+        assertThat(result, instanceOf(ItemAccessoryDTO.class));
+    }
+
+    @Test()
+    public void createNewAccessoryTest_NotFound(){
+        //given
+        long itemId = 1L;
+        long accessoryId = 2L;
+        //when
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
+        //then
+        assertThrows(NotFoundException.class, ()->itemService.createNewAccessory(itemId, accessoryId));
     }
 }
