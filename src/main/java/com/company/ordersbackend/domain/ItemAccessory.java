@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 
 @Entity(name = "item_accessories")
 @Data()
@@ -20,4 +21,9 @@ public class ItemAccessory extends ItemSuperClass {
         super(item);
     }
 
+    @PreRemove()
+    public void preRemove(){
+        this.item.getAccessories().remove(this);
+        this.item = null;
+    }
 }

@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -102,6 +102,31 @@ class ItemControllerTest {
         //then
         mockMvc.perform(get(url + "/{itemId}/accessory/{accessoryId}", 1L, 1L)
         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test()
+    @WithMockUser()
+    public void deleteAccessoryTest() throws Exception {
+        //given
+        long accessoryId = 1L;
+        //when
+        //then
+        mockMvc.perform(delete(url + "/accessory/{accessoryId}", accessoryId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test()
+    @WithMockUser()
+    public void deleteAccessoryTest_NotFound() throws Exception {
+        //given
+        long accessoryId = 1L;
+        //when
+        doThrow(NotFoundException.class)
+                .when(itemService)
+                .deleteAccessory(anyLong());
+        //then
+        mockMvc.perform(delete(url + "/accessory/{accessoryId}", accessoryId))
                 .andExpect(status().isNotFound());
     }
 }

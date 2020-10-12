@@ -107,7 +107,8 @@ public class OrderController {
     @PatchMapping("/orderNr/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO setOrderNr(@PathVariable(value = "id") @Min(1) long id,
-                               @RequestParam(value = "orderNr") @Length(min = 5, max = 255) String orderNr) {
+                               @RequestParam(value = "orderNr")
+                               @Length(min = 5, max = 255) String orderNr) {
         return orderService.setOrderNr(id, orderNr);
     }
 

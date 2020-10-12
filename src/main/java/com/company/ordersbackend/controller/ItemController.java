@@ -49,6 +49,12 @@ public class ItemController {
         return itemService.createNewAccessory(itemId, accessoryId);
     }
 
+    @DeleteMapping("/accessory/{accessoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAccessory(@PathVariable(value = "accessoryId") @Min(1) long accessoryId){
+        itemService.deleteAccessory(accessoryId);
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity update(@PathVariable long id, @RequestBody @Valid ItemDTO itemDTO, Errors errors) {
         return itemService.update(id, itemDTO, errors) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();

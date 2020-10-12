@@ -7,7 +7,6 @@ import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.ItemAccessoryDTO;
 import com.company.ordersbackend.model.ItemDTO;
 import com.company.ordersbackend.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -136,5 +135,12 @@ public class ItemService {
         ItemAccessory itemAccessory = new ItemAccessory(itemToAccessory);
         item.addItemAccessory(itemAccessory);
         return dtoMapper.itemAccessoryDTO(itemAccessoryRepository.save(itemAccessory));
+    }
+
+    @Transactional()
+    public void deleteAccessory(long accessoryId) {
+        ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId)
+                .orElseThrow(() -> new NotFoundException("itemAccessory id --- " + accessoryId));
+        itemAccessoryRepository.delete(itemAccessory);
     }
 }

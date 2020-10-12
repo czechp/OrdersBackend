@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -309,5 +310,26 @@ class ItemServiceTest {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
         //then
         assertThrows(NotFoundException.class, ()->itemService.createNewAccessory(itemId, accessoryId));
+    }
+
+    @Test()
+    public void deleteAccessoryTest(){
+        //given
+        long accessoryId = 1L;
+        //when
+        when(itemAccessoryRepository.findById(anyLong())).thenReturn(Optional.of(itemAccessory));
+        itemService.deleteAccessory(accessoryId);
+        //then
+        verify(itemAccessoryRepository, times(1)).delete(itemAccessory);
+    }
+
+    @Test()
+    public void deleteAccessoryTest_NotFound(){
+        //given
+        long accessoryId = 1L;
+        //when
+        when(itemAccessoryRepository.findById(any())).thenReturn(Optional.empty());
+        //then
+        assertThrows(NotFoundException.class, ()-> itemService.deleteAccessory(accessoryId));
     }
 }

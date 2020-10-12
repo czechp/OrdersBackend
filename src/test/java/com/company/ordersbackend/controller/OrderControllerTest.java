@@ -149,7 +149,7 @@ class OrderControllerTest {
         //then
         mockMvc.perform(patch("/api/order/orderNr/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON)
-                .param("orderNr", "12345"))
+                .param("orderNr", "123"))
                 .andExpect(status().isBadRequest());
     }
 
