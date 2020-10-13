@@ -4,6 +4,7 @@ import com.company.ordersbackend.domain.OrderStatus;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -48,6 +49,18 @@ public class OrderController {
                                                    Principal principal) {
         Optional<OrderDTO> result = orderService.addItemToOrder(orderId, principal.getName(), itemId, amount);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
+    }
+
+    //todo: test for it
+    @GetMapping("/{orderId}/accessory/{accessoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO addItemToOrderFromAccessories(
+            @PathVariable(name = "orderId") @Min(1) long orderId,
+            @PathVariable(name="accessoryId") @Min(1) long accessoryId,
+            @RequestParam(name = "amount") @Range(min = 1, max = 500) int amount,
+            Principal principal
+    ){
+        return orderService.addItemToOrderFromAccessories(orderId, accessoryId, amount, principal.getName());
     }
 
     @GetMapping("/status")

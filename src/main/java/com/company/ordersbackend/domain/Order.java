@@ -35,6 +35,16 @@ public class Order {
 
     private String orderNr = "";
 
+    public void addItemInOrder(ItemInOrder itemInOrder){
+        for (ItemInOrder inOrder : this.itemsInOrder) {
+            if(itemInOrder.getSerialNumber() == inOrder.getSerialNumber()){
+                inOrder.setAmount(itemInOrder.getAmount() + inOrder.getAmount());
+                return;
+            }
+        }
+        this.itemsInOrder.add(itemInOrder);
+    }
+
     public Order() {
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;
@@ -46,8 +56,5 @@ public class Order {
         this.orderStatus = OrderStatus.NEW;
     }
 
-    public void addItem(ItemInOrder itemInOrder) {
-        this.itemsInOrder.add(itemInOrder);
-    }
 
 }

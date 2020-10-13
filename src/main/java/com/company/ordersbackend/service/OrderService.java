@@ -4,6 +4,7 @@ import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
+import com.company.ordersbackend.repository.ItemAccessoryRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,16 @@ public class OrderService {
     private final ItemService itemService;
     private final AppUserService appUserService;
     private final EmailSenderService emailSenderService;
-
+    private final ItemAccessoryRepository itemAccessoryRepository;
 
     @Autowired()
-    public OrderService(OrderRepository orderRepository, DTOMapper dtoMapper, ItemService itemService, AppUserService appUserService, EmailSenderService emailSenderService) {
+    public OrderService(OrderRepository orderRepository, DTOMapper dtoMapper, ItemService itemService, AppUserService appUserService, EmailSenderService emailSenderService, ItemAccessoryRepository itemAccessoryRepository) {
         this.orderRepository = orderRepository;
         this.dtoMapper = dtoMapper;
         this.itemService = itemService;
         this.appUserService = appUserService;
         this.emailSenderService = emailSenderService;
+        this.itemAccessoryRepository = itemAccessoryRepository;
     }
 
     public Optional<OrderDTO> save(OrderDTO orderDTO, Errors errors, String username) {
@@ -52,7 +54,7 @@ public class OrderService {
             if (order.getAppUser().getUsername().equals(username) && order.getOrderStatus() != OrderStatus.FINISHED) {
                 Optional<ItemInOrder> optionalItemInOrder = itemService.convertItemIntoItemInOrder(itemId, amount);
                 if (optionalItemInOrder.isPresent()) {
-                    order.getItemsInOrder().add(optionalItemInOrder.get());
+                    order.addItemInOrder(optionalItemInOrder.get());
                     return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
                 }
             }
@@ -178,5 +180,20 @@ public class OrderService {
                 .orElseThrow(() -> new NotFoundException("order id --- " + id));
         order.setOrderNr(orderNr);
         return dtoMapper.orderDTO(order);
+    }
+
+    @Transactional()
+    //todo: test for it
+    public OrderDTO addItemToOrderFromAccessories(long orderId, long accessoryId, int amount, String username) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("order id --- " + orderId));
+        ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId).orElseThrow(() -> new NotFoundException("itemAcessory id --- " + accessoryId));
+        if (order.getAppUser().getUsername() == username) {
+            ItemInOrder itemInOrder = new ItemInOrder(itemAccessory);
+            itemInOrder.setAmount(amount);
+            order.addItemInOrder(itemInOrder);
+            return  dtoMapper.orderDTO(order);
+        }else{
+            throw new AccessDeniedException(username);
+        }
     }
 }

@@ -1,12 +1,10 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.AppUser;
-import com.company.ordersbackend.domain.AppUserRole;
-import com.company.ordersbackend.domain.Order;
-import com.company.ordersbackend.domain.OrderStatus;
+import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
+import com.company.ordersbackend.repository.ItemAccessoryRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +45,9 @@ class OrderServiceTest {
     private AppUserService appUserService;
     @Mock
     private EmailSenderService emailSenderService;
+    @MockBean()
+    private ItemAccessoryRepository itemAccessoryRepository;
+
 
     @Autowired
     private DTOMapper dtoMapper;
@@ -55,7 +56,7 @@ class OrderServiceTest {
 
     @BeforeEach
     public void init() {
-        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService, emailSenderService);
+        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService, emailSenderService, itemAccessoryRepository);
     }
 
     @Test
