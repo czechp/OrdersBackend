@@ -1,0 +1,29 @@
+package com.company.ordersbackend.domain;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
+
+@Entity(name = "item_accessories")
+@Data()
+@NoArgsConstructor()
+@SuperBuilder()
+public class ItemAccessory extends ItemSuperClass {
+    @ManyToOne()
+    private Item item;
+
+    public ItemAccessory(Item item) {
+        super(item);
+    }
+
+    @PreRemove()
+    public void preRemove(){
+        this.item.getAccessories().remove(this);
+        this.item = null;
+    }
+}

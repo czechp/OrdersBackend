@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ItemDTO {
+@Data()
+@NoArgsConstructor()
+@AllArgsConstructor()
+public class ItemAccessoryDTO {
     private long id;
 
     @NotNull(message = "Name cannot be null")
@@ -41,17 +39,8 @@ public class ItemDTO {
     @NotNull(message = "Item category cannot be null")
     private ItemCategoryDTO itemCategory;
 
-    private List<ItemAccessoryDTO> accessories = new ArrayList<>();
+    @NotNull()
+    @JsonIgnore()
+    private ItemDTO itemDTO;
 
-
-    public ItemDTO(ItemDTO itemDTO) {
-        this.id = itemDTO.getId();
-        this.name = itemDTO.getName();
-        this.description = itemDTO.getDescription();
-        this.serialNumber = itemDTO.getSerialNumber();
-        this.url = itemDTO.getUrl();
-        this.producer = itemDTO.getProducer();
-        this.provider = itemDTO.getProvider();
-        this.itemCategory = itemDTO.getItemCategory();
-    }
 }

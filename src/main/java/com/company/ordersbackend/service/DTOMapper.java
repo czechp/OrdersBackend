@@ -60,7 +60,9 @@ public class DTOMapper {
         result.setProducer(producerDTO(item.getProducer()));
         result.setProvider(providerDTO(item.getProvider()));
         result.setItemCategory(itemCategoryDTO(item.getItemCategory()));
-
+        for (ItemAccessory accessory : item.getAccessories()) {
+            result.getAccessories().add(itemAccessoryDTO(accessory));
+        }
         return result;
     }
 
@@ -74,6 +76,9 @@ public class DTOMapper {
         result.setProducer(producerPOJO(itemDTO.getProducer()));
         result.setProvider(providerPOJO(itemDTO.getProvider()));
         result.setItemCategory(itemCategoryPOJO(itemDTO.getItemCategory()));
+        for (ItemAccessoryDTO accessoryDTO : itemDTO.getAccessories()) {
+            result.getAccessories().add(itemAccessoryPojo(accessoryDTO));
+        }
         return result;
     }
 
@@ -162,6 +167,33 @@ public class DTOMapper {
         for (ItemInOrderDTO item : orderDTO.getItemsInOrder()) {
             result.getItemsInOrder().add(itemInOrderPOJO(item));
         }
+        return result;
+    }
+
+    public ItemAccessoryDTO itemAccessoryDTO(ItemAccessory itemAccessory) {
+        ItemAccessoryDTO result = new ItemAccessoryDTO();
+        result.setId(itemAccessory.getId());
+        result.setName(itemAccessory.getName());
+        result.setSerialNumber(itemAccessory.getSerialNumber());
+        result.setUrl(itemAccessory.getUrl());
+        result.setDescription(itemAccessory.getDescription());
+        result.setProducer(producerDTO(itemAccessory.getProducer()));
+        result.setProvider(providerDTO(itemAccessory.getProvider()));
+        result.setItemCategory(itemCategoryDTO(itemAccessory.getItemCategory()));
+        return result;
+    }
+
+    public ItemAccessory itemAccessoryPojo(ItemAccessoryDTO itemAccessoryDTO) {
+        ItemAccessory result = new ItemAccessory();
+        result.setId(itemAccessoryDTO.getId());
+        result.setName(itemAccessoryDTO.getName());
+        result.setSerialNumber(itemAccessoryDTO.getSerialNumber());
+        result.setUrl(itemAccessoryDTO.getUrl());
+        result.setDescription(itemAccessoryDTO.getDescription());
+        result.setProducer(producerPOJO(itemAccessoryDTO.getProducer()));
+        result.setProvider(providerPOJO(itemAccessoryDTO.getProvider()));
+        result.setItemCategory(itemCategoryPOJO(itemAccessoryDTO.getItemCategory()));
+        result.setItem(itemPOJO(itemAccessoryDTO.getItemDTO()));
         return result;
     }
 }

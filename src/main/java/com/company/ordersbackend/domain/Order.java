@@ -1,5 +1,7 @@
 package com.company.ordersbackend.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Entity(name = "orders")
 @Data()
+@AllArgsConstructor()
+@Builder()
 public class Order {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +39,16 @@ public class Order {
 
     private String orderNr = "";
 
+    public void addItemInOrder(ItemInOrder itemInOrder){
+        for (ItemInOrder inOrder : this.itemsInOrder) {
+            if(itemInOrder.getSerialNumber() == inOrder.getSerialNumber()){
+                inOrder.setAmount(itemInOrder.getAmount() + inOrder.getAmount());
+                return;
+            }
+        }
+        this.itemsInOrder.add(itemInOrder);
+    }
+
     public Order() {
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;
@@ -46,8 +60,5 @@ public class Order {
         this.orderStatus = OrderStatus.NEW;
     }
 
-    public void addItem(ItemInOrder itemInOrder) {
-        this.itemsInOrder.add(itemInOrder);
-    }
 
 }

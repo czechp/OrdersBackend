@@ -1,12 +1,10 @@
 package com.company.ordersbackend.service;
 
-import com.company.ordersbackend.domain.AppUser;
-import com.company.ordersbackend.domain.AppUserRole;
-import com.company.ordersbackend.domain.Order;
-import com.company.ordersbackend.domain.OrderStatus;
+import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
+import com.company.ordersbackend.repository.ItemAccessoryRepository;
 import com.company.ordersbackend.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
-import javax.validation.constraints.Email;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,15 +46,64 @@ class OrderServiceTest {
     private AppUserService appUserService;
     @Mock
     private EmailSenderService emailSenderService;
+    @MockBean()
+    private ItemAccessoryRepository itemAccessoryRepository;
+
 
     @Autowired
     private DTOMapper dtoMapper;
 
     private OrderService orderService;
 
+    private Order order;
+    private AppUser appUser;
+    private ItemAccessory itemAccessory;
+    private Producer producer;
+    private Provider provider;
+    private ItemCategory itemCategory;
+
     @BeforeEach
     public void init() {
-        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService, emailSenderService);
+        this.orderService = new OrderService(orderRepository, dtoMapper, itemService, appUserService, emailSenderService, itemAccessoryRepository);
+        appUser = new AppUser("user", "user", "superUser", "webcoderc@gmail.com");
+
+        this.order = Order.builder()
+                .id(1L)
+                .name("Any order")
+                .appUser(appUser)
+                .itemsInOrder(new ArrayList<>())
+                .orderStatus(OrderStatus.NEW)
+                .creationDate(LocalDateTime.now())
+                .closedDate(LocalDateTime.now())
+                .commentary("Any commentary")
+                .orderNr("Any order nr")
+                .build();
+
+        this.producer = Producer.builder()
+                .id(1L)
+                .name("Any producer")
+                .build();
+
+        this.provider = Provider.builder()
+                .id(1L)
+                .name("Any provider")
+                .build();
+
+        this.itemCategory = ItemCategory.builder()
+                .id(1L)
+                .name("Any item category")
+                .build();
+
+        this.itemAccessory = ItemAccessory.builder()
+                .id(1L)
+                .name("Any item accessory")
+                .serialNumber("123-456")
+                .description("Any description")
+                .url("www.google.pl")
+                .producer(producer)
+                .provider(provider)
+                .itemCategory(itemCategory)
+                .build();
     }
 
     @Test
@@ -159,7 +207,7 @@ class OrderServiceTest {
         String username = "user";
         long id = 1L;
         //when
-        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(new AppUser()));
+        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(appUser));
         when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.empty());
         Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
         //then
@@ -328,5 +376,47 @@ class OrderServiceTest {
         assertThrows(NotFoundException.class, () -> orderService.delete(id));
     }
 
+    @Test()
+    public void addItemToOrderFromAccessoriesTest() {
+        //given
+        long orderId = 1L;
+        long accessoryId = 1L;
+        int amount = 10;
+        String username = "user";
+        //when
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.ofNullable(order));
+        when(itemAccessoryRepository.findById(anyLong())).thenReturn(Optional.of(itemAccessory));
+        OrderDTO result = orderService.addItemToOrderFromAccessories(orderId, accessoryId, amount, username);
+        //then
+        assertThat(result, instanceOf(OrderDTO.class));
+        assertThat(result.getItemsInOrder(), hasSize(1));
+    }
 
+    @Test()
+    public void addItemToOrderFromAccessoriesTest_AccesDenied() {
+        //given
+        long orderId = 1L;
+        long accessoryId = 1L;
+        int amount = 10;
+        String username = "admin";
+        //when
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.ofNullable(order));
+        when(itemAccessoryRepository.findById(anyLong())).thenReturn(Optional.of(itemAccessory));
+        //then
+        assertThrows(AccessDeniedException.class, () -> orderService.addItemToOrderFromAccessories(orderId, accessoryId, amount, username));
+    }
+
+    @Test()
+    public void addItemToOrderFromAccessoriesTest_NotFound() {
+        //given
+        long orderId = 1L;
+        long accessoryId = 1L;
+        int amount = 10;
+        String username = "admin";
+        //when
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(itemAccessoryRepository.findById(anyLong())).thenReturn(Optional.empty());
+        //then
+        assertThrows(NotFoundException.class, () -> orderService.addItemToOrderFromAccessories(orderId, accessoryId, amount, username));
+    }
 }

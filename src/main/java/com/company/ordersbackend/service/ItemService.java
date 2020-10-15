@@ -1,10 +1,14 @@
 package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.Item;
+import com.company.ordersbackend.domain.ItemAccessory;
 import com.company.ordersbackend.domain.ItemInOrder;
+import com.company.ordersbackend.exception.NotFoundException;
+import com.company.ordersbackend.model.ItemAccessoryDTO;
 import com.company.ordersbackend.model.ItemDTO;
 import com.company.ordersbackend.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
@@ -19,14 +23,17 @@ public class ItemService {
     private ProviderRepository providerRepository;
     private ItemCategoryRepository itemCategoryRepository;
     private ItemInOrderRepository itemInOrderRepository;
+    private ItemAccessoryRepository itemAccessoryRepository;
 
-    public ItemService(ItemRepository itemRepository, DTOMapper dtoMapper, ProducerRepository producerRepository, ProviderRepository providerRepository, ItemCategoryRepository itemCategoryRepository, ItemInOrderRepository itemInOrderRepository) {
+
+    public ItemService(ItemRepository itemRepository, DTOMapper dtoMapper, ProducerRepository producerRepository, ProviderRepository providerRepository, ItemCategoryRepository itemCategoryRepository, ItemInOrderRepository itemInOrderRepository, ItemAccessoryRepository itemAccessoryRepository) {
         this.itemRepository = itemRepository;
         this.dtoMapper = dtoMapper;
         this.producerRepository = producerRepository;
         this.providerRepository = providerRepository;
         this.itemCategoryRepository = itemCategoryRepository;
         this.itemInOrderRepository = itemInOrderRepository;
+        this.itemAccessoryRepository = itemAccessoryRepository;
     }
 
     public Optional<Item> findById(long id) {
@@ -113,5 +120,27 @@ public class ItemService {
 
     public boolean existsByName(String name) {
         return itemRepository.existsByName(name);
+    }
+
+    @Transactional()
+    public ItemAccessoryDTO createNewAccessory(long itemId, long accessoryId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(
+                        () -> new NotFoundException("item id --- " + itemId)
+                );
+        Item itemToAccessory = itemRepository.findById(accessoryId)
+                .orElseThrow(
+                        () -> new NotFoundException("item id (accessory) --- " + itemId)
+                );
+        ItemAccessory itemAccessory = new ItemAccessory(itemToAccessory);
+        item.addItemAccessory(itemAccessory);
+        return dtoMapper.itemAccessoryDTO(itemAccessoryRepository.save(itemAccessory));
+    }
+
+    @Transactional()
+    public void deleteAccessory(long accessoryId) {
+        ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId)
+                .orElseThrow(() -> new NotFoundException("itemAccessory id --- " + accessoryId));
+        itemAccessoryRepository.delete(itemAccessory);
     }
 }
