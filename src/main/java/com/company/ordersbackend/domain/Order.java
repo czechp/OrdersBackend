@@ -41,7 +41,7 @@ public class Order {
 
     public void addItemInOrder(ItemInOrder itemInOrder){
         for (ItemInOrder inOrder : this.itemsInOrder) {
-            if(itemInOrder.getSerialNumber() == inOrder.getSerialNumber()){
+            if (itemInOrder.getSerialNumber().equals(inOrder.getSerialNumber())) {
                 inOrder.setAmount(itemInOrder.getAmount() + inOrder.getAmount());
                 return;
             }
