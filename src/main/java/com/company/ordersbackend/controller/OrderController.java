@@ -130,4 +130,11 @@ public class OrderController {
         orderService.delete(id);
     }
 
+
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderDTO> findAll() {
+        return orderService.findAll();
+    }
+
 }

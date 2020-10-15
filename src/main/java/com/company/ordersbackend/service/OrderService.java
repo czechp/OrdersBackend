@@ -195,4 +195,11 @@ public class OrderService {
             throw new AccessDeniedException(username);
         }
     }
+
+    public List<OrderDTO> findAll() {
+        return orderRepository.findAll()
+                .stream()
+                .map(x -> dtoMapper.orderDTO(x))
+                .collect(Collectors.toList());
+    }
 }
