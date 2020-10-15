@@ -186,12 +186,12 @@ public class OrderService {
     public OrderDTO addItemToOrderFromAccessories(long orderId, long accessoryId, int amount, String username) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("order id --- " + orderId));
         ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId).orElseThrow(() -> new NotFoundException("itemAcessory id --- " + accessoryId));
-        if (order.getAppUser().getUsername() == username) {
+        if (order.getAppUser().getUsername().equals(username)) {
             ItemInOrder itemInOrder = new ItemInOrder(itemAccessory);
             itemInOrder.setAmount(amount);
             order.addItemInOrder(itemInOrder);
-            return  dtoMapper.orderDTO(order);
-        }else{
+            return dtoMapper.orderDTO(order);
+        } else {
             throw new AccessDeniedException(username);
         }
     }
