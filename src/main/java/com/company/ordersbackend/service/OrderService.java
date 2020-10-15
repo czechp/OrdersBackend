@@ -183,7 +183,6 @@ public class OrderService {
     }
 
     @Transactional()
-    //todo: test for it
     public OrderDTO addItemToOrderFromAccessories(long orderId, long accessoryId, int amount, String username) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("order id --- " + orderId));
         ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId).orElseThrow(() -> new NotFoundException("itemAcessory id --- " + accessoryId));

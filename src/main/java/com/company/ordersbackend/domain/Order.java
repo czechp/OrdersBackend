@@ -1,5 +1,7 @@
 package com.company.ordersbackend.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Entity(name = "orders")
 @Data()
+@AllArgsConstructor()
+@Builder()
 public class Order {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)

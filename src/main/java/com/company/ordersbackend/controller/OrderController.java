@@ -51,7 +51,6 @@ public class OrderController {
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 
-    //todo: test for it
     @GetMapping("/{orderId}/accessory/{accessoryId}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO addItemToOrderFromAccessories(

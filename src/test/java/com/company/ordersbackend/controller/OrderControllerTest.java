@@ -1,5 +1,6 @@
 package com.company.ordersbackend.controller;
 
+import com.company.ordersbackend.exception.AccessDeniedException;
 import com.company.ordersbackend.exception.NotFoundException;
 import com.company.ordersbackend.model.OrderDTO;
 import com.company.ordersbackend.service.OrderService;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -151,6 +151,57 @@ class OrderControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .param("orderNr", "123"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test()
+    @WithMockUser(roles = {"USER"})
+    void addItemToOrderFromAccessoriesTest() throws Exception {
+        //given
+
+        //when
+        when(orderService.addItemToOrderFromAccessories(anyLong(), anyLong(), anyInt(), anyString())).thenReturn(new OrderDTO());
+        //then
+        mockMvc.perform(get("/api/order/{orderId}/accessory/{accessoryId}", 1L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("amount", "10"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test()
+    @WithMockUser(roles = {"USER"})
+    void addItemToOrderFromAccessoriesTest_AccessDenied() throws Exception {
+        //given
+
+        //when
+        doThrow(AccessDeniedException.class)
+                .when(orderService)
+                .addItemToOrderFromAccessories(anyLong(), anyLong(), anyInt(), anyString());
+        //then
+        mockMvc.perform(get("/api/order/{orderId}/accessory/{accessoryId}", 1L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("amount", "10"))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test()
+    @WithMockUser(roles = {"USER"})
+    void addItemToOrderFromAccessoriesTest_NotFound() throws Exception {
+        //given
+
+        //when
+        doThrow(NotFoundException.class)
+                .when(orderService)
+                .addItemToOrderFromAccessories(anyLong(), anyLong(), anyInt(), anyString());
+        //then
+        mockMvc.perform(get("/api/order/{orderId}/accessory/{accessoryId}", 1L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("amount", "10"))
+                .andExpect(status().isNotFound());
     }
 
 }
