@@ -24,7 +24,7 @@ public class ItemCategory {
     private String name;
 
     @JsonIgnore()
-    @OneToMany(mappedBy = "itemCategory", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "itemCategory", fetch = FetchType.LAZY)
     private List<Item> itemList = new ArrayList<>();
 
     public ItemCategory(long id, String name) {

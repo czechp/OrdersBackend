@@ -21,9 +21,5 @@ public class ItemAccessory extends ItemSuperClass {
         super(item);
     }
 
-    @PreRemove()
-    public void preRemove(){
-        this.item.getAccessories().remove(this);
-        this.item = null;
-    }
+
 }

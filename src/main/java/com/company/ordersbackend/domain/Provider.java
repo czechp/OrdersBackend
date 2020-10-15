@@ -23,7 +23,7 @@ public class Provider {
     private String name;
 
     @JsonIgnore()
-    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private List<Item> itemList = new ArrayList<>();
 
     public Provider(long id, String name) {

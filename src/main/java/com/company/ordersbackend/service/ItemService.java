@@ -8,7 +8,6 @@ import com.company.ordersbackend.model.ItemAccessoryDTO;
 import com.company.ordersbackend.model.ItemDTO;
 import com.company.ordersbackend.repository.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
@@ -122,7 +121,6 @@ public class ItemService {
         return itemRepository.existsByName(name);
     }
 
-    @Transactional()
     public ItemAccessoryDTO createNewAccessory(long itemId, long accessoryId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(
@@ -137,10 +135,9 @@ public class ItemService {
         return dtoMapper.itemAccessoryDTO(itemAccessoryRepository.save(itemAccessory));
     }
 
-    @Transactional()
     public void deleteAccessory(long accessoryId) {
-        ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId)
-                .orElseThrow(() -> new NotFoundException("itemAccessory id --- " + accessoryId));
-        itemAccessoryRepository.delete(itemAccessory);
+        if (itemAccessoryRepository.existsById(accessoryId))
+            itemAccessoryRepository.deleteById(accessoryId);
+        else throw new NotFoundException("accessory id --- id");
     }
 }

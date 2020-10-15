@@ -23,7 +23,7 @@ public class Producer {
     private String name;
 
     @JsonIgnore()
-    @OneToMany(mappedBy = "producer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY)
     private List<Item> itemList = new ArrayList<>();
 
 

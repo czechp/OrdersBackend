@@ -29,7 +29,7 @@ public class Item extends ItemSuperClass {
         super(id, name, serialNumber, description, url, producer, provider, itemCategory);
     }
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemAccessory> accessories = new ArrayList<>();
 
     public void addItemAccessory(ItemAccessory itemAccessory){
