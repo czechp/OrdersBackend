@@ -181,9 +181,8 @@ class OrderServiceTest {
         appUser.setRole(AppUserRole.USER.toString());
         long id = 1L;
         //when
-        when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(appUser));
-        when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.of(new Order()));
-        Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(new Order()));
+        Optional<OrderDTO> result = orderService.findById(id);
         //then
         assertTrue(result.isPresent());
         assertThat(result.get(), instanceOf(OrderDTO.class));
@@ -196,7 +195,7 @@ class OrderServiceTest {
         long id = 1L;
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.empty());
-        Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
+        Optional<OrderDTO> result = orderService.findById(id);
         //then
         assertFalse(result.isPresent());
     }
@@ -209,7 +208,7 @@ class OrderServiceTest {
         //when
         when(appUserService.findAppUserByUsername(any())).thenReturn(Optional.of(appUser));
         when(orderRepository.findByAppUserAndId(any(), anyLong())).thenReturn(Optional.empty());
-        Optional<OrderDTO> result = orderService.findByUsernameAndId(username, id);
+        Optional<OrderDTO> result = orderService.findById(id);
         //then
         assertFalse(result.isPresent());
     }

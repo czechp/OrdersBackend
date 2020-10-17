@@ -71,8 +71,8 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") long id, Principal principal) {
-        Optional<OrderDTO> result = orderService.findByUsernameAndId(principal.getName(), id);
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") long id) {
+        Optional<OrderDTO> result = orderService.findById(id);
         return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
     }
 

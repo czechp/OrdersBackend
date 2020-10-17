@@ -76,22 +76,14 @@ public class OrderService {
         return result;
     }
 
-    public Optional<OrderDTO> findByUsernameAndId(String username, long id) {
-        Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);
-        if (optionalAppUser.isPresent()) {
-            Optional<Order> optionalOrder;
-            if (optionalAppUser.get().getRole().equals(AppUserRole.USER.toString()))
-                optionalOrder = orderRepository.findByAppUserAndId(optionalAppUser.get(), id);
-            else
-                optionalOrder = orderRepository.findById(id);
-
-            if (optionalOrder.isPresent()) {
-                return Optional.of(dtoMapper.orderDTO(optionalOrder.get()));
-            }
+    public Optional<OrderDTO> findById(long id) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()) {
+            return Optional.of(dtoMapper.orderDTO(optionalOrder.get()));
         }
-
         return Optional.empty();
     }
+
 
     public Optional<OrderDTO> modifyName(String username, long id, String orderName) {
         Optional<AppUser> optionalAppUser = appUserService.findAppUserByUsername(username);

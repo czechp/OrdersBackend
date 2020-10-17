@@ -10,11 +10,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.Errors;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -317,10 +315,10 @@ class ItemServiceTest {
         //given
         long accessoryId = 1L;
         //when
-        when(itemAccessoryRepository.findById(anyLong())).thenReturn(Optional.of(itemAccessory));
+        when(itemAccessoryRepository.existsById(anyLong())).thenReturn(true);
         itemService.deleteAccessory(accessoryId);
         //then
-        verify(itemAccessoryRepository, times(1)).delete(itemAccessory);
+        verify(itemAccessoryRepository, times(1)).deleteById(accessoryId);
     }
 
     @Test()
