@@ -10,6 +10,7 @@ public class HomeController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void applicationStartingConfirmation() {
+    public String applicationStartingConfirmation() {
+        return "Application started";
     }
 }
