@@ -23,8 +23,7 @@ public class Order {
     @ManyToOne()
     private AppUser appUser;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_in_order_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)

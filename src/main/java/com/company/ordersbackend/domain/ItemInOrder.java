@@ -2,7 +2,7 @@ package com.company.ordersbackend.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,6 +14,10 @@ public class ItemInOrder extends ItemSuperClass {
     private boolean isOrdered;
     private boolean isDelivered;
     private int amount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "item_in_order_id")
+    private Order order;
 
     public ItemInOrder() {
         super();
