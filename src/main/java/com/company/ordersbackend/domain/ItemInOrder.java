@@ -16,7 +16,6 @@ public class ItemInOrder extends ItemSuperClass {
     private int amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "item_in_order_id")
     private Order order;
 
     public ItemInOrder() {
