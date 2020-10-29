@@ -3,6 +3,7 @@ package com.company.ordersbackend.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class Order {
     private AppUser appUser;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ItemInOrder> itemsInOrder;
+    private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
@@ -60,5 +61,13 @@ public class Order {
         this.itemsInOrder.add(itemInOrder);
     }
 
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+        hashCodeBuilder.append(name);
+        hashCodeBuilder.append(id);
+        hashCodeBuilder.append(creationDate);
 
+        return hashCodeBuilder.toHashCode();
+    }
 }
