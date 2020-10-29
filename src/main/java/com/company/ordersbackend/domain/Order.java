@@ -3,7 +3,6 @@ package com.company.ordersbackend.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -63,13 +62,4 @@ public class Order {
         this.itemsInOrder.add(itemInOrder);
     }
 
-    @Override
-    public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
-        hashCodeBuilder.append(name);
-        hashCodeBuilder.append(id);
-        hashCodeBuilder.append(creationDate);
-
-        return hashCodeBuilder.toHashCode();
-    }
 }

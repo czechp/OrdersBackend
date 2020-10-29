@@ -157,9 +157,12 @@ public class DTOMapper {
         result.setCommentary(order.getCommentary());
         result.setOrderNr(order.getOrderNr());
         for (ItemInOrder item : order.getItemsInOrder()) {
-            item.getOrder().setItemsInOrder(new ArrayList<>());
             result.getItemsInOrder().add(itemInOrderDTO(item));
         }
+
+        result.getItemsInOrder()
+                .stream()
+                .forEach(x->x.getOrder().setItemsInOrder(new ArrayList<>()));
         return result;
     }
 

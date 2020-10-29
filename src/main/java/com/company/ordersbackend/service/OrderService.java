@@ -147,14 +147,16 @@ public class OrderService {
         appUserService.saveAppUser(order.getAppUser());
     }
 
+    @Transactional
     public OrderDTO modifyCommentary(long id, String commentary, Principal principal) {
         AppUser appUser = appUserService.findAppUserByUsername(principal.getName()).orElseThrow(() -> new NotFoundException("user --- " + principal.getName()));
         Order order = orderRepository.findByAppUserAndId(appUser, id).orElseThrow(() -> new NotFoundException("order id --- " + id));
         order.setCommentary(commentary);
-        return dtoMapper.orderDTO(orderRepository.save(order));
+        return dtoMapper.orderDTO(order);
     }
 
 
+    @Transactional()
     public OrderDTO addCommentaryBySuperUser(long id, String commentary, String username) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("order id --- " + id));
@@ -163,16 +165,18 @@ public class OrderService {
         order.setCommentary(order.getCommentary() + "\n----------------------------------------\n"
                 + appUser.getUsername()
                 + ": " + "\n" + commentary);
-        return dtoMapper.orderDTO(orderRepository.save(order));
+        return dtoMapper.orderDTO(order);
     }
 
+    @Transactional()
     public OrderDTO setOrderNr(long id, String orderNr) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("order id --- " + id));
         order.setOrderNr(orderNr);
-        return dtoMapper.orderDTO(orderRepository.save(order));
+        return dtoMapper.orderDTO(order);
     }
 
+    @Transactional()
     public OrderDTO addItemToOrderFromAccessories(long orderId, long accessoryId, int amount, String username) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("order id --- " + orderId));
         ItemAccessory itemAccessory = itemAccessoryRepository.findById(accessoryId).orElseThrow(() -> new NotFoundException("itemAcessory id --- " + accessoryId));
@@ -180,7 +184,7 @@ public class OrderService {
             ItemInOrder itemInOrder = new ItemInOrder(itemAccessory);
             itemInOrder.setAmount(amount);
             order.addItemInOrder(itemInOrder);
-            return dtoMapper.orderDTO(orderRepository.save(order));
+            return dtoMapper.orderDTO(order);
         } else {
             throw new AccessDeniedException(username);
         }
