@@ -50,9 +50,7 @@ public class Order {
         this.orderStatus = OrderStatus.NEW;
     }
 
-    public void setItemsInOrder(List<ItemInOrder> itemsInOrder) {
-        this.itemsInOrder.addAll(itemsInOrder);
-    }
+
 
     public void addItemInOrder(ItemInOrder itemInOrder) {
         for (ItemInOrder inOrder : this.itemsInOrder) {
