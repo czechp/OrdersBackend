@@ -6,6 +6,7 @@ import com.company.ordersbackend.service.ItemInOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +68,8 @@ public class ItemInOrderController {
     List<ItemInOrderDTO> findAllOrderedItems(){
         return itemInOrderService.findAllOrderedItems();
     }
+
+
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)

@@ -195,4 +195,13 @@ public class OrderService {
                 .map(x -> dtoMapper.orderDTO(x))
                 .collect(Collectors.toList());
     }
+
+    @Transactional()
+    public void deliverAllItemsInFinishedOrder() {
+        List<Order> finishedOrder = orderRepository.findByOrderStatus(OrderStatus.FINISHED);
+        finishedOrder.stream()
+                .flatMap(x-> x.getItemsInOrder().stream())
+                .forEach(x->x.setDelivered(true));
+
+    }
 }
