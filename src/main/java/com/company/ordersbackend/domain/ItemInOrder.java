@@ -17,7 +17,7 @@ public class ItemInOrder extends ItemSuperClass {
     private int amount;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private Order order;
 
     public ItemInOrder() {
