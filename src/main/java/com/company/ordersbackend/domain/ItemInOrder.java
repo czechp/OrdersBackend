@@ -37,6 +37,5 @@ public class ItemInOrder extends ItemSuperClass {
         hashCodeBuilder.append(amount);
         return hashCodeBuilder.toHashCode();
 
-        return hashCodeBuilder.toHashCode();
     }
 }
