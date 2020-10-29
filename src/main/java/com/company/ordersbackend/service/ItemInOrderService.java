@@ -91,7 +91,7 @@ public class ItemInOrderService {
 
 
     public List<ItemInOrderDTO> findAllOrderedItems() {
-        return itemInOrderRepository.findByIsOrdered(true)
+        return itemInOrderRepository.findByIsOrderedAndIsDelivered(true, false)
                 .stream()
                 .map(x-> dtoMapper.itemInOrderDTO(x))
                 .collect(Collectors.toList());
