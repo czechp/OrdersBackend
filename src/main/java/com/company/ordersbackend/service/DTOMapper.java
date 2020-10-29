@@ -2,6 +2,7 @@ package com.company.ordersbackend.service;
 
 import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.model.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -136,6 +137,7 @@ public class DTOMapper {
         result.setDelivered(itemInOrder.isDelivered());
         result.setOrdered(itemInOrder.isOrdered());
         result.setAmount(itemInOrder.getAmount());
+        result.setOrder(new OrderDTO());
         result.getOrder().setId(itemInOrder.getOrder().getId());
         result.getOrder().setName(itemInOrder.getOrder().getName());
         result.getOrder().setAppUser(itemInOrder.getOrder().getAppUser());
