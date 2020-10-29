@@ -159,10 +159,7 @@ public class DTOMapper {
         for (ItemInOrder item : order.getItemsInOrder()) {
             result.getItemsInOrder().add(itemInOrderDTO(item));
         }
-
-        result.getItemsInOrder()
-                .stream()
-                .forEach(x->x.getOrder().setItemsInOrder(new ArrayList<>()));
+        
         return result;
     }
 
