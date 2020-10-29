@@ -78,6 +78,7 @@ public class ItemInOrderService {
 
     private void setDelivered(ItemInOrder itemInOrder) {
         itemInOrder.setDelivered(true);
+        itemInOrder.setOrdered(false);
         itemInOrder.setDeliverDate(LocalDateTime.now());
     }
 
@@ -89,4 +90,10 @@ public class ItemInOrderService {
     }
 
 
+    public List<ItemInOrderDTO> findAllOrderedItems() {
+        return itemInOrderRepository.findByIsOrdered(true)
+                .stream()
+                .map(x-> dtoMapper.itemInOrderDTO(x))
+                .collect(Collectors.toList());
+    }
 }
