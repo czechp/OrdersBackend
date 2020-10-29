@@ -16,6 +16,9 @@ public class ItemInOrder extends ItemSuperClass {
     private int amount;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Order order;
+
     public ItemInOrder() {
         super();
     }

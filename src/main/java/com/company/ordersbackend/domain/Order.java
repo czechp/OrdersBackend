@@ -23,8 +23,7 @@ public class Order {
     @ManyToOne()
     private AppUser appUser;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_in_order_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemInOrder> itemsInOrder = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
@@ -39,16 +38,6 @@ public class Order {
 
     private String orderNr = "";
 
-    public void addItemInOrder(ItemInOrder itemInOrder){
-        for (ItemInOrder inOrder : this.itemsInOrder) {
-            if (itemInOrder.getSerialNumber().equals(inOrder.getSerialNumber())) {
-                inOrder.setAmount(itemInOrder.getAmount() + inOrder.getAmount());
-                return;
-            }
-        }
-        this.itemsInOrder.add(itemInOrder);
-    }
-
     public Order() {
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;
@@ -58,6 +47,17 @@ public class Order {
         this.appUser = appUser;
         this.creationDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.NEW;
+    }
+
+    public void addItemInOrder(ItemInOrder itemInOrder) {
+        for (ItemInOrder inOrder : this.itemsInOrder) {
+            if (itemInOrder.getSerialNumber().equals(inOrder.getSerialNumber())) {
+                inOrder.setAmount(itemInOrder.getAmount() + inOrder.getAmount());
+                return;
+            }
+        }
+        itemInOrder.setOrder(this);
+        this.itemsInOrder.add(itemInOrder);
     }
 
 
