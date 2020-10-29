@@ -15,4 +15,5 @@ public class ItemInOrderDTO extends ItemDTO {
     private boolean isOrdered;
     private boolean isDelivered;
     private int amount;
+    private OrderDTO order;
 }

@@ -64,8 +64,8 @@ public class Setup {
         ItemCategory itemCategory = itemCategoryRepository.findById(1L).get();
 
         Item item1 = new Item("Stycznik", "123", "32a", "https://www.google.com/", producer, provider, itemCategory);
-        Item item2 = new Item("Zabezpieczenie termiczne", "123", "32A", "http://123.com", producer, provider, itemCategory);
-        Item item3 = new Item("Bezpiecznik", "123", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item2 = new Item("Zabezpieczenie termiczne", "456", "32A", "http://123.com", producer, provider, itemCategory);
+        Item item3 = new Item("Bezpiecznik", "789", "32A", "http://123.com", producer, provider, itemCategory);
 
         itemRepository.saveAll(Arrays.asList(item1, item2, item3));
         AppUser user = new AppUser("user", passwordEncoder.encode("user"), "superUser", "webcoderc@gmail.com");

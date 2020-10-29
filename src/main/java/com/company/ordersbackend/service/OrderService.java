@@ -54,7 +54,8 @@ public class OrderService {
             if (order.getAppUser().getUsername().equals(username) && order.getOrderStatus() != OrderStatus.FINISHED) {
                 Optional<ItemInOrder> optionalItemInOrder = itemService.convertItemIntoItemInOrder(itemId, amount);
                 if (optionalItemInOrder.isPresent()) {
-                    order.addItemInOrder(optionalItemInOrder.get());
+                    ItemInOrder itemInOrder = optionalItemInOrder.get();
+                    order.addItemInOrder(itemInOrder);
                     return Optional.of(dtoMapper.orderDTO(orderRepository.save(order)));
                 }
             }

@@ -74,6 +74,7 @@ public class AppUser implements UserDetails {
         this.role = role.toUpperCase();
     }
 
+    @JsonIgnore()
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + this.role));
