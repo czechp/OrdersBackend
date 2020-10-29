@@ -4,8 +4,6 @@ import com.company.ordersbackend.domain.*;
 import com.company.ordersbackend.model.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
 public class DTOMapper {
 
@@ -138,11 +136,11 @@ public class DTOMapper {
         result.setDelivered(itemInOrder.isDelivered());
         result.setOrdered(itemInOrder.isOrdered());
         result.setAmount(itemInOrder.getAmount());
-        result.setOrder(orderDTO(itemInOrder.getOrder()));
+        result.getOrder().setId(itemInOrder.getOrder().getId());
+        result.getOrder().setName(itemInOrder.getOrder().getName());
+        result.getOrder().setAppUser(itemInOrder.getOrder().getAppUser());
+        result.getOrder().setOrderNr(itemInOrder.getOrder().getOrderNr());
 
-        result.getOrder().getItemsInOrder()
-                .stream()
-                .forEach(x->x.getOrder().setItemsInOrder(new ArrayList<>()));
         return result;
     }
 
@@ -156,10 +154,10 @@ public class DTOMapper {
         result.setOrderStatus(order.getOrderStatus());
         result.setCommentary(order.getCommentary());
         result.setOrderNr(order.getOrderNr());
-        for (ItemInOrder item : order.getItemsInOrder()) {
-            result.getItemsInOrder().add(itemInOrderDTO(item));
-        }
-        
+
+        order.getItemsInOrder()
+                .stream()
+                .forEach(x -> result.getItemsInOrder().add(itemInOrderDTO(x)));
         return result;
     }
 
