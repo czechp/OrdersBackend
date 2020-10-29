@@ -60,6 +60,13 @@ public class ItemInOrderController {
     public ItemInOrderDTO changeStatusDelivered(@PathVariable("id") final long id, Principal principal) {
         return itemInOrderService.changeStatus(id, ItemStatus.DELIVERED, principal);
     }
+
+
+    @GetMapping("status/ordered")
+    @ResponseStatus(HttpStatus.OK)
+    List<ItemInOrderDTO> findAllOrderedItems(){
+        return itemInOrderService.findAllOrderedItems();
+    }
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
