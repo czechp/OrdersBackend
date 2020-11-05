@@ -128,7 +128,7 @@ public class ItemService {
                 );
         Item itemToAccessory = itemRepository.findById(accessoryId)
                 .orElseThrow(
-                        () -> new NotFoundException("item id (accessory) --- " + itemId)
+                        () -> new NotFoundException("item id (accessory) --- " + accessoryId)
                 );
         ItemAccessory itemAccessory = new ItemAccessory(itemToAccessory);
         item.addItemAccessory(itemAccessory);
